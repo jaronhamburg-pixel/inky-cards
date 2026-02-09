@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inky Cards - Luxury Greeting Card Platform
+
+A complete luxury greeting card e-commerce platform built with Next.js 16, featuring AI-powered card generation, video greetings, and a full admin dashboard.
+
+## Features
+
+### 🎨 Customer Features
+- **Browse Cards**: Marketplace with 25+ luxury greeting cards
+- **Advanced Filtering**: Filter by category, occasion, and price
+- **AI Card Generator**: Create custom cards using Google Gemini AI
+- **Card Editor**: Customize text, fonts, and preview changes
+- **Video Greetings**: Add personal video messages with QR codes
+- **Shopping Cart**: Full cart management with quantity controls
+- **Checkout Flow**: Multi-step checkout with form validation
+- **Order Tracking**: View order status and details
+
+### 🔧 Admin Features
+- **Dashboard**: Overview of orders, revenue, and inventory
+- **Order Management**: View and update order statuses
+- **Card Inventory**: Manage card catalog
+- **Analytics**: Basic metrics and reporting
+
+### 🎯 Technical Features
+- Next.js 16 App Router
+- TypeScript (strict mode)
+- Tailwind CSS v4 with luxury design system
+- Zustand for state management
+- Google Gemini AI integration
+- React Hook Form + Zod validation
+- Responsive design (mobile-first)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Google Gemini API key (free tier available)
 
+### Installation
+
+1. Clone the repository (if applicable)
+
+2. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Set up environment variables:
+```bash
+cp .env.local.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Edit `.env.local` and add your API keys:
+- `GOOGLE_AI_API_KEY`: Get from https://ai.google.dev/
+- `ADMIN_SECRET`: Set a secure password for admin access
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Start the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open http://localhost:3000 in your browser
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+/app
+  /(pages)           # User-facing pages
+    page.tsx         # Homepage
+    /cards           # Card marketplace
+    /generate        # AI generator
+    /cart            # Shopping cart
+    /checkout        # Checkout flow
+    /orders          # Order details
+  /admin             # Admin dashboard
+  /api               # API routes
+/components
+  /ui                # Reusable UI components
+  /layout            # Layout components
+  /cards             # Card-specific components
+/lib
+  /data              # Mock data
+  /services          # Business logic
+  /store             # Zustand stores
+  /utils             # Utilities
+/types               # TypeScript types
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Mock Data
 
-## Deploy on Vercel
+This implementation uses in-memory mock data instead of a database for simplicity:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Cards**: 25 pre-defined luxury cards in `/lib/data/mock-cards.ts`
+- **Orders**: Sample orders stored in memory in `/lib/data/mock-orders.ts`
+- Cart state persists in localStorage via Zustand
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To add a real database:
+1. Install Prisma: `npm install prisma @prisma/client`
+2. Create schema in `prisma/schema.prisma`
+3. Replace mock data functions with Prisma queries
+
+## AI Integration
+
+The platform uses Google Gemini 2.0 Flash (free tier) for card text generation:
+
+- Model: `gemini-2.0-flash-exp`
+- Free tier: 60 requests/minute
+- Features: Text generation for card messages
+- Location: `/lib/services/ai-service.ts`
+
+Images are sourced from Unsplash (no API key needed for development).
+
+## Environment Variables
+
+Required:
+- `GOOGLE_AI_API_KEY`: Google Gemini API key for AI generation
+
+Optional:
+- `UPLOADTHING_TOKEN`: For video upload functionality
+- `ADMIN_SECRET`: Password for admin access
+- `NEXT_PUBLIC_APP_URL`: Base URL for the app
+
+## Design System
+
+### Colors
+- **Luxury Gold**: `#D4AF37`
+- **Dark Gold**: `#B8941E`
+- **Luxury Cream**: `#F5F5DC`
+- **Charcoal**: `#2C2C2C`
+- **Stone**: `#8B8680`
+
+### Typography
+- **Headings**: Playfair Display (serif)
+- **Body**: Inter (sans-serif)
+
+## Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+```
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Android)
+
+## License
+
+This project is for demonstration purposes.

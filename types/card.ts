@@ -1,0 +1,54 @@
+export type CardCategory = 'luxury' | 'minimalist' | 'artistic' | 'vintage' | 'modern';
+
+export type CardOccasion =
+  | 'birthday'
+  | 'wedding'
+  | 'anniversary'
+  | 'thank-you'
+  | 'sympathy'
+  | 'congratulations'
+  | 'holiday'
+  | 'just-because';
+
+export interface TextTemplate {
+  placeholder: string;
+  maxLength: number;
+  fontFamily: string;
+  fontSize: number;
+  color: string;
+  position: { x: number; y: number };
+  alignment: 'left' | 'center' | 'right';
+}
+
+export interface Card {
+  id: string;
+  title: string;
+  description: string;
+  category: CardCategory;
+  occasions: CardOccasion[];
+  price: number;
+  images: {
+    front: string;
+    back: string;
+    thumbnail: string;
+  };
+  customizable: {
+    frontText: boolean;
+    backText: boolean;
+    insideText: boolean;
+  };
+  templates: {
+    front?: TextTemplate;
+    back?: TextTemplate;
+    inside?: TextTemplate;
+  };
+}
+
+export interface CardCustomization {
+  frontText?: string;
+  backText?: string;
+  insideText?: string;
+  fontFamily?: string;
+  fontSize?: number;
+  textColor?: string;
+}
