@@ -20,8 +20,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           type={type}
           className={cn(
-            'w-full px-4 py-2.5 border border-neutral-300 rounded-md',
-            'focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-transparent',
+            'w-full px-4 py-2.5 border border-silk rounded bg-white',
+            'focus:outline-none focus:ring-2 focus:ring-ink focus:border-transparent',
             'placeholder:text-neutral-400',
             'transition-all duration-200',
             error && 'border-red-500 focus:ring-red-500',
@@ -55,8 +55,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           className={cn(
-            'w-full px-4 py-2.5 border border-neutral-300 rounded-md',
-            'focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-transparent',
+            'w-full px-4 py-2.5 border border-silk rounded bg-white',
+            'focus:outline-none focus:ring-2 focus:ring-ink focus:border-transparent',
             'placeholder:text-neutral-400',
             'transition-all duration-200',
             'resize-vertical min-h-[100px]',

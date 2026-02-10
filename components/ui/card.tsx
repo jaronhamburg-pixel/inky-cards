@@ -10,7 +10,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     const variants = {
       default: 'bg-white',
       elevated: 'bg-white shadow-lg',
-      bordered: 'bg-white border border-neutral-200',
+      bordered: 'bg-white border border-silk',
     };
 
     return (

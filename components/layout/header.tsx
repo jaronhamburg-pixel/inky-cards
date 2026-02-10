@@ -8,87 +8,126 @@ import { CartDrawer } from '@/components/cart/cart-drawer';
 export function Header() {
   const itemCount = useCartStore((state) => state.getItemCount());
   const [cartOpen, setCartOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white border-b border-neutral-200">
-        <nav className="container-luxury py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
-              <span className="heading-card text-luxury-charcoal">Inky Cards</span>
-            </Link>
-
-            {/* Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+      <header className="sticky top-0 z-40 bg-paper/95 backdrop-blur-sm border-b border-silk">
+        <nav className="container-luxury">
+          <div className="flex items-center justify-between h-16">
+            {/* Left nav */}
+            <div className="hidden md:flex items-center gap-8">
               <Link
                 href="/cards"
-                className="body-regular text-neutral-700 hover:text-luxury-gold transition-colors"
+                className="text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                Browse Cards
+                Shop Cards
               </Link>
               <Link
                 href="/generate"
-                className="body-regular text-neutral-700 hover:text-luxury-gold transition-colors"
+                className="text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                AI Generator
+                Create with AI
               </Link>
               <Link
-                href="/about"
-                className="body-regular text-neutral-700 hover:text-luxury-gold transition-colors"
+                href="/the-edit"
+                className="text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                About
+                The Edit
               </Link>
             </div>
 
-            {/* Cart Icon */}
+            {/* Mobile hamburger */}
             <button
-              onClick={() => setCartOpen(true)}
-              className="relative"
-              aria-label="Open shopping cart"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 -ml-2"
+              aria-label="Toggle menu"
             >
-              <svg
-                className="w-6 h-6 text-luxury-charcoal hover:text-luxury-gold transition-colors"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                />
+              <svg className="w-5 h-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
-              {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-luxury-gold text-luxury-charcoal text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {itemCount}
-                </span>
-              )}
             </button>
+
+            {/* Center logo */}
+            <Link href="/" className="absolute left-1/2 -translate-x-1/2">
+              <span className="font-serif text-2xl md:text-3xl font-semibold tracking-[0.15em] text-ink">
+                INKY
+              </span>
+            </Link>
+
+            {/* Right nav */}
+            <div className="flex items-center gap-6">
+              <Link
+                href="/account"
+                className="hidden md:block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
+              >
+                Account
+              </Link>
+              <button
+                onClick={() => setCartOpen(true)}
+                className="relative flex items-center gap-1.5 text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
+                aria-label="Open shopping basket"
+              >
+                <span className="hidden md:inline">Basket</span>
+                <svg
+                  className="w-5 h-5 md:hidden"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                {itemCount > 0 && (
+                  <span className="inline-flex items-center justify-center bg-ink text-white text-[10px] font-semibold rounded-full w-5 h-5">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
 
-          {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center justify-around mt-4 pt-4 border-t border-neutral-200">
-            <Link
-              href="/cards"
-              className="text-sm text-neutral-700 hover:text-luxury-gold transition-colors"
-            >
-              Browse
-            </Link>
-            <Link
-              href="/generate"
-              className="text-sm text-neutral-700 hover:text-luxury-gold transition-colors"
-            >
-              AI Generator
-            </Link>
-            <Link
-              href="/about"
-              className="text-sm text-neutral-700 hover:text-luxury-gold transition-colors"
-            >
-              About
-            </Link>
-          </div>
+          {/* Mobile nav */}
+          {mobileOpen && (
+            <div className="md:hidden border-t border-silk py-6 space-y-4">
+              <Link
+                href="/cards"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
+              >
+                Shop Cards
+              </Link>
+              <Link
+                href="/generate"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
+              >
+                Create with AI
+              </Link>
+              <Link
+                href="/the-edit"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
+              >
+                The Edit
+              </Link>
+              <Link
+                href="/account"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
+              >
+                Account
+              </Link>
+            </div>
+          )}
         </nav>
       </header>
 

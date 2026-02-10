@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-playfair",
+  variable: "--font-cormorant",
 });
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
-  variable: "--font-inter",
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Inky Cards - Luxury Greeting Cards with AI Customization",
-  description: "Create personalized luxury greeting cards with AI-powered customization and video messaging. Premium quality cards for every occasion.",
+  title: "INKY — Premium Greeting Cards",
+  description: "Personalised greeting cards worth keeping. AI-powered customisation, video messages, and premium quality.",
 };
 
 export default function RootLayout({
@@ -27,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="antialiased min-h-screen flex flex-col">
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
+      <body className="antialiased min-h-screen flex flex-col bg-paper text-ink">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

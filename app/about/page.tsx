@@ -1,181 +1,150 @@
+'use client';
+
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
 export default function AboutPage() {
   return (
-    <div className="animate-fade-in">
+    <div>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-luxury-cream to-white py-20 md:py-32">
+      <section className="py-24 md:py-32">
         <div className="container-luxury text-center">
-          <h1 className="heading-hero text-luxury-charcoal mb-6">About Inky Cards</h1>
-          <p className="body-large text-neutral-600 max-w-2xl mx-auto">
-            Combining timeless elegance with cutting-edge AI technology to create greeting cards
-            that truly matter.
-          </p>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="heading-hero text-ink mb-6"
+          >
+            The Edit
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="body-large text-stone max-w-xl mx-auto"
+          >
+            Combining timeless craft with modern AI technology to create greeting
+            cards that truly matter.
+          </motion.p>
         </div>
       </section>
 
       {/* Mission */}
-      <section className="py-20">
-        <div className="container-luxury max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="heading-display text-luxury-charcoal mb-6">Our Mission</h2>
-            <p className="body-large text-neutral-600">
-              In a digital world, physical greeting cards remain one of the most meaningful ways to
-              express emotion. We believe every card should be as unique as the sentiment it
-              carries. That's why we've created a platform that merges luxury craftsmanship with AI
-              innovation, allowing you to create truly personalized cards that recipients will
-              treasure forever.
+      <section className="pb-24">
+        <div className="container-luxury max-w-3xl">
+          <div className="text-center">
+            <h2 className="heading-display text-ink mb-8">Our Mission</h2>
+            <p className="text-stone leading-relaxed">
+              In a digital world, physical greeting cards remain one of the most
+              meaningful ways to express emotion. We believe every card should be as
+              unique as the sentiment it carries. That&apos;s why we created a platform
+              that merges craft with AI innovation, allowing you to create
+              personalised cards that recipients will treasure.
             </p>
           </div>
         </div>
       </section>
 
       {/* What Makes Us Different */}
-      <section className="py-20 bg-neutral-50">
+      <section className="py-24 border-t border-silk">
         <div className="container-luxury">
-          <h2 className="heading-display text-luxury-charcoal text-center mb-12">
+          <h2 className="heading-display text-ink text-center mb-14">
             What Makes Us Different
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg border border-neutral-200">
-              <div className="w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-6 h-6 text-luxury-charcoal"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                  />
-                </svg>
-              </div>
-              <h3 className="heading-card mb-3">AI-Powered Creativity</h3>
-              <p className="text-neutral-600">
-                Our advanced AI helps you craft the perfect message and design, tailored to your
-                specific occasion and recipient.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+                AI-Powered Creativity
+              </h3>
+              <p className="text-stone text-sm leading-relaxed">
+                Our advanced AI helps you craft the perfect message and design,
+                tailored to your specific occasion and recipient.
               </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg border border-neutral-200">
-              <div className="w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-6 h-6 text-luxury-charcoal"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                  />
-                </svg>
-              </div>
-              <h3 className="heading-card mb-3">Premium Quality</h3>
-              <p className="text-neutral-600">
-                Every card is printed on premium cardstock with luxury finishes, ensuring your
-                message is delivered with elegance.
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+                Premium Quality
+              </h3>
+              <p className="text-stone text-sm leading-relaxed">
+                Every card is printed on premium cardstock with luxury finishes,
+                ensuring your message is delivered with elegance.
               </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg border border-neutral-200">
-              <div className="w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-6 h-6 text-luxury-charcoal"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
-              <h3 className="heading-card mb-3">Video Integration</h3>
-              <p className="text-neutral-600">
-                Add a personal video greeting with QR code integration, bringing your card to life
-                in a whole new dimension.
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+                Video Integration
+              </h3>
+              <p className="text-stone text-sm leading-relaxed">
+                Add a personal video greeting with QR code integration, bringing your
+                card to life in a whole new dimension.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Our Process */}
-      <section className="py-20">
-        <div className="container-luxury max-w-4xl">
-          <h2 className="heading-display text-luxury-charcoal text-center mb-12">
-            How It Works
-          </h2>
-          <div className="space-y-8">
-            <div className="flex gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center text-luxury-charcoal font-bold text-xl">
-                1
-              </div>
-              <div>
-                <h3 className="heading-card mb-2">Choose or Create</h3>
-                <p className="text-neutral-600">
-                  Browse our curated collection or use our AI generator to create a unique design
-                  from scratch.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center text-luxury-charcoal font-bold text-xl">
-                2
-              </div>
-              <div>
-                <h3 className="heading-card mb-2">Personalize</h3>
-                <p className="text-neutral-600">
-                  Customize your message, choose fonts, and add optional video greetings with our
-                  intuitive editor.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center text-luxury-charcoal font-bold text-xl">
-                3
-              </div>
-              <div>
-                <h3 className="heading-card mb-2">We Print & Ship</h3>
-                <p className="text-neutral-600">
-                  Your card is professionally printed on premium materials and shipped with care,
-                  ready to make someone's day.
-                </p>
-              </div>
-            </div>
+      {/* How It Works */}
+      <section className="py-24 border-t border-silk">
+        <div className="container-luxury max-w-3xl">
+          <h2 className="heading-display text-ink text-center mb-14">How It Works</h2>
+          <div className="space-y-10">
+            {[
+              { step: '01', title: 'Choose or Create', desc: 'Browse our curated collection or use our AI generator to create a unique design from scratch.' },
+              { step: '02', title: 'Personalise', desc: 'Customise your message, choose fonts, and add optional video greetings with our intuitive editor.' },
+              { step: '03', title: 'We Print & Ship', desc: 'Your card is professionally printed on premium materials and shipped with care, ready to make someone\'s day.' },
+            ].map((item) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="flex gap-8"
+              >
+                <span className="font-serif text-3xl font-semibold text-silk flex-shrink-0 w-12">
+                  {item.step}
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl font-medium text-ink mb-2 tracking-tight">{item.title}</h3>
+                  <p className="text-stone text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-luxury-charcoal text-luxury-cream">
+      <section className="bg-ink text-paper py-24 md:py-32">
         <div className="container-luxury text-center">
-          <h2 className="heading-display mb-6">Ready to Create Something Special?</h2>
-          <p className="body-large mb-8 max-w-2xl mx-auto opacity-90">
-            Join thousands of customers who trust Inky Cards for their most important moments.
+          <h2 className="heading-display text-paper mb-6">Make it personal.</h2>
+          <p className="body-large text-paper/60 mb-12 max-w-lg mx-auto">
+            Join thousands of customers who trust INKY for their most important moments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/generate">
-              <Button size="lg" variant="secondary">
+              <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
                 Try AI Generator
               </Button>
             </Link>
             <Link href="/cards">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-luxury-cream text-luxury-cream hover:bg-luxury-cream hover:text-luxury-charcoal"
-              >
+              <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink">
                 Browse Collection
               </Button>
             </Link>

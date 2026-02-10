@@ -19,27 +19,12 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="container-luxury py-20 text-center animate-fade-in">
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-neutral-100 rounded-full mb-6">
-          <svg
-            className="w-10 h-10 text-neutral-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-            />
-          </svg>
-        </div>
-        <h1 className="heading-display text-luxury-charcoal mb-4">Your Cart is Empty</h1>
-        <p className="body-large text-neutral-600 mb-8">
-          Discover our collection of luxury greeting cards
+        <h1 className="heading-display text-ink mb-4">Your Basket is Empty</h1>
+        <p className="body-large text-stone mb-8">
+          Discover our collection of greeting cards
         </p>
         <Link href="/cards">
-          <Button size="lg">Browse Cards</Button>
+          <Button size="lg">Shop Cards</Button>
         </Link>
       </div>
     );
@@ -47,7 +32,7 @@ export default function CartPage() {
 
   return (
     <div className="container-luxury py-12 animate-fade-in">
-      <h1 className="heading-display text-luxury-charcoal mb-8">Shopping Cart</h1>
+      <h1 className="heading-display text-ink mb-8">Basket</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -55,10 +40,9 @@ export default function CartPage() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="bg-white border border-neutral-200 rounded-lg p-6 flex gap-6"
+              className="bg-white border border-silk rounded-lg p-6 flex gap-6"
             >
-              {/* Card Image */}
-              <div className="w-24 h-32 relative overflow-hidden rounded-md flex-shrink-0">
+              <div className="w-20 h-28 relative overflow-hidden rounded shadow-sm flex-shrink-0">
                 <Image
                   src={item.card.images.thumbnail}
                   alt={item.card.title}
@@ -67,85 +51,66 @@ export default function CartPage() {
                 />
               </div>
 
-              {/* Card Info */}
               <div className="flex-1">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="font-semibold text-luxury-charcoal mb-1">
-                      {item.card.title}
-                    </h3>
-                    <p className="text-sm text-neutral-500 capitalize">{item.card.category}</p>
+                    <h3 className="font-serif font-medium text-ink mb-0.5">{item.card.title}</h3>
+                    <p className="text-xs text-stone capitalize">{item.card.category}</p>
                   </div>
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="text-neutral-400 hover:text-red-600 transition-colors"
+                    className="text-stone hover:text-red-600 transition-colors"
                     aria-label="Remove item"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
 
-                {/* Customization */}
                 {(item.customization.frontText || item.customization.insideText) && (
-                  <div className="mb-3 p-2 bg-luxury-cream rounded text-xs">
+                  <div className="mb-3 p-2 bg-paper border border-silk rounded text-xs">
                     {item.customization.frontText && (
-                      <p className="text-neutral-700">
-                        <span className="font-medium">Front:</span> {item.customization.frontText}
-                      </p>
+                      <p className="text-stone"><span className="font-medium text-ink">Front:</span> {item.customization.frontText}</p>
                     )}
                     {item.customization.insideText && (
-                      <p className="text-neutral-700">
-                        <span className="font-medium">Inside:</span>{' '}
-                        {item.customization.insideText}
-                      </p>
+                      <p className="text-stone"><span className="font-medium text-ink">Inside:</span> {item.customization.insideText}</p>
                     )}
                   </div>
                 )}
 
                 <div className="flex items-center justify-between">
-                  {/* Quantity */}
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-8 h-8 border border-neutral-300 rounded hover:border-luxury-gold transition-colors"
+                      className="w-8 h-8 border border-silk rounded hover:border-ink transition-colors text-sm"
                     >
                       -
                     </button>
-                    <span className="w-12 text-center font-medium">{item.quantity}</span>
+                    <span className="w-10 text-center text-sm font-medium">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-8 h-8 border border-neutral-300 rounded hover:border-luxury-gold transition-colors"
+                      className="w-8 h-8 border border-silk rounded hover:border-ink transition-colors text-sm"
                     >
                       +
                     </button>
                   </div>
 
-                  {/* Price */}
                   <div className="text-right">
-                    <p className="text-lg font-semibold text-luxury-gold">
+                    <p className="text-lg font-serif font-semibold text-ink">
                       {formatPrice(item.price * item.quantity)}
                     </p>
                     {item.quantity > 1 && (
-                      <p className="text-xs text-neutral-500">
-                        {formatPrice(item.price)} each
-                      </p>
+                      <p className="text-xs text-stone">{formatPrice(item.price)} each</p>
                     )}
                   </div>
                 </div>
 
-                {/* Edit button */}
                 <Link
                   href={`/cards/${item.cardId}/customize`}
-                  className="inline-block mt-3 text-sm text-luxury-gold hover:text-luxury-dark-gold transition-colors"
+                  className="inline-block mt-3 text-xs text-stone hover:text-ink transition-colors"
                 >
-                  Edit Customization →
+                  Edit Personalisation &rarr;
                 </Link>
               </div>
             </div>
@@ -153,90 +118,52 @@ export default function CartPage() {
 
           <button
             onClick={clearCart}
-            className="text-sm text-red-600 hover:text-red-700 transition-colors"
+            className="text-xs text-stone hover:text-red-600 transition-colors"
           >
-            Clear Cart
+            Clear Basket
           </button>
         </div>
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white border border-neutral-200 rounded-lg p-6 sticky top-24">
-            <h2 className="font-semibold text-lg text-luxury-charcoal mb-4">Order Summary</h2>
+          <div className="bg-white border border-silk rounded-lg p-6 sticky top-24">
+            <h2 className="font-serif text-lg font-medium text-ink mb-4">Summary</h2>
 
             <div className="space-y-3 mb-6">
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-sm text-stone">
                 <span>Subtotal</span>
                 <span>{formatPrice(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-sm text-stone">
                 <span>Shipping</span>
                 <span>{shipping === 0 ? 'FREE' : formatPrice(shipping)}</span>
               </div>
               {shipping > 0 && (
-                <p className="text-xs text-neutral-500">
-                  Free shipping on orders over $50
-                </p>
+                <p className="text-xs text-stone">Free shipping on orders over $50</p>
               )}
-              <div className="flex justify-between text-neutral-600">
-                <span>Tax (estimated)</span>
+              <div className="flex justify-between text-sm text-stone">
+                <span>Tax (est.)</span>
                 <span>{formatPrice(tax)}</span>
               </div>
-              <div className="pt-3 border-t border-neutral-200 flex justify-between text-lg font-semibold text-luxury-charcoal">
+              <div className="pt-3 border-t border-silk flex justify-between text-lg font-serif font-semibold text-ink">
                 <span>Total</span>
-                <span className="text-luxury-gold">{formatPrice(total)}</span>
+                <span>{formatPrice(total)}</span>
               </div>
             </div>
 
-            <Button
-              size="lg"
-              variant="secondary"
-              className="w-full mb-3"
-              onClick={() => router.push('/checkout')}
-            >
-              Proceed to Checkout
+            <Button size="lg" variant="primary" className="w-full mb-3" onClick={() => router.push('/checkout')}>
+              Checkout
             </Button>
-
             <Link href="/cards">
               <Button size="lg" variant="outline" className="w-full">
                 Continue Shopping
               </Button>
             </Link>
 
-            {/* Trust Badges */}
-            <div className="mt-6 pt-6 border-t border-neutral-200">
-              <div className="space-y-2 text-sm text-neutral-600">
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Secure checkout</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Free returns within 30 days</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Premium quality guarantee</span>
-                </div>
-              </div>
+            <div className="mt-6 pt-6 border-t border-silk space-y-2 text-xs text-stone">
+              <p>Secure checkout</p>
+              <p>Free returns within 30 days</p>
+              <p>Premium quality guarantee</p>
             </div>
           </div>
         </div>

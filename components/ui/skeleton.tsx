@@ -8,7 +8,7 @@ export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
       className={cn(
-        'animate-pulse rounded-md bg-neutral-200',
+        'animate-pulse rounded bg-silk',
         className
       )}
     />
@@ -17,16 +17,12 @@ export function Skeleton({ className }: SkeletonProps) {
 
 export function CardSkeleton() {
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg overflow-hidden">
+    <div className="bg-white border border-silk rounded-lg overflow-hidden">
       <Skeleton className="aspect-[3/4] w-full rounded-none" />
       <div className="p-4 space-y-3">
         <Skeleton className="h-5 w-3/4" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-1/2" />
-        <div className="flex justify-between items-center pt-2">
-          <Skeleton className="h-6 w-16" />
-          <Skeleton className="h-8 w-24 rounded-md" />
-        </div>
       </div>
     </div>
   );
@@ -34,7 +30,7 @@ export function CardSkeleton() {
 
 export function CardGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {Array.from({ length: count }).map((_, i) => (
         <CardSkeleton key={i} />
       ))}
@@ -44,7 +40,7 @@ export function CardGridSkeleton({ count = 8 }: { count?: number }) {
 
 export function OrderRowSkeleton() {
   return (
-    <div className="flex items-center gap-4 p-4 border-b border-neutral-100">
+    <div className="flex items-center gap-4 p-4 border-b border-silk">
       <Skeleton className="h-4 w-24" />
       <Skeleton className="h-4 w-32 flex-1" />
       <Skeleton className="h-6 w-20 rounded-full" />
@@ -58,10 +54,10 @@ export function DetailSkeleton() {
     <div className="space-y-6">
       <Skeleton className="h-8 w-1/3" />
       <Skeleton className="h-4 w-1/4" />
-      <div className="bg-white border border-neutral-200 rounded-lg p-8 space-y-4">
+      <div className="bg-white border border-silk rounded-lg p-8 space-y-4">
         <Skeleton className="h-6 w-1/4" />
         <div className="flex gap-6">
-          <Skeleton className="w-24 h-32 rounded-md" />
+          <Skeleton className="w-24 h-32 rounded" />
           <div className="flex-1 space-y-3">
             <Skeleton className="h-5 w-1/2" />
             <Skeleton className="h-4 w-full" />
