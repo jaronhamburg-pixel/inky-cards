@@ -4,18 +4,29 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+function BrandedBack() {
+  return (
+    <div className="absolute inset-0 bg-paper flex flex-col items-center justify-center">
+      <div className="absolute inset-0 border border-silk/60 rounded-lg m-3" />
+      <span className="font-serif text-xl font-semibold tracking-[0.15em] text-ink mb-2">
+        INKY
+      </span>
+      <div className="w-6 h-px bg-silk mb-2" />
+      <p className="text-[9px] uppercase tracking-[0.25em] text-stone">Designed by Inky Cards</p>
+    </div>
+  );
+}
+
 interface Card3DProps {
   frontImage: string;
-  backImage: string;
+  backImage?: string;
   alt: string;
   className?: string;
-  /** If true, card opens like a book on hover instead of flipping */
   hoverEffect?: 'flip' | 'open';
 }
 
 export function Card3D({
   frontImage,
-  backImage,
   alt,
   className = '',
   hoverEffect = 'open',
@@ -35,19 +46,17 @@ export function Card3D({
           transition={{ duration: 0.6, ease: 'easeInOut' }}
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {/* Front */}
           <div
             className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
             style={{ backfaceVisibility: 'hidden' }}
           >
             <Image src={frontImage} alt={alt} fill className="object-cover" />
           </div>
-          {/* Back */}
           <div
             className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
-            <Image src={backImage} alt={`${alt} back`} fill className="object-cover" />
+            <BrandedBack />
           </div>
         </motion.div>
       </div>
@@ -62,10 +71,9 @@ export function Card3D({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative w-full aspect-[3/4]">
-        {/* Inside (back/inside of card visible when open) */}
-        <div className="absolute inset-0 rounded-lg overflow-hidden card-3d-face bg-white">
-          <Image src={backImage} alt={`${alt} inside`} fill className="object-cover opacity-40" />
-          <div className="absolute inset-0 bg-white/80" />
+        {/* Inside — branded back */}
+        <div className="absolute inset-0 rounded-lg overflow-hidden card-3d-face">
+          <BrandedBack />
         </div>
 
         {/* Front cover — pivots from left edge */}

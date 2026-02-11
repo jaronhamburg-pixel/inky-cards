@@ -7,7 +7,7 @@ export const mockCards: Card[] = [
     description: 'A luxurious card featuring gold foil accents and classic typography, perfect for life\'s most significant celebrations.',
     category: 'luxury',
     occasions: ['wedding', 'anniversary'],
-    price: 12.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1608496099924-f863c6f1eaf3?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -45,7 +45,7 @@ export const mockCards: Card[] = [
     description: 'Clean lines and sophisticated marble textures create a modern statement piece for any occasion.',
     category: 'minimalist',
     occasions: ['birthday', 'thank-you', 'just-because'],
-    price: 10.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1645830849105-b0f0ab3ca332?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1515096788709-a3cf4ce0a4a6?w=800&h=1200&fit=crop&q=80',
@@ -83,7 +83,7 @@ export const mockCards: Card[] = [
     description: 'Delicate floral illustrations and vintage typography evoke timeless romance and elegance.',
     category: 'vintage',
     occasions: ['wedding', 'anniversary', 'congratulations'],
-    price: 14.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1562048048-86d659689440?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1581345629038-4792b67c379c?w=800&h=1200&fit=crop&q=80',
@@ -121,7 +121,7 @@ export const mockCards: Card[] = [
     description: 'Bold geometric patterns with luxurious gold detailing for the modern celebration.',
     category: 'modern',
     occasions: ['birthday', 'congratulations', 'just-because'],
-    price: 13.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1707338252277-3f66895b0532?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1769538012116-b26a4cecbcf7?w=800&h=1200&fit=crop&q=80',
@@ -159,7 +159,7 @@ export const mockCards: Card[] = [
     description: 'Hand-painted watercolor designs bring warmth and artistic expression to your message.',
     category: 'artistic',
     occasions: ['birthday', 'thank-you', 'just-because'],
-    price: 11.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1446475157725-e6dada23994e?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1610926950521-ab7e8b45f377?w=800&h=1200&fit=crop&q=80',
@@ -197,7 +197,7 @@ export const mockCards: Card[] = [
     description: 'Gentle tones and thoughtful design express comfort and support during difficult times.',
     category: 'minimalist',
     occasions: ['sympathy'],
-    price: 9.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1627329074338-d8c602f34c3e?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1515096788709-a3cf4ce0a4a6?w=800&h=1200&fit=crop&q=80',
@@ -235,7 +235,7 @@ export const mockCards: Card[] = [
     description: 'Festive elegance with rich colors and seasonal details for your holiday greetings.',
     category: 'luxury',
     occasions: ['holiday'],
-    price: 15.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1638589766792-c5ef5e417025?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -273,7 +273,7 @@ export const mockCards: Card[] = [
     description: 'Contemporary design with heartfelt appreciation, perfect for expressing gratitude.',
     category: 'modern',
     occasions: ['thank-you'],
-    price: 8.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1717590432421-8ae3f6753545?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1769538012116-b26a4cecbcf7?w=800&h=1200&fit=crop&q=80',
@@ -311,7 +311,7 @@ export const mockCards: Card[] = [
     description: 'Timeless elegance celebrating enduring love and cherished memories.',
     category: 'luxury',
     occasions: ['anniversary'],
-    price: 16.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1616504204011-554922b202b2?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -349,7 +349,7 @@ export const mockCards: Card[] = [
     description: 'Thoughtful design for spontaneous expressions of care and connection.',
     category: 'minimalist',
     occasions: ['just-because'],
-    price: 10.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1743356629167-343e188d100b?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1515096788709-a3cf4ce0a4a6?w=800&h=1200&fit=crop&q=80',
@@ -387,7 +387,7 @@ export const mockCards: Card[] = [
     description: 'Opulent design with intricate details for the most special day.',
     category: 'luxury',
     occasions: ['wedding'],
-    price: 24.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1549576351-2b0829ac81f8?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -425,7 +425,7 @@ export const mockCards: Card[] = [
     description: 'Vibrant and creative design that celebrates life with artistic flair.',
     category: 'artistic',
     occasions: ['birthday'],
-    price: 12.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1749855333713-0f4ad9d033e3?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1610926950521-ab7e8b45f377?w=800&h=1200&fit=crop&q=80',
@@ -463,7 +463,7 @@ export const mockCards: Card[] = [
     description: 'Classic design celebrating achievements with timeless sophistication.',
     category: 'vintage',
     occasions: ['congratulations'],
-    price: 13.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1525268771113-32d9e9021a97?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1581345629038-4792b67c379c?w=800&h=1200&fit=crop&q=80',
@@ -501,7 +501,7 @@ export const mockCards: Card[] = [
     description: 'Clean and contemporary wedding card with elegant simplicity.',
     category: 'minimalist',
     occasions: ['wedding'],
-    price: 18.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1745605443018-030f36ce90e7?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1515096788709-a3cf4ce0a4a6?w=800&h=1200&fit=crop&q=80',
@@ -539,7 +539,7 @@ export const mockCards: Card[] = [
     description: 'Sophisticated gratitude with luxurious gold foil embellishments.',
     category: 'luxury',
     occasions: ['thank-you'],
-    price: 14.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1566305977571-5666677c6e98?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -577,7 +577,7 @@ export const mockCards: Card[] = [
     description: 'Hand-illustrated botanical elements create a natural, organic aesthetic.',
     category: 'artistic',
     occasions: ['birthday', 'thank-you', 'just-because'],
-    price: 11.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1584284621485-c955b915f5cb?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1610926950521-ab7e8b45f377?w=800&h=1200&fit=crop&q=80',
@@ -615,7 +615,7 @@ export const mockCards: Card[] = [
     description: 'Contemporary holiday design with festive elegance.',
     category: 'modern',
     occasions: ['holiday'],
-    price: 13.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1704739308671-96dd994617d8?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1769538012116-b26a4cecbcf7?w=800&h=1200&fit=crop&q=80',
@@ -653,7 +653,7 @@ export const mockCards: Card[] = [
     description: 'Romantic vintage design celebrating years of love and commitment.',
     category: 'vintage',
     occasions: ['anniversary'],
-    price: 15.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1756187793625-4a29fef1f4f8?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1581345629038-4792b67c379c?w=800&h=1200&fit=crop&q=80',
@@ -691,7 +691,7 @@ export const mockCards: Card[] = [
     description: 'Gentle and comforting design offering peace during difficult times.',
     category: 'minimalist',
     occasions: ['sympathy'],
-    price: 9.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1610926950521-ab7e8b45f377?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1515096788709-a3cf4ce0a4a6?w=800&h=1200&fit=crop&q=80',
@@ -729,7 +729,7 @@ export const mockCards: Card[] = [
     description: 'Celebrate success with opulent design and gold accents.',
     category: 'luxury',
     occasions: ['congratulations'],
-    price: 17.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1515711660811-48832a4c6f69?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -767,7 +767,7 @@ export const mockCards: Card[] = [
     description: 'Soft watercolor strokes create a dreamy birthday celebration.',
     category: 'artistic',
     occasions: ['birthday'],
-    price: 12.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1743657166982-9e3ff272122b?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1610926950521-ab7e8b45f377?w=800&h=1200&fit=crop&q=80',
@@ -805,7 +805,7 @@ export const mockCards: Card[] = [
     description: 'Contemporary design for spontaneous moments of connection.',
     category: 'modern',
     occasions: ['just-because'],
-    price: 10.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1530735270084-64865de16524?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1769538012116-b26a4cecbcf7?w=800&h=1200&fit=crop&q=80',
@@ -843,7 +843,7 @@ export const mockCards: Card[] = [
     description: 'Classic gratitude with vintage charm and delicate details.',
     category: 'vintage',
     occasions: ['thank-you'],
-    price: 11.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1495231916356-a86217efff12?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1581345629038-4792b67c379c?w=800&h=1200&fit=crop&q=80',
@@ -881,7 +881,7 @@ export const mockCards: Card[] = [
     description: 'Opulent holiday design with rich gold and elegant typography.',
     category: 'luxury',
     occasions: ['holiday'],
-    price: 19.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1513885251266-04dcfa26e979?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1703379943328-bfe13999c988?w=800&h=1200&fit=crop&q=80',
@@ -919,7 +919,7 @@ export const mockCards: Card[] = [
     description: 'Clean and modern birthday card with sophisticated simplicity.',
     category: 'minimalist',
     occasions: ['birthday'],
-    price: 10.99,
+    price: 4.99,
     images: {
       front: 'https://images.unsplash.com/photo-1698285439446-2ad560e31a17?w=800&h=1200&fit=crop&q=80',
       back: 'https://images.unsplash.com/photo-1515096788709-a3cf4ce0a4a6?w=800&h=1200&fit=crop&q=80',

@@ -35,7 +35,6 @@ export function CardGrid({ cards }: CardGridProps) {
           >
             <Card3D
               frontImage={card.images.thumbnail}
-              backImage={card.images.back}
               alt={card.title}
               hoverEffect="open"
             />

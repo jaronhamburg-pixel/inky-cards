@@ -127,8 +127,8 @@ export function CardFilters({
             className="w-full h-2 bg-silk rounded-lg appearance-none cursor-pointer accent-ink"
           />
           <div className="flex items-center justify-between text-sm text-stone">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}+</span>
+            <span>£{priceRange[0]}</span>
+            <span>£{priceRange[1]}+</span>
           </div>
         </div>
       </div>

@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { mockCards } from '@/lib/data/mock-cards';
 import { formatPrice } from '@/lib/utils/formatting';
@@ -11,17 +10,6 @@ import { formatPrice } from '@/lib/utils/formatting';
 const featuredCards = mockCards.slice(0, 10);
 
 export default function Home() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const nextCard = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % featuredCards.length);
-  }, []);
-
-  // Auto-rotate every 3 seconds
-  useEffect(() => {
-    const timer = setInterval(nextCard, 3000);
-    return () => clearInterval(timer);
-  }, [nextCard]);
 
   return (
     <div>
@@ -65,7 +53,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The Collection — auto-rotating carousel */}
+      {/* The Collection — carousel with hover pop */}
       <section className="pb-20 md:pb-28">
         <div className="container-luxury">
           <div className="text-center mb-10">
@@ -73,100 +61,32 @@ export default function Home() {
             <p className="text-stone text-base">Curated designs for every occasion</p>
           </div>
 
-          {/* Carousel — shows all 10 cards with active card highlighted */}
-          <div className="relative">
-            <div className="flex items-end justify-center gap-3 md:gap-5 overflow-hidden py-4">
-              {featuredCards.map((card, i) => {
-                const offset = i - activeIndex;
-                const isActive = i === activeIndex;
-                // Calculate distance for scaling (wrapping around)
-                const dist = Math.min(
-                  Math.abs(offset),
-                  Math.abs(offset + featuredCards.length),
-                  Math.abs(offset - featuredCards.length)
-                );
-                const visible = dist <= 3;
-
-                if (!visible) return null;
-
-                return (
-                  <motion.div
-                    key={card.id}
-                    layout
-                    initial={false}
-                    animate={{
-                      scale: isActive ? 1 : 0.78 - dist * 0.06,
-                      opacity: isActive ? 1 : 0.6 - dist * 0.12,
-                      zIndex: isActive ? 10 : 5 - dist,
-                    }}
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    className="flex-shrink-0 cursor-pointer"
-                    onClick={() => setActiveIndex(i)}
-                  >
-                    <Link
-                      href={`/cards/${card.id}`}
-                      className="block"
-                      onClick={(e) => {
-                        if (!isActive) {
-                          e.preventDefault();
-                          setActiveIndex(i);
-                        }
-                      }}
-                    >
-                      <div
-                        className={`relative overflow-hidden rounded-lg card-3d-face transition-shadow duration-500 ${
-                          isActive
-                            ? 'w-44 md:w-56 aspect-[3/4] shadow-xl'
-                            : 'w-32 md:w-40 aspect-[3/4] shadow-md'
-                        }`}
-                      >
-                        <Image
-                          src={card.images.thumbnail}
-                          alt={card.title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Active card info */}
-            <AnimatePresence mode="wait">
+          <div className="flex items-center justify-center gap-3 md:gap-5 overflow-x-auto py-6 px-4 scrollbar-hide">
+            {featuredCards.map((card, i) => (
               <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, y: 8 }}
+                key={card.id}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3 }}
-                className="text-center mt-6"
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                whileHover={{ scale: 1.12, y: -12, zIndex: 20 }}
+                className="flex-shrink-0 relative z-0"
               >
-                <h3 className="font-serif text-lg font-medium text-ink tracking-tight">
-                  {featuredCards[activeIndex].title}
-                </h3>
-                <p className="text-sm text-stone mt-0.5">
-                  {formatPrice(featuredCards[activeIndex].price)}
-                </p>
+                <Link href={`/cards/${card.id}`} className="block">
+                  <div className="w-36 md:w-44 aspect-[3/4] relative overflow-hidden rounded-lg card-3d-face shadow-md transition-shadow duration-300 hover:shadow-xl">
+                    <Image
+                      src={card.images.thumbnail}
+                      alt={card.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="mt-2 text-center">
+                    <p className="font-serif text-xs font-medium text-ink truncate">{card.title}</p>
+                    <p className="text-xs text-stone">{formatPrice(card.price)}</p>
+                  </div>
+                </Link>
               </motion.div>
-            </AnimatePresence>
-
-            {/* Dots */}
-            <div className="flex justify-center gap-1.5 mt-5">
-              {featuredCards.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveIndex(i)}
-                  className={`rounded-full transition-all duration-300 ${
-                    i === activeIndex
-                      ? 'w-6 h-1.5 bg-ink'
-                      : 'w-1.5 h-1.5 bg-stone/30 hover:bg-stone/50'
-                  }`}
-                  aria-label={`View card ${i + 1}`}
-                />
-              ))}
-            </div>
+            ))}
           </div>
 
           <div className="text-center mt-12">

@@ -31,7 +31,6 @@ export default function GeneratePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCard, setGeneratedCard] = useState<GeneratedCard | null>(null);
   const [error, setError] = useState('');
-  const [isFlipped, setIsFlipped] = useState(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -41,8 +40,6 @@ export default function GeneratePage() {
 
     setIsGenerating(true);
     setError('');
-    setIsFlipped(false);
-
     try {
       const response = await fetch('/api/generate-card', {
         method: 'POST',
@@ -70,7 +67,7 @@ export default function GeneratePage() {
       description: `AI-generated card: ${prompt.slice(0, 100)}`,
       category: style === 'minimalist' ? 'minimalist' : 'artistic',
       occasions: [occasion === 'other' ? 'just-because' : occasion],
-      price: 14.99,
+      price: 4.99,
       images: { front: generatedCard.imageUrl, back: generatedCard.imageUrl, thumbnail: generatedCard.imageUrl },
       customizable: { frontText: true, backText: false, insideText: true },
       templates: {
@@ -249,43 +246,19 @@ export default function GeneratePage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-6"
               >
-                {/* 3D Card with flip */}
-                <div
-                  className="perspective-[1200px] cursor-pointer"
-                  onClick={() => setIsFlipped(!isFlipped)}
-                >
-                  <motion.div
-                    className="relative w-full aspect-[3/4]"
-                    animate={{ rotateY: isFlipped ? 180 : 0 }}
-                    transition={{ duration: 0.6, ease: 'easeInOut' }}
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
-                    {/* Front */}
-                    <div
-                      className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
-                      style={{ backfaceVisibility: 'hidden' }}
-                    >
-                      <Image src={generatedCard.imageUrl} alt="Generated card" fill className="object-cover" />
-                      {generatedCard.frontText && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                          <p className="text-white text-xl font-serif px-6 text-center">{generatedCard.frontText}</p>
-                        </div>
-                      )}
+                {/* Card preview */}
+                <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden card-3d-face">
+                  <Image src={generatedCard.imageUrl} alt="Generated card" fill className="object-cover" />
+                  {generatedCard.frontText && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <p className="text-white text-xl font-serif px-6 text-center">{generatedCard.frontText}</p>
                     </div>
-                    {/* Back — blank inside */}
-                    <div
-                      className="absolute inset-0 rounded-lg overflow-hidden card-3d-face bg-white flex items-center justify-center"
-                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                    >
-                      <p className="text-neutral-300 text-sm italic">Personalise the inside</p>
-                    </div>
-                  </motion.div>
+                  )}
                 </div>
-                <p className="text-center text-xs text-stone">Click card to flip</p>
 
                 <div className="flex items-center justify-between py-4 border-t border-silk">
                   <span className="text-stone text-sm">Price</span>
-                  <span className="text-xl font-serif font-semibold text-ink">{formatPrice(14.99)}</span>
+                  <span className="text-xl font-serif font-semibold text-ink">{formatPrice(4.99)}</span>
                 </div>
 
                 <div className="space-y-3">

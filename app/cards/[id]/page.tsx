@@ -57,9 +57,9 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
     <div className="container-luxury py-12 animate-fade-in">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
         {/* 3D Interactive Card */}
-        <div>
+        <div className="flex flex-col items-center">
           <div
-            className="perspective-[1200px] cursor-pointer mb-4"
+            className="perspective-[1200px] cursor-pointer mb-4 w-full max-w-md"
             onClick={() => setIsFlipped(!isFlipped)}
           >
             <motion.div
@@ -81,17 +81,17 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
                   priority
                 />
               </div>
-              {/* Back */}
+              {/* Back — branded */}
               <div
-                className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
+                className="absolute inset-0 rounded-lg overflow-hidden card-3d-face bg-paper flex flex-col items-center justify-center"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
-                <Image
-                  src={card.images.back}
-                  alt={`${card.title} back`}
-                  fill
-                  className="object-cover"
-                />
+                <div className="absolute inset-0 border border-silk/60 rounded-lg m-4" />
+                <span className="font-serif text-3xl md:text-4xl font-semibold tracking-[0.15em] text-ink mb-3">
+                  INKY
+                </span>
+                <div className="w-8 h-px bg-silk mb-3" />
+                <p className="text-xs uppercase tracking-[0.25em] text-stone">Designed by Inky Cards</p>
               </div>
             </motion.div>
           </div>
@@ -129,7 +129,6 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
           <div className="mb-8 p-5 bg-paper border border-silk rounded-lg">
             <h3 className="text-sm font-medium text-ink mb-3 uppercase tracking-wider">Customisation</h3>
             <ul className="space-y-1.5 text-sm text-stone">
-              {card.customizable.frontText && <li>Front text personalisation</li>}
               {card.customizable.insideText && <li>Inside message personalisation</li>}
               {card.customizable.backText && <li>Back text personalisation</li>}
               <li>Font & colour selection</li>
@@ -199,7 +198,6 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
               >
                 <Card3D
                   frontImage={relatedCard.images.thumbnail}
-                  backImage={relatedCard.images.back}
                   alt={relatedCard.title}
                   hoverEffect="open"
                 />

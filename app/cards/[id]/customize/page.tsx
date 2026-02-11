@@ -525,17 +525,17 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
             <div className="pt-5 border-t border-silk">
               <div className="flex justify-between text-sm text-stone mb-1">
                 <span>Card</span>
-                <span>${card.price.toFixed(2)}</span>
+                <span>£{card.price.toFixed(2)}</span>
               </div>
               {mediaUrl && (
                 <div className="flex justify-between text-sm text-stone mb-1">
                   <span>{mediaBlob?.type?.startsWith('image') ? 'Photo' : 'Video'} greeting</span>
-                  <span>$2.00</span>
+                  <span>£2.00</span>
                 </div>
               )}
               <div className="flex justify-between text-lg font-serif font-semibold mt-2">
                 <span className="text-ink">Total</span>
-                <span className="text-ink">${((mediaUrl ? card.price + 2 : card.price) * quantity).toFixed(2)}</span>
+                <span className="text-ink">£{((mediaUrl ? card.price + 2 : card.price) * quantity).toFixed(2)}</span>
               </div>
             </div>
 
