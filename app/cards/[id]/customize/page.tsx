@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useCallback } from 'react';
+import { use, useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import { getCardById } from '@/lib/data/mock-cards';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import { VideoRecorder } from '@/components/video/video-recorder';
-import { QRDisplay } from '@/components/video/qr-display';
 
 type EditorView = 'front' | 'inside';
 type TextAlignment = 'left' | 'center' | 'right';
@@ -57,7 +56,31 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   const [mediaBlob, setMediaBlob] = useState<Blob | null>(null);
   const [showRecorder, setShowRecorder] = useState(false);
   const [mediaMode, setMediaMode] = useState<MediaMode>('video');
-  const [qrDataUrl, setQrDataUrl] = useState<string>('');
+  const [qrImageUrl, setQrImageUrl] = useState<string>('');
+
+  // Generate actual QR code image when media is added
+  useEffect(() => {
+    if (!mediaUrl) {
+      setQrImageUrl('');
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const QRCode = (await import('qrcode')).default;
+        const dataUrl = await QRCode.toDataURL(mediaUrl, {
+          width: 200,
+          margin: 2,
+          color: { dark: '#1a1a1a', light: '#FFFFFF' },
+          errorCorrectionLevel: 'M',
+        });
+        if (!cancelled) setQrImageUrl(dataUrl);
+      } catch (err) {
+        console.error('Failed to generate QR code:', err);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [mediaUrl]);
 
   // Undo/Redo
   const [history, setHistory] = useState<HistoryEntry[]>([
@@ -134,7 +157,6 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
     const url = URL.createObjectURL(file);
     setMediaBlob(file);
     setMediaUrl(url);
-    setQrDataUrl(url);
     setShowRecorder(false);
   };
 
@@ -221,10 +243,10 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
               <div className="aspect-[3/2] max-h-[55vh] relative overflow-hidden rounded-lg border border-silk card-3d-face mx-auto flex">
                 {/* Left half — back of front cover */}
                 <div className="card-inside-left w-1/2 h-full relative">
-                  {qrDataUrl && (
+                  {qrImageUrl && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <img src={qrDataUrl} alt="QR Code" className="w-24 h-24 mx-auto mb-2" />
+                        <img src={qrImageUrl} alt="QR Code" className="w-24 h-24 mx-auto mb-2" />
                         <p className="text-xs text-stone">Scan for greeting</p>
                       </div>
                     </div>
@@ -424,7 +446,6 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                     setMediaBlob(blob);
                     setMediaUrl(previewUrl);
                     setShowRecorder(false);
-                    setQrDataUrl(previewUrl);
                   }}
                   onCancel={() => setShowRecorder(false)}
                 />
@@ -440,7 +461,6 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                         if (mediaUrl) URL.revokeObjectURL(mediaUrl);
                         setMediaUrl('');
                         setMediaBlob(null);
-                        setQrDataUrl('');
                       }}
                       className="text-xs text-stone hover:text-ink transition-colors"
                     >
@@ -450,9 +470,9 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                   {mediaBlob?.type?.startsWith('image') && (
                     <img src={mediaUrl} alt="Uploaded photo" className="w-full h-24 object-cover rounded mt-2" />
                   )}
-                  {qrDataUrl && (
-                    <div className="mt-2">
-                      <QRDisplay url={qrDataUrl} size={80} />
+                  {qrImageUrl && (
+                    <div className="mt-2 flex justify-center">
+                      <img src={qrImageUrl} alt="QR Code" className="w-20 h-20" />
                     </div>
                   )}
                 </div>
