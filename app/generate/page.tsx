@@ -10,7 +10,7 @@ import { useCartStore } from '@/lib/store/cart-store';
 import { Card as CardType } from '@/types/card';
 import { formatPrice } from '@/lib/utils/formatting';
 
-type Occasion = 'birthday' | 'wedding' | 'anniversary' | 'thank-you' | 'sympathy' | 'congratulations' | 'holiday' | 'just-because';
+type Occasion = 'birthday' | 'wedding' | 'anniversary' | 'thank-you' | 'sympathy' | 'congratulations' | 'holiday' | 'other';
 type Tone = 'formal' | 'casual' | 'heartfelt' | 'humorous';
 type Style = 'elegant' | 'minimalist' | 'artistic' | 'modern';
 
@@ -33,6 +33,7 @@ export default function GeneratePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCard, setGeneratedCard] = useState<GeneratedCard | null>(null);
   const [error, setError] = useState('');
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -42,6 +43,7 @@ export default function GeneratePage() {
 
     setIsGenerating(true);
     setError('');
+    setIsFlipped(false);
 
     try {
       const response = await fetch('/api/generate-card', {
@@ -52,7 +54,8 @@ export default function GeneratePage() {
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to generate card');
-      setGeneratedCard(data.card);
+      // Clear inside text — user should personalise it themselves
+      setGeneratedCard({ ...data.card, insideText: '' });
     } catch (err: any) {
       setError(err.message || 'Failed to generate card. Please try again.');
     } finally {
@@ -60,27 +63,29 @@ export default function GeneratePage() {
     }
   };
 
-  const handleAddToCart = () => {
+  const handlePersonalise = () => {
     if (!generatedCard) return;
+    // Create a temporary card and navigate to the customize page
     const card: CardType = {
       id: `ai-${Date.now()}`,
       title: `Custom ${occasion} Card`,
       description: `AI-generated card: ${prompt.slice(0, 100)}`,
       category: style === 'minimalist' ? 'minimalist' : 'artistic',
-      occasions: [occasion],
+      occasions: [occasion === 'other' ? 'just-because' : occasion],
       price: 14.99,
       images: { front: generatedCard.imageUrl, back: generatedCard.imageUrl, thumbnail: generatedCard.imageUrl },
       customizable: { frontText: true, backText: false, insideText: true },
       templates: {
         front: { placeholder: generatedCard.frontText, maxLength: 50, fontFamily: 'Cormorant Garamond', fontSize: 24, color: '#1a1a1a', position: { x: 400, y: 700 }, alignment: 'center' },
-        inside: { placeholder: generatedCard.insideText, maxLength: 200, fontFamily: 'DM Sans', fontSize: 16, color: '#404040', position: { x: 100, y: 300 }, alignment: 'left' },
+        inside: { placeholder: '', maxLength: 200, fontFamily: 'DM Sans', fontSize: 16, color: '#404040', position: { x: 100, y: 300 }, alignment: 'left' },
       },
     };
 
+    // Add directly to cart with blank inside, so user can personalise
     addItem({
       cardId: card.id,
       card,
-      customization: { frontText: generatedCard.frontText, insideText: generatedCard.insideText },
+      customization: { frontText: generatedCard.frontText, insideText: '' },
       quantity: 1,
       price: card.price,
     });
@@ -95,7 +100,7 @@ export default function GeneratePage() {
     { value: 'sympathy', label: 'Sympathy' },
     { value: 'congratulations', label: 'Congratulations' },
     { value: 'holiday', label: 'Holiday' },
-    { value: 'just-because', label: 'Just Because' },
+    { value: 'other', label: 'Other' },
   ];
 
   return (
@@ -114,7 +119,7 @@ export default function GeneratePage() {
           <div className="bg-white border border-silk rounded-lg p-8">
             <h2 className="font-serif text-lg font-medium text-ink mb-6">Design Your Card</h2>
 
-            {/* Occasion */}
+            {/* Occasion — centered in grid */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-ink mb-3 uppercase tracking-wider">Occasion</label>
               <div className="grid grid-cols-2 gap-2">
@@ -122,7 +127,7 @@ export default function GeneratePage() {
                   <button
                     key={occ.value}
                     onClick={() => setOccasion(occ.value)}
-                    className={`p-3 rounded border text-left text-sm transition-all ${
+                    className={`p-3 rounded border text-center text-sm transition-all ${
                       occasion === occ.value
                         ? 'border-ink bg-ink/5 font-medium'
                         : 'border-silk text-stone hover:border-ink'
@@ -147,7 +152,7 @@ export default function GeneratePage() {
               <p className="text-xs text-stone mt-1">{prompt.length}/500 characters</p>
             </div>
 
-            {/* Tone */}
+            {/* Tone — centered */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-ink mb-3 uppercase tracking-wider">Tone</label>
               <div className="grid grid-cols-2 gap-2">
@@ -160,7 +165,7 @@ export default function GeneratePage() {
                   <button
                     key={t.value}
                     onClick={() => setTone(t.value)}
-                    className={`p-3 rounded border text-sm transition-all ${
+                    className={`p-3 rounded border text-center text-sm transition-all ${
                       tone === t.value
                         ? 'border-ink bg-ink/5 font-medium'
                         : 'border-silk text-stone hover:border-ink'
@@ -172,7 +177,7 @@ export default function GeneratePage() {
               </div>
             </div>
 
-            {/* Style */}
+            {/* Style — centered */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-ink mb-3 uppercase tracking-wider">Visual Style</label>
               <div className="grid grid-cols-2 gap-2">
@@ -185,7 +190,7 @@ export default function GeneratePage() {
                   <button
                     key={s.value}
                     onClick={() => setStyle(s.value)}
-                    className={`p-3 rounded border text-sm transition-all ${
+                    className={`p-3 rounded border text-center text-sm transition-all ${
                       style === s.value
                         ? 'border-ink bg-ink/5 font-medium'
                         : 'border-silk text-stone hover:border-ink'
@@ -252,17 +257,39 @@ export default function GeneratePage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-6"
               >
-                <div className="aspect-[3/4] relative overflow-hidden rounded-lg shadow-md">
-                  <Image src={generatedCard.imageUrl} alt="Generated card" fill className="object-cover" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <p className="text-white text-xl font-serif px-6 text-center">{generatedCard.frontText}</p>
-                  </div>
+                {/* 3D Card with flip */}
+                <div
+                  className="perspective-[1200px] cursor-pointer"
+                  onClick={() => setIsFlipped(!isFlipped)}
+                >
+                  <motion.div
+                    className="relative w-full aspect-[3/4]"
+                    animate={{ rotateY: isFlipped ? 180 : 0 }}
+                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                    {/* Front */}
+                    <div
+                      className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
+                      style={{ backfaceVisibility: 'hidden' }}
+                    >
+                      <Image src={generatedCard.imageUrl} alt="Generated card" fill className="object-cover" />
+                      {generatedCard.frontText && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                          <p className="text-white text-xl font-serif px-6 text-center">{generatedCard.frontText}</p>
+                        </div>
+                      )}
+                    </div>
+                    {/* Back — blank inside */}
+                    <div
+                      className="absolute inset-0 rounded-lg overflow-hidden card-3d-face bg-white flex items-center justify-center"
+                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    >
+                      <p className="text-neutral-300 text-sm italic">Personalise the inside</p>
+                    </div>
+                  </motion.div>
                 </div>
-
-                <div className="bg-paper border border-silk rounded-lg p-5">
-                  <h3 className="text-sm font-medium text-ink mb-2 uppercase tracking-wider">Inside Message</h3>
-                  <p className="text-stone text-sm italic">{generatedCard.insideText}</p>
-                </div>
+                <p className="text-center text-xs text-stone">Click card to flip</p>
 
                 <div className="flex items-center justify-between py-4 border-t border-silk">
                   <span className="text-stone text-sm">Price</span>
@@ -270,7 +297,7 @@ export default function GeneratePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Button size="lg" variant="primary" className="w-full" onClick={handleAddToCart}>
+                  <Button size="lg" variant="primary" className="w-full" onClick={handlePersonalise}>
                     Add to Basket
                   </Button>
                   <Button size="lg" variant="outline" className="w-full" onClick={handleGenerate}>

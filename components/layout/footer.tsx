@@ -25,13 +25,13 @@ export function Footer() {
           <Link href="/about" className="text-paper/60 hover:text-paper transition-colors">
             About
           </Link>
-          <Link href="#" className="text-paper/60 hover:text-paper transition-colors">
+          <Link href="/contact" className="text-paper/60 hover:text-paper transition-colors">
             Contact
           </Link>
-          <Link href="#" className="text-paper/60 hover:text-paper transition-colors">
+          <Link href="/terms" className="text-paper/60 hover:text-paper transition-colors">
             Terms
           </Link>
-          <Link href="#" className="text-paper/60 hover:text-paper transition-colors">
+          <Link href="/privacy" className="text-paper/60 hover:text-paper transition-colors">
             Privacy
           </Link>
         </div>

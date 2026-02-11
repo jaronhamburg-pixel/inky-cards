@@ -22,7 +22,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Your Special Message',
         maxLength: 50,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 24,
         color: '#2C2C2C',
         position: { x: 400, y: 700 },
@@ -98,7 +98,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'With Love',
         maxLength: 40,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 28,
         color: '#8B8680',
         position: { x: 400, y: 650 },
@@ -107,7 +107,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Write your love story...',
         maxLength: 220,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#404040',
         position: { x: 120, y: 320 },
@@ -174,7 +174,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Happy Birthday',
         maxLength: 40,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 26,
         color: '#2C2C2C',
         position: { x: 400, y: 680 },
@@ -250,7 +250,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Season\'s Greetings',
         maxLength: 45,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 28,
         color: '#B8941E',
         position: { x: 400, y: 720 },
@@ -259,7 +259,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Share your holiday wishes...',
         maxLength: 210,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 16,
         color: '#2C2C2C',
         position: { x: 100, y: 310 },
@@ -326,7 +326,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Happy Anniversary',
         maxLength: 50,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 26,
         color: '#D4AF37',
         position: { x: 400, y: 690 },
@@ -335,7 +335,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Celebrate your love story...',
         maxLength: 230,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#2C2C2C',
         position: { x: 110, y: 320 },
@@ -402,7 +402,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Our Wedding Day',
         maxLength: 45,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 30,
         color: '#B8941E',
         position: { x: 400, y: 710 },
@@ -411,7 +411,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Your wedding message...',
         maxLength: 250,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 16,
         color: '#2C2C2C',
         position: { x: 100, y: 300 },
@@ -440,7 +440,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Happy Birthday',
         maxLength: 40,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 27,
         color: '#D4AF37',
         position: { x: 400, y: 680 },
@@ -478,7 +478,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Congratulations',
         maxLength: 38,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 28,
         color: '#8B8680',
         position: { x: 400, y: 690 },
@@ -487,7 +487,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Share your pride...',
         maxLength: 210,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#404040',
         position: { x: 110, y: 320 },
@@ -554,7 +554,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Thank You',
         maxLength: 30,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 32,
         color: '#D4AF37',
         position: { x: 400, y: 690 },
@@ -563,7 +563,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Express gratitude...',
         maxLength: 190,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#2C2C2C',
         position: { x: 100, y: 340 },
@@ -592,7 +592,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Best Wishes',
         maxLength: 35,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 26,
         color: '#2C2C2C',
         position: { x: 400, y: 680 },
@@ -668,7 +668,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Anniversaire',
         maxLength: 45,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 28,
         color: '#8B8680',
         position: { x: 400, y: 690 },
@@ -677,7 +677,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Anniversary message...',
         maxLength: 220,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#404040',
         position: { x: 110, y: 320 },
@@ -744,7 +744,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Bravo!',
         maxLength: 35,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 36,
         color: '#D4AF37',
         position: { x: 400, y: 690 },
@@ -753,7 +753,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Congratulatory message...',
         maxLength: 210,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#2C2C2C',
         position: { x: 100, y: 330 },
@@ -782,7 +782,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Celebrate You',
         maxLength: 40,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 27,
         color: '#2C2C2C',
         position: { x: 400, y: 680 },
@@ -858,7 +858,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Merci',
         maxLength: 30,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 32,
         color: '#8B8680',
         position: { x: 400, y: 690 },
@@ -867,7 +867,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Thank you message...',
         maxLength: 180,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 15,
         color: '#404040',
         position: { x: 110, y: 335 },
@@ -896,7 +896,7 @@ export const mockCards: Card[] = [
       front: {
         placeholder: 'Joy & Peace',
         maxLength: 45,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 30,
         color: '#D4AF37',
         position: { x: 400, y: 710 },
@@ -905,7 +905,7 @@ export const mockCards: Card[] = [
       inside: {
         placeholder: 'Holiday greetings...',
         maxLength: 220,
-        fontFamily: 'Playfair Display',
+        fontFamily: 'Cormorant Garamond',
         fontSize: 16,
         color: '#2C2C2C',
         position: { x: 100, y: 320 },

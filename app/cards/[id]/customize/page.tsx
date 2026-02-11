@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useCallback, useRef } from 'react';
+import { use, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,6 +12,7 @@ import { QRDisplay } from '@/components/video/qr-display';
 
 type EditorView = 'front' | 'inside';
 type TextAlignment = 'left' | 'center' | 'right';
+type MediaMode = 'video' | 'photo';
 
 const fontOptions = [
   { name: 'Cormorant Garamond', value: 'Cormorant Garamond' },
@@ -41,24 +42,26 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   const card = getCardById(id);
   const addItem = useCartStore((state) => state.addItem);
 
-  const [currentView, setCurrentView] = useState<EditorView>('front');
+  // Start on inside view (auto-open)
+  const [currentView, setCurrentView] = useState<EditorView>('inside');
   const [frontText, setFrontText] = useState(card?.templates.front?.placeholder || '');
-  const [insideText, setInsideText] = useState(card?.templates.inside?.placeholder || '');
+  const [insideText, setInsideText] = useState('');
   const [fontFamily, setFontFamily] = useState('Cormorant Garamond');
   const [fontSize, setFontSize] = useState(28);
   const [textColor, setTextColor] = useState('#1a1a1a');
   const [textAlign, setTextAlign] = useState<TextAlignment>('center');
   const [quantity, setQuantity] = useState(1);
 
-  // Video / QR
-  const [videoUrl, setVideoUrl] = useState<string>('');
-  const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
+  // Video / Photo / QR
+  const [mediaUrl, setMediaUrl] = useState<string>('');
+  const [mediaBlob, setMediaBlob] = useState<Blob | null>(null);
   const [showRecorder, setShowRecorder] = useState(false);
+  const [mediaMode, setMediaMode] = useState<MediaMode>('video');
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
 
   // Undo/Redo
   const [history, setHistory] = useState<HistoryEntry[]>([
-    { frontText: card?.templates.front?.placeholder || '', insideText: card?.templates.inside?.placeholder || '', fontFamily: 'Cormorant Garamond', fontSize: 28, textColor: '#1a1a1a', textAlign: 'center' },
+    { frontText: card?.templates.front?.placeholder || '', insideText: '', fontFamily: 'Cormorant Garamond', fontSize: 28, textColor: '#1a1a1a', textAlign: 'center' },
   ]);
   const [historyIndex, setHistoryIndex] = useState(0);
 
@@ -120,9 +123,19 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
         textColor,
       },
       quantity,
-      price: videoUrl ? card.price + 2 : card.price,
+      price: mediaUrl ? card.price + 2 : card.price,
     });
     router.push('/cart');
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setMediaBlob(file);
+    setMediaUrl(url);
+    setQrDataUrl(url);
+    setShowRecorder(false);
   };
 
   const currentTemplate = currentView === 'front' ? card.templates.front : card.templates.inside;
@@ -131,8 +144,8 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   const isCustomizable = currentView === 'front' ? false : card.customizable.insideText;
 
   return (
-    <div className="container-luxury py-12 animate-fade-in">
-      <div className="mb-8">
+    <div className="container-luxury py-8 animate-fade-in">
+      <div className="mb-6">
         <Link href={`/cards/${card.id}`} className="text-stone hover:text-ink text-sm transition-colors mb-2 inline-block">
           &larr; Back to card
         </Link>
@@ -166,12 +179,12 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Preview — 2/3 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Preview — smaller to fit viewport */}
         <div className="lg:col-span-2">
-          <div className="bg-white border border-silk rounded-lg p-8 sticky top-24">
+          <div className="bg-white border border-silk rounded-lg p-6 sticky top-20">
             {/* View Toggle */}
-            <div className="flex gap-2 mb-6">
+            <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setCurrentView('front')}
                 className={`flex-1 py-2 px-4 rounded text-sm font-medium transition-all ${
@@ -194,43 +207,25 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
               </button>
             </div>
 
-            {/* Card Preview */}
+            {/* Card Preview — smaller aspect ratio to fit screen */}
             {currentView === 'front' ? (
-              <div className="aspect-[4/5] relative overflow-hidden rounded-lg bg-silk shadow-md mb-4">
+              <div className="aspect-[4/5] max-h-[55vh] relative overflow-hidden rounded-lg bg-silk card-3d-face mx-auto">
                 <Image
                   src={card.images.front}
                   alt={card.title}
                   fill
                   className="object-cover"
                 />
-                {isCustomizable && currentText && (
-                  <div className="absolute inset-0 flex items-center justify-center p-8">
-                    <p
-                      className="w-full whitespace-pre-wrap"
-                      style={{
-                        fontFamily,
-                        fontSize: `${fontSize}px`,
-                        color: textColor,
-                        textAlign,
-                        textShadow: textColor === '#FFFFFF' ? '0 1px 4px rgba(0,0,0,0.5)' : 'none',
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {currentText}
-                    </p>
-                  </div>
-                )}
               </div>
             ) : (
-              <div className="aspect-[3/2] relative overflow-hidden rounded-lg border border-silk shadow-md mb-4 flex">
+              <div className="aspect-[3/2] max-h-[55vh] relative overflow-hidden rounded-lg border border-silk card-3d-face mx-auto flex">
                 {/* Left half — back of front cover */}
                 <div className="card-inside-left w-1/2 h-full relative">
-                  {/* QR code on left side */}
                   {qrDataUrl && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
                         <img src={qrDataUrl} alt="QR Code" className="w-24 h-24 mx-auto mb-2" />
-                        <p className="text-xs text-stone">Scan for video</p>
+                        <p className="text-xs text-stone">Scan for greeting</p>
                       </div>
                     </div>
                   )}
@@ -255,24 +250,26 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                       value={currentText}
                       onChange={(e) => setCurrentText(e.target.value)}
                       onBlur={pushHistory}
-                      placeholder="Type your message here..."
+                      placeholder="Your Message"
                       maxLength={currentTemplate?.maxLength}
-                      className="w-full h-full resize-none border-0 bg-transparent focus:outline-none placeholder:text-neutral-300"
+                      className="w-full h-full resize-none border-0 bg-transparent focus:outline-none placeholder:text-neutral-300 flex items-center"
                       style={{
                         fontFamily,
                         fontSize: `${Math.round(fontSize * 0.6)}px`,
                         color: textColor,
                         textAlign,
                         lineHeight: 1.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        paddingTop: '35%',
                       }}
                     />
                   ) : (
                     <p
-                      className="w-full text-neutral-300 italic"
+                      className="w-full text-neutral-300 italic text-center"
                       style={{
                         fontFamily,
                         fontSize: `${Math.round(fontSize * 0.6)}px`,
-                        textAlign,
                         lineHeight: 1.5,
                       }}
                     >
@@ -283,8 +280,8 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
               </div>
             )}
 
-            {!isCustomizable && (
-              <div className="text-center p-3 bg-neutral-50 rounded text-sm text-stone">
+            {!isCustomizable && currentView === 'inside' && (
+              <div className="text-center p-3 bg-neutral-50 rounded text-sm text-stone mt-3">
                 This side of the card is not customisable
               </div>
             )}
@@ -293,7 +290,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
 
         {/* Controls — 1/3 */}
         <div className="lg:col-span-1">
-          <div className="bg-white border border-silk rounded-lg p-6 space-y-6">
+          <div className="bg-white border border-silk rounded-lg p-5 space-y-5">
             {/* Font Selector */}
             <div>
               <label className="block text-sm font-medium text-ink mb-2 uppercase tracking-wider">Font</label>
@@ -393,40 +390,56 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
               </div>
             </div>
 
-            {/* Video / QR Section */}
-            <div className="pt-6 border-t border-silk">
+            {/* Video / Photo / QR Section */}
+            <div className="pt-5 border-t border-silk">
               <label className="block text-sm font-medium text-ink mb-2 uppercase tracking-wider">
-                Add Video Message (+$2)
+                Add Video or Photo (+$2)
               </label>
-              {!videoUrl && !showRecorder && (
-                <button
-                  onClick={() => setShowRecorder(true)}
-                  className="w-full py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors"
-                >
-                  Record or upload a video
-                </button>
+              {!mediaUrl && !showRecorder && (
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => { setMediaMode('video'); setShowRecorder(true); }}
+                      className="flex-1 py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors"
+                    >
+                      Record Video
+                    </button>
+                    <label className="flex-1 py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors cursor-pointer text-center">
+                      Upload Photo
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        className="hidden"
+                        onChange={handlePhotoUpload}
+                      />
+                    </label>
+                  </div>
+                </div>
               )}
-              {showRecorder && !videoUrl && (
+              {showRecorder && !mediaUrl && mediaMode === 'video' && (
                 <VideoRecorder
                   maxDuration={60}
                   onVideoReady={(blob, previewUrl) => {
-                    setVideoBlob(blob);
-                    setVideoUrl(previewUrl);
+                    setMediaBlob(blob);
+                    setMediaUrl(previewUrl);
                     setShowRecorder(false);
                     setQrDataUrl(previewUrl);
                   }}
                   onCancel={() => setShowRecorder(false)}
                 />
               )}
-              {videoUrl && (
+              {mediaUrl && (
                 <div className="p-3 bg-neutral-50 rounded">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-ink font-medium">Video added</span>
+                    <span className="text-sm text-ink font-medium">
+                      {mediaBlob?.type?.startsWith('image') ? 'Photo' : 'Video'} added
+                    </span>
                     <button
                       onClick={() => {
-                        if (videoUrl) URL.revokeObjectURL(videoUrl);
-                        setVideoUrl('');
-                        setVideoBlob(null);
+                        if (mediaUrl) URL.revokeObjectURL(mediaUrl);
+                        setMediaUrl('');
+                        setMediaBlob(null);
                         setQrDataUrl('');
                       }}
                       className="text-xs text-stone hover:text-ink transition-colors"
@@ -434,6 +447,9 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                       Remove
                     </button>
                   </div>
+                  {mediaBlob?.type?.startsWith('image') && (
+                    <img src={mediaUrl} alt="Uploaded photo" className="w-full h-24 object-cover rounded mt-2" />
+                  )}
                   {qrDataUrl && (
                     <div className="mt-2">
                       <QRDisplay url={qrDataUrl} size={80} />
@@ -470,25 +486,25 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
             </div>
 
             {/* Price Summary */}
-            <div className="pt-6 border-t border-silk">
+            <div className="pt-5 border-t border-silk">
               <div className="flex justify-between text-sm text-stone mb-1">
                 <span>Card</span>
                 <span>${card.price.toFixed(2)}</span>
               </div>
-              {videoUrl && (
+              {mediaUrl && (
                 <div className="flex justify-between text-sm text-stone mb-1">
-                  <span>Video greeting</span>
+                  <span>{mediaBlob?.type?.startsWith('image') ? 'Photo' : 'Video'} greeting</span>
                   <span>$2.00</span>
                 </div>
               )}
               <div className="flex justify-between text-lg font-serif font-semibold mt-2">
                 <span className="text-ink">Total</span>
-                <span className="text-ink">${((videoUrl ? card.price + 2 : card.price) * quantity).toFixed(2)}</span>
+                <span className="text-ink">${((mediaUrl ? card.price + 2 : card.price) * quantity).toFixed(2)}</span>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="space-y-3 pt-6 border-t border-silk">
+            <div className="space-y-3 pt-5 border-t border-silk">
               <Button size="lg" variant="primary" className="w-full" onClick={handleAddToCart}>
                 Add to Basket
               </Button>
@@ -498,12 +514,12 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                 className="w-full"
                 onClick={() => {
                   setFrontText(card.templates.front?.placeholder || '');
-                  setInsideText(card.templates.inside?.placeholder || '');
+                  setInsideText('');
                   setFontFamily('Cormorant Garamond');
                   setFontSize(28);
                   setTextColor('#1a1a1a');
                   setTextAlign('center');
-                  setHistory([{ frontText: card.templates.front?.placeholder || '', insideText: card.templates.inside?.placeholder || '', fontFamily: 'Cormorant Garamond', fontSize: 28, textColor: '#1a1a1a', textAlign: 'center' }]);
+                  setHistory([{ frontText: card.templates.front?.placeholder || '', insideText: '', fontFamily: 'Cormorant Garamond', fontSize: 28, textColor: '#1a1a1a', textAlign: 'center' }]);
                   setHistoryIndex(0);
                 }}
               >

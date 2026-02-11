@@ -20,76 +20,53 @@ export default function TheEditPage() {
 
   return (
     <div className="animate-fade-in">
-      {/* Hero */}
-      <section className="py-20 md:py-28">
-        <div className="container-luxury text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="heading-hero text-ink mb-4"
-          >
-            The Edit
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="body-large text-stone max-w-lg mx-auto"
-          >
-            Ideas, inspiration, and the stories behind considered card-giving.
-          </motion.p>
-        </div>
-      </section>
+      {/* Full-bleed hero with featured article overlay */}
+      <section className="relative">
+        <Link href={`/the-edit/${featured.slug}`} className="group block">
+          <div className="relative w-full h-[70vh] min-h-[500px] overflow-hidden">
+            <Image
+              src={featured.image}
+              alt={featured.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              priority
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-      {/* Featured article — large hero card */}
-      <section className="pb-20">
-        <div className="container-luxury">
-          <Link href={`/the-edit/${featured.slug}`} className="group block">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-            >
-              <div className="aspect-[16/10] relative overflow-hidden rounded-lg bg-silk">
-                <Image
-                  src={featured.image}
-                  alt={featured.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  priority
-                />
+            {/* Content overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
+              <div className="max-w-3xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                >
+                  <span className="text-xs uppercase tracking-widest text-white/60 mb-3 block">
+                    {featured.category}
+                  </span>
+                  <h1 className="font-serif text-4xl md:text-6xl font-medium text-white tracking-tight leading-tight mb-4">
+                    {featured.title}
+                  </h1>
+                  <p className="text-white/70 text-lg leading-relaxed max-w-xl mb-4">
+                    {featured.excerpt}
+                  </p>
+                  <div className="flex items-center gap-3 text-xs text-white/50">
+                    <time>{new Date(featured.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
+                    <span className="w-1 h-1 rounded-full bg-white/30" />
+                    <span>{featured.readTime}</span>
+                  </div>
+                </motion.div>
               </div>
-              <div className="md:pl-4">
-                <span className="text-xs uppercase tracking-widest text-stone">
-                  {featured.category}
-                </span>
-                <h2 className="font-serif text-3xl md:text-4xl font-medium text-ink mt-3 mb-4 tracking-tight leading-tight group-hover:underline decoration-1 underline-offset-4">
-                  {featured.title}
-                </h2>
-                <p className="text-stone leading-relaxed mb-4">
-                  {featured.excerpt}
-                </p>
-                <div className="flex items-center gap-3 text-xs text-stone/60">
-                  <time>{new Date(featured.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
-                  <span className="w-1 h-1 rounded-full bg-stone/30" />
-                  <span>{featured.readTime}</span>
-                </div>
-              </div>
-            </motion.div>
-          </Link>
-        </div>
+            </div>
+          </div>
+        </Link>
       </section>
-
-      {/* Divider */}
-      <div className="container-luxury">
-        <div className="border-t border-silk" />
-      </div>
 
       {/* Article grid */}
       <section className="py-20">
         <div className="container-luxury">
+          <h2 className="heading-display text-ink mb-14 text-center">Latest Articles</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
             {rest.map((article, i) => (
               <motion.div

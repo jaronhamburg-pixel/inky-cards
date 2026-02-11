@@ -1,42 +1,46 @@
 'use client';
 
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { mockCards } from '@/lib/data/mock-cards';
 import { formatPrice } from '@/lib/utils/formatting';
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.5, ease: 'easeOut' as const },
-  }),
-};
+const featuredCards = mockCards.slice(0, 10);
 
 export default function Home() {
-  const featuredCards = mockCards.slice(0, 8);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const nextCard = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % featuredCards.length);
+  }, []);
+
+  // Auto-rotate every 3 seconds
+  useEffect(() => {
+    const timer = setInterval(nextCard, 3000);
+    return () => clearInterval(timer);
+  }, [nextCard]);
 
   return (
     <div>
-      {/* Hero Section — Editorial, minimal */}
-      <section className="py-24 md:py-36">
+      {/* Hero + Carousel Section — compact so cards are visible on landing */}
+      <section className="pt-14 pb-8 md:pt-20 md:pb-12">
         <div className="container-luxury text-center">
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="heading-hero text-ink mb-8"
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="heading-hero text-ink mb-4"
           >
             Cards worth keeping.
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
-            className="body-large text-stone max-w-xl mx-auto mb-12"
+            transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
+            className="body-large text-stone max-w-xl mx-auto mb-8"
           >
             Personalised greeting cards crafted with care. AI-powered design,
             video messages, and premium quality printing.
@@ -44,7 +48,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link href="/cards">
@@ -61,49 +65,111 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Cards Grid — visible early */}
-      <section className="pb-24">
+      {/* The Collection — auto-rotating carousel */}
+      <section className="pb-20 md:pb-28">
         <div className="container-luxury">
-          <div className="text-center mb-14">
-            <h2 className="heading-display text-ink mb-3">The Collection</h2>
+          <div className="text-center mb-10">
+            <h2 className="heading-display text-ink mb-2">The Collection</h2>
             <p className="text-stone text-base">Curated designs for every occasion</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {featuredCards.map((card, i) => (
+          {/* Carousel — shows all 10 cards with active card highlighted */}
+          <div className="relative">
+            <div className="flex items-end justify-center gap-3 md:gap-5 overflow-hidden py-4">
+              {featuredCards.map((card, i) => {
+                const offset = i - activeIndex;
+                const isActive = i === activeIndex;
+                // Calculate distance for scaling (wrapping around)
+                const dist = Math.min(
+                  Math.abs(offset),
+                  Math.abs(offset + featuredCards.length),
+                  Math.abs(offset - featuredCards.length)
+                );
+                const visible = dist <= 3;
+
+                if (!visible) return null;
+
+                return (
+                  <motion.div
+                    key={card.id}
+                    layout
+                    initial={false}
+                    animate={{
+                      scale: isActive ? 1 : 0.78 - dist * 0.06,
+                      opacity: isActive ? 1 : 0.6 - dist * 0.12,
+                      zIndex: isActive ? 10 : 5 - dist,
+                    }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    className="flex-shrink-0 cursor-pointer"
+                    onClick={() => setActiveIndex(i)}
+                  >
+                    <Link
+                      href={`/cards/${card.id}`}
+                      className="block"
+                      onClick={(e) => {
+                        if (!isActive) {
+                          e.preventDefault();
+                          setActiveIndex(i);
+                        }
+                      }}
+                    >
+                      <div
+                        className={`relative overflow-hidden rounded-lg card-3d-face transition-shadow duration-500 ${
+                          isActive
+                            ? 'w-44 md:w-56 aspect-[3/4] shadow-xl'
+                            : 'w-32 md:w-40 aspect-[3/4] shadow-md'
+                        }`}
+                      >
+                        <Image
+                          src={card.images.thumbnail}
+                          alt={card.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Active card info */}
+            <AnimatePresence mode="wait">
               <motion.div
-                key={card.id}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-50px' }}
-                variants={fadeIn}
+                key={activeIndex}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3 }}
+                className="text-center mt-6"
               >
-                <Link
-                  href={`/cards/${card.id}`}
-                  className="group block"
-                >
-                  <div className="aspect-[3/4] relative overflow-hidden rounded-lg bg-silk mb-3 shadow-sm">
-                    <Image
-                      src={card.images.thumbnail}
-                      alt={card.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/5 transition-colors duration-300" />
-                  </div>
-                  <h3 className="font-serif text-base font-medium text-ink tracking-tight line-clamp-1">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm text-stone mt-0.5">
-                    {formatPrice(card.price)}
-                  </p>
-                </Link>
+                <h3 className="font-serif text-lg font-medium text-ink tracking-tight">
+                  {featuredCards[activeIndex].title}
+                </h3>
+                <p className="text-sm text-stone mt-0.5">
+                  {formatPrice(featuredCards[activeIndex].price)}
+                </p>
               </motion.div>
-            ))}
+            </AnimatePresence>
+
+            {/* Dots */}
+            <div className="flex justify-center gap-1.5 mt-5">
+              {featuredCards.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveIndex(i)}
+                  className={`rounded-full transition-all duration-300 ${
+                    i === activeIndex
+                      ? 'w-6 h-1.5 bg-ink'
+                      : 'w-1.5 h-1.5 bg-stone/30 hover:bg-stone/50'
+                  }`}
+                  aria-label={`View card ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
-          <div className="text-center mt-14">
+          <div className="text-center mt-12">
             <Link href="/cards">
               <Button size="lg" variant="outline">
                 View All Cards
@@ -113,7 +179,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features — minimal, text-based, no icons/emojis */}
+      {/* Features */}
       <section className="py-24 border-t border-silk">
         <div className="container-luxury">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
@@ -163,7 +229,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Editorial CTA — full-width, black bg */}
+      {/* Editorial CTA */}
       <section className="bg-ink text-paper py-24 md:py-32">
         <div className="container-luxury text-center">
           <motion.h2
