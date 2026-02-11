@@ -35,10 +35,26 @@ interface HistoryEntry {
   textAlign: TextAlignment;
 }
 
+function getCard(id: string) {
+  // Try mock data first, then check sessionStorage for AI-generated cards
+  const mockCard = getCardById(id);
+  if (mockCard) return mockCard;
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = sessionStorage.getItem('inky-ai-card');
+      if (stored) {
+        const aiCard = JSON.parse(stored);
+        if (aiCard.id === id) return aiCard;
+      }
+    } catch {}
+  }
+  return null;
+}
+
 export default function CustomizePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const card = getCardById(id);
+  const card = getCard(id);
   const addItem = useCartStore((state) => state.addItem);
 
   // Start on inside view (auto-open)
@@ -168,8 +184,8 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   return (
     <div className="container-luxury py-8 animate-fade-in">
       <div className="mb-6">
-        <Link href={`/cards/${card.id}`} className="text-stone hover:text-ink text-sm transition-colors mb-2 inline-block">
-          &larr; Back to card
+        <Link href={card.id.startsWith('ai-') ? '/generate' : `/cards/${card.id}`} className="text-stone hover:text-ink text-sm transition-colors mb-2 inline-block">
+          &larr; {card.id.startsWith('ai-') ? 'Back to designer' : 'Back to card'}
         </Link>
         <div className="flex items-center justify-between">
           <div>

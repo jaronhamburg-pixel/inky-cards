@@ -124,7 +124,7 @@ export default function TheEditPage() {
             </Link>
             <Link href="/generate">
               <button className="px-8 py-3 text-sm uppercase tracking-widest border border-paper/30 text-paper/60 rounded hover:bg-paper hover:text-ink transition-colors">
-                Create with AI
+                AI Designer
               </button>
             </Link>
           </div>

@@ -58,7 +58,7 @@ export default function Home() {
             </Link>
             <Link href="/generate">
               <Button size="lg" variant="outline">
-                Create with AI
+                AI Designer
               </Button>
             </Link>
           </motion.div>

@@ -32,7 +32,7 @@ export function Header() {
                 href="/generate"
                 className="text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                Create with AI
+                AI Designer
               </Link>
               <Link
                 href="/the-edit"
@@ -115,7 +115,7 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
                 className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                Create with AI
+                AI Designer
               </Link>
               <Link
                 href="/the-edit"

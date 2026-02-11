@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/input';
-import { useCartStore } from '@/lib/store/cart-store';
 import { Card as CardType } from '@/types/card';
 import { formatPrice } from '@/lib/utils/formatting';
 
@@ -24,7 +23,6 @@ interface GeneratedCard {
 
 export default function GeneratePage() {
   const router = useRouter();
-  const addItem = useCartStore((state) => state.addItem);
 
   const [occasion, setOccasion] = useState<Occasion>('birthday');
   const [prompt, setPrompt] = useState('');
@@ -65,9 +63,9 @@ export default function GeneratePage() {
 
   const handlePersonalise = () => {
     if (!generatedCard) return;
-    // Create a temporary card and navigate to the customize page
+    const cardId = `ai-${Date.now()}`;
     const card: CardType = {
-      id: `ai-${Date.now()}`,
+      id: cardId,
       title: `Custom ${occasion} Card`,
       description: `AI-generated card: ${prompt.slice(0, 100)}`,
       category: style === 'minimalist' ? 'minimalist' : 'artistic',
@@ -77,19 +75,13 @@ export default function GeneratePage() {
       customizable: { frontText: true, backText: false, insideText: true },
       templates: {
         front: { placeholder: generatedCard.frontText, maxLength: 50, fontFamily: 'Cormorant Garamond', fontSize: 24, color: '#1a1a1a', position: { x: 400, y: 700 }, alignment: 'center' },
-        inside: { placeholder: '', maxLength: 200, fontFamily: 'DM Sans', fontSize: 16, color: '#404040', position: { x: 100, y: 300 }, alignment: 'left' },
+        inside: { placeholder: '', maxLength: 200, fontFamily: 'Cormorant Garamond', fontSize: 16, color: '#404040', position: { x: 100, y: 300 }, alignment: 'center' },
       },
     };
 
-    // Add directly to cart with blank inside, so user can personalise
-    addItem({
-      cardId: card.id,
-      card,
-      customization: { frontText: generatedCard.frontText, insideText: '' },
-      quantity: 1,
-      price: card.price,
-    });
-    router.push('/cart');
+    // Store AI card in sessionStorage so the customize page can load it
+    sessionStorage.setItem('inky-ai-card', JSON.stringify(card));
+    router.push(`/cards/${cardId}/customize`);
   };
 
   const occasions: { value: Occasion; label: string }[] = [
@@ -108,7 +100,7 @@ export default function GeneratePage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <h1 className="heading-display text-ink mb-4">Create with AI</h1>
+          <h1 className="heading-display text-ink mb-4">Inky AI Designer</h1>
           <p className="body-large text-stone max-w-xl mx-auto">
             Describe your vision and our AI will craft a unique, personalised card
           </p>
@@ -298,7 +290,7 @@ export default function GeneratePage() {
 
                 <div className="space-y-3">
                   <Button size="lg" variant="primary" className="w-full" onClick={handlePersonalise}>
-                    Add to Basket
+                    Personalise
                   </Button>
                   <Button size="lg" variant="outline" className="w-full" onClick={handleGenerate}>
                     Generate Another
