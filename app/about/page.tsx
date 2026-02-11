@@ -16,7 +16,7 @@ export default function AboutPage() {
             transition={{ duration: 0.7 }}
             className="heading-hero text-ink mb-6"
           >
-            The Edit
+            About Inky Cards
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}

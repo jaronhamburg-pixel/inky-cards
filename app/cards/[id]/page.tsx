@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { getCardById, mockCards } from '@/lib/data/mock-cards';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Card3D } from '@/components/cards/card-3d';
 import { formatPrice } from '@/lib/utils/formatting';
 import { useCartStore } from '@/lib/store/cart-store';
 
@@ -55,7 +56,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
   return (
     <div className="container-luxury py-12 animate-fade-in">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-        {/* Interactive Card */}
+        {/* 3D Interactive Card */}
         <div>
           <div
             className="perspective-[1200px] cursor-pointer mb-4"
@@ -69,7 +70,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
             >
               {/* Front */}
               <div
-                className="absolute inset-0 rounded-lg overflow-hidden shadow-lg"
+                className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
                 style={{ backfaceVisibility: 'hidden' }}
               >
                 <Image
@@ -82,7 +83,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
               </div>
               {/* Back */}
               <div
-                className="absolute inset-0 rounded-lg overflow-hidden shadow-lg"
+                className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 <Image
@@ -132,7 +133,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
               {card.customizable.insideText && <li>Inside message personalisation</li>}
               {card.customizable.backText && <li>Back text personalisation</li>}
               <li>Font & colour selection</li>
-              <li>Optional video greeting with QR code</li>
+              <li>Optional video or photo greeting with QR code</li>
             </ul>
           </div>
 
@@ -196,15 +197,13 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
                 href={`/cards/${relatedCard.id}`}
                 className="group block"
               >
-                <div className="aspect-[3/4] relative overflow-hidden rounded-lg bg-silk mb-3 shadow-sm group-hover:shadow-md transition-shadow duration-300">
-                  <Image
-                    src={relatedCard.images.thumbnail}
-                    alt={relatedCard.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="font-serif text-sm font-medium text-ink tracking-tight line-clamp-1">
+                <Card3D
+                  frontImage={relatedCard.images.thumbnail}
+                  backImage={relatedCard.images.back}
+                  alt={relatedCard.title}
+                  hoverEffect="open"
+                />
+                <h3 className="font-serif text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
                   {relatedCard.title}
                 </h3>
                 <p className="text-xs text-stone mt-0.5">

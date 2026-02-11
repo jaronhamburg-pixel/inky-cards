@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Card } from '@/types/card';
+import { Card3D } from '@/components/cards/card-3d';
 import { formatPrice } from '@/lib/utils/formatting';
 
 interface CardGridProps {
@@ -33,16 +33,13 @@ export function CardGrid({ cards }: CardGridProps) {
             href={`/cards/${card.id}`}
             className="group block"
           >
-            <div className="aspect-[3/4] relative overflow-hidden rounded-lg bg-silk mb-3 shadow-sm transition-shadow duration-300 group-hover:shadow-md">
-              <Image
-                src={card.images.thumbnail}
-                alt={card.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/5 transition-colors duration-300" />
-            </div>
-            <h3 className="font-serif text-sm font-medium text-ink tracking-tight line-clamp-1">
+            <Card3D
+              frontImage={card.images.thumbnail}
+              backImage={card.images.back}
+              alt={card.title}
+              hoverEffect="open"
+            />
+            <h3 className="font-serif text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
               {card.title}
             </h3>
             <p className="text-xs text-stone mt-0.5">

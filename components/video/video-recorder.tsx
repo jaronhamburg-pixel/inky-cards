@@ -268,7 +268,7 @@ export function VideoRecorder({
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
             <span
               key={countdownValue}
-              className="animate-ping text-8xl font-bold text-[#D4AF37] drop-shadow-lg"
+              className="animate-ping text-8xl font-bold text-white drop-shadow-lg"
               style={{
                 animationDuration: '0.8s',
                 animationIterationCount: '1',
@@ -315,7 +315,7 @@ export function VideoRecorder({
               variant="secondary"
               size="lg"
               onClick={startCountdown}
-              className="bg-[#D4AF37] text-[#2C2C2C] hover:bg-[#C9A430]"
+              className="bg-ink text-white hover:bg-ink/90"
             >
               <svg className="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10" />
@@ -371,7 +371,7 @@ export function VideoRecorder({
               variant="secondary"
               size="lg"
               onClick={handleUseVideo}
-              className="bg-[#D4AF37] text-[#2C2C2C] hover:bg-[#C9A430]"
+              className="bg-ink text-white hover:bg-ink/90"
             >
               Use This Video
             </Button>

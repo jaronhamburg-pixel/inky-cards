@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cart-store';
 import { CartDrawer } from '@/components/cart/cart-drawer';
@@ -9,6 +9,11 @@ export function Header() {
   const itemCount = useCartStore((state) => state.getItemCount());
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -86,7 +91,7 @@ export function Header() {
                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-                {itemCount > 0 && (
+                {mounted && itemCount > 0 && (
                   <span className="inline-flex items-center justify-center bg-ink text-white text-[10px] font-semibold rounded-full w-5 h-5">
                     {itemCount}
                   </span>
