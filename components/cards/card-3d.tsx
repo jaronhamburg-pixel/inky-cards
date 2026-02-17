@@ -8,7 +8,7 @@ function BrandedBack() {
   return (
     <div className="absolute inset-0 bg-paper flex flex-col items-center justify-center">
       <div className="absolute inset-0 border border-silk/60 rounded-lg m-3" />
-      <span className="font-serif text-xl font-semibold tracking-[0.15em] text-ink mb-2">
+      <span className="text-lg font-semibold tracking-widest text-ink mb-2">
         INKY
       </span>
       <div className="w-6 h-px bg-silk mb-2" />

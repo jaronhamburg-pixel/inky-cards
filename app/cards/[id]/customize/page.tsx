@@ -431,7 +431,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
             {/* Video / Photo / QR Section */}
             <div className="pt-5 border-t border-silk">
               <label className="block text-sm font-medium text-ink mb-2 uppercase tracking-wider">
-                Add Video or Photo (+$2)
+                Add Video or Photo (+£2)
               </label>
               {!mediaUrl && !showRecorder && (
                 <div className="space-y-2">
@@ -533,7 +533,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                   <span>£2.00</span>
                 </div>
               )}
-              <div className="flex justify-between text-lg font-serif font-semibold mt-2">
+              <div className="flex justify-between text-lg font-semibold mt-2">
                 <span className="text-ink">Total</span>
                 <span className="text-ink">£{((mediaUrl ? card.price + 2 : card.price) * quantity).toFixed(2)}</span>
               </div>

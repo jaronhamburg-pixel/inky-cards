@@ -87,7 +87,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 <div className="absolute inset-0 border border-silk/60 rounded-lg m-4" />
-                <span className="font-serif text-3xl md:text-4xl font-semibold tracking-[0.15em] text-ink mb-3">
+                <span className="text-2xl md:text-3xl font-semibold tracking-widest text-ink mb-3">
                   INKY
                 </span>
                 <div className="w-8 h-px bg-silk mb-3" />
@@ -109,7 +109,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="mb-8">
-            <span className="text-3xl font-serif font-semibold text-ink">{formatPrice(card.price)}</span>
+            <span className="text-3xl font-semibold text-ink">{formatPrice(card.price)}</span>
             <span className="text-stone ml-2 text-sm">per card</span>
           </div>
 
@@ -201,7 +201,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
                   alt={relatedCard.title}
                   hoverEffect="open"
                 />
-                <h3 className="font-serif text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
+                <h3 className="text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
                   {relatedCard.title}
                 </h3>
                 <p className="text-xs text-stone mt-0.5">

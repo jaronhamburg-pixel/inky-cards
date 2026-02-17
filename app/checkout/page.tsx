@@ -118,7 +118,7 @@ export default function CheckoutPage() {
             {/* Step 1 */}
             {currentStep === 1 && (
               <div className="space-y-6">
-                <h2 className="font-serif text-lg font-medium text-ink mb-4">Contact Information</h2>
+                <h2 className="text-lg font-medium text-ink mb-4">Contact Information</h2>
                 <Input {...register('email')} label="Email" type="email" placeholder="you@example.com" error={errors.email?.message} required />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input {...register('firstName')} label="First Name" placeholder="Jane" error={errors.firstName?.message} required />
@@ -131,7 +131,7 @@ export default function CheckoutPage() {
             {/* Step 2 */}
             {currentStep === 2 && (
               <div className="space-y-6">
-                <h2 className="font-serif text-lg font-medium text-ink mb-4">Shipping Address</h2>
+                <h2 className="text-lg font-medium text-ink mb-4">Shipping Address</h2>
                 <Input {...register('address')} label="Street Address" placeholder="123 Main Street" error={errors.address?.message} required />
                 <Input {...register('city')} label="City" placeholder="Portland" error={errors.city?.message} required />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -144,14 +144,14 @@ export default function CheckoutPage() {
             {/* Step 3 */}
             {currentStep === 3 && (
               <div className="space-y-6">
-                <h2 className="font-serif text-lg font-medium text-ink mb-4">Review Your Order</h2>
+                <h2 className="text-lg font-medium text-ink mb-4">Review Your Order</h2>
                 <div className="space-y-3">
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-4 p-4 bg-paper border border-silk rounded">
                       <div className="font-medium text-ink flex-1 text-sm">
                         {item.card.title} &times; {item.quantity}
                       </div>
-                      <div className="text-ink font-serif font-semibold text-sm">
+                      <div className="text-ink font-semibold text-sm">
                         {formatPrice(item.price * item.quantity)}
                       </div>
                     </div>
@@ -191,7 +191,7 @@ export default function CheckoutPage() {
         {/* Sidebar */}
         <div className="lg:col-span-1">
           <div className="bg-white border border-silk rounded-lg p-6 sticky top-24">
-            <h3 className="font-serif text-lg font-medium text-ink mb-4">Summary</h3>
+            <h3 className="text-lg font-medium text-ink mb-4">Summary</h3>
             <div className="space-y-3 mb-6">
               <div className="flex justify-between text-sm text-stone">
                 <span>Subtotal ({items.reduce((s, i) => s + i.quantity, 0)} items)</span>
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
                 <span>Tax</span>
                 <span>{formatPrice(tax)}</span>
               </div>
-              <div className="pt-3 border-t border-silk flex justify-between text-lg font-serif font-semibold">
+              <div className="pt-3 border-t border-silk flex justify-between text-lg font-semibold">
                 <span className="text-ink">Total</span>
                 <span className="text-ink">{formatPrice(total)}</span>
               </div>

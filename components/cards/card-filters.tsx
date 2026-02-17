@@ -65,7 +65,7 @@ export function CardFilters({
   return (
     <div className="bg-white p-6 rounded-lg border border-silk">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="font-serif text-lg font-medium text-ink">Filters</h3>
+        <h3 className="text-lg font-medium text-ink">Filters</h3>
         {hasFilters && (
           <button
             onClick={onReset}

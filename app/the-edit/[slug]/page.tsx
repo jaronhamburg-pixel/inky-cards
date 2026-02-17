@@ -51,10 +51,10 @@ export default function ArticlePage() {
             <span className="block text-xs uppercase tracking-widest text-stone mb-4">
               {article.category}
             </span>
-            <h1 className="font-serif text-4xl md:text-5xl font-medium text-ink tracking-tight leading-tight mb-6">
+            <h1 className="text-2xl md:text-3xl font-medium text-ink tracking-tight leading-tight mb-6">
               {article.title}
             </h1>
-            <p className="body-large text-stone mb-6">
+            <p className="text-sm text-stone mb-6">
               {article.excerpt}
             </p>
             <div className="flex items-center gap-3 text-sm text-stone/60 pb-8 border-b border-silk">
@@ -102,7 +102,7 @@ export default function ArticlePage() {
             className="space-y-6"
           >
             {article.content.map((paragraph, i) => (
-              <p key={i} className="text-ink/80 leading-[1.85] text-[17px]">
+              <p key={i} className="text-ink/80 leading-[1.75] text-[13px]">
                 {paragraph}
               </p>
             ))}
@@ -134,7 +134,7 @@ export default function ArticlePage() {
                 <span className="text-xs uppercase tracking-widest text-stone">
                   {item.category}
                 </span>
-                <h3 className="font-serif text-lg font-medium text-ink mt-1.5 tracking-tight leading-snug group-hover:underline decoration-1 underline-offset-4">
+                <h3 className="text-sm font-medium text-ink mt-1.5 tracking-tight leading-snug group-hover:underline decoration-1 underline-offset-4">
                   {item.title}
                 </h3>
               </Link>

@@ -14,7 +14,7 @@ export function CardGrid({ cards }: CardGridProps) {
   if (cards.length === 0) {
     return (
       <div className="col-span-full text-center py-20">
-        <h3 className="font-serif text-xl text-ink mb-2">No cards found</h3>
+        <h3 className="text-xl text-ink mb-2">No cards found</h3>
         <p className="text-stone text-sm">Try adjusting your filters or search query</p>
       </div>
     );
@@ -38,7 +38,7 @@ export function CardGrid({ cards }: CardGridProps) {
               alt={card.title}
               hoverEffect="open"
             />
-            <h3 className="font-serif text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
+            <h3 className="text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
               {card.title}
             </h3>
             <p className="text-xs text-stone mt-0.5">

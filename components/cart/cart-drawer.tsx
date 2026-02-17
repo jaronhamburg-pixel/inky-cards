@@ -62,7 +62,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-silk px-6 py-4">
           <div className="flex items-center gap-2">
-            <h2 className="font-serif text-lg font-medium text-ink">Basket</h2>
+            <h2 className="text-lg font-medium text-ink">Basket</h2>
             {itemCount > 0 && (
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[10px] font-semibold text-white">
                 {itemCount}
@@ -82,7 +82,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center px-6">
-            <p className="text-ink font-serif font-medium mb-1">Your basket is empty</p>
+            <p className="text-ink font-medium mb-1">Your basket is empty</p>
             <p className="text-sm text-stone mb-6">Add some beautiful cards to get started.</p>
             <Link href="/cards" onClick={onClose}>
               <Button variant="primary" size="md">Shop Cards</Button>
@@ -163,7 +163,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className="border-t border-silk px-6 py-4">
             <div className="flex items-center justify-between pb-4">
               <span className="text-sm font-medium text-ink">Subtotal</span>
-              <span className="text-lg font-serif font-semibold text-ink">
+              <span className="text-lg font-semibold text-ink">
                 {formatPrice(subtotal)}
               </span>
             </div>

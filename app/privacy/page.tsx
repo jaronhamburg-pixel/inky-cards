@@ -9,7 +9,7 @@ export default function PrivacyPage() {
 
         <div className="prose-inky space-y-8">
           <section>
-            <h2 className="font-serif text-xl font-medium text-ink mb-3">1. Information We Collect</h2>
+            <h2 className="text-xl font-medium text-ink mb-3">1. Information We Collect</h2>
             <p className="text-stone leading-relaxed text-sm">
               We collect information you provide directly: name, email, shipping address, and payment
               details when placing an order. We also collect device and usage information through
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-medium text-ink mb-3">2. How We Use Your Data</h2>
+            <h2 className="text-xl font-medium text-ink mb-3">2. How We Use Your Data</h2>
             <p className="text-stone leading-relaxed text-sm">
               Your data is used to process and deliver orders, provide customer support, improve our
               products and services, and send marketing communications (only with your consent).
@@ -27,7 +27,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-medium text-ink mb-3">3. Media Uploads</h2>
+            <h2 className="text-xl font-medium text-ink mb-3">3. Media Uploads</h2>
             <p className="text-stone leading-relaxed text-sm">
               Videos and photos uploaded for QR code greetings are stored securely using encrypted
               cloud storage. Access is restricted to the unique QR code URL generated for each
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-medium text-ink mb-3">4. Payment Security</h2>
+            <h2 className="text-xl font-medium text-ink mb-3">4. Payment Security</h2>
             <p className="text-stone leading-relaxed text-sm">
               Payment processing is handled by our secure payment partner. We do not store your
               full credit card details on our servers. All transactions are encrypted using
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-medium text-ink mb-3">5. Cookies</h2>
+            <h2 className="text-xl font-medium text-ink mb-3">5. Cookies</h2>
             <p className="text-stone leading-relaxed text-sm">
               We use essential cookies to maintain your shopping basket and session. Analytics
               cookies help us understand how visitors use our site. You can manage cookie
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-medium text-ink mb-3">6. Your Rights</h2>
+            <h2 className="text-xl font-medium text-ink mb-3">6. Your Rights</h2>
             <p className="text-stone leading-relaxed text-sm">
               You have the right to access, correct, or delete your personal data. You may also
               opt out of marketing communications at any time. To exercise these rights, contact

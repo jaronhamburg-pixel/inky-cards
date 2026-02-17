@@ -59,7 +59,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+              <h3 className="text-xl font-medium text-ink mb-3 tracking-tight">
                 AI-Powered Creativity
               </h3>
               <p className="text-stone text-sm leading-relaxed">
@@ -73,7 +73,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+              <h3 className="text-xl font-medium text-ink mb-3 tracking-tight">
                 Premium Quality
               </h3>
               <p className="text-stone text-sm leading-relaxed">
@@ -87,7 +87,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+              <h3 className="text-xl font-medium text-ink mb-3 tracking-tight">
                 Video Integration
               </h3>
               <p className="text-stone text-sm leading-relaxed">
@@ -117,11 +117,11 @@ export default function AboutPage() {
                 transition={{ duration: 0.5 }}
                 className="flex gap-8"
               >
-                <span className="font-serif text-3xl font-semibold text-silk flex-shrink-0 w-12">
+                <span className="text-3xl font-semibold text-silk flex-shrink-0 w-12">
                   {item.step}
                 </span>
                 <div>
-                  <h3 className="font-serif text-xl font-medium text-ink mb-2 tracking-tight">{item.title}</h3>
+                  <h3 className="text-xl font-medium text-ink mb-2 tracking-tight">{item.title}</h3>
                   <p className="text-stone text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </motion.div>
@@ -140,12 +140,12 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/generate">
               <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
-                Try AI Generator
+                Try INKY AI Generator
               </Button>
             </Link>
             <Link href="/cards">
               <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink">
-                Browse Collection
+                View All Cards
               </Button>
             </Link>
           </div>

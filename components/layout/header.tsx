@@ -32,7 +32,7 @@ export function Header() {
                 href="/generate"
                 className="text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                AI Designer
+                INKY AI Designer
               </Link>
               <Link
                 href="/the-edit"
@@ -59,7 +59,7 @@ export function Header() {
 
             {/* Center logo */}
             <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-              <span className="font-serif text-2xl md:text-3xl font-semibold tracking-[0.15em] text-ink">
+              <span className="text-xl md:text-2xl font-semibold tracking-widest text-ink">
                 INKY
               </span>
             </Link>
@@ -115,7 +115,7 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
                 className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                AI Designer
+                INKY AI Designer
               </Link>
               <Link
                 href="/the-edit"

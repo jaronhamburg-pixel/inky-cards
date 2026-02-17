@@ -43,60 +43,65 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography Classes — Editorial */
+/* Typography Classes */
 .heading-hero {
-  font-family: var(--font-serif);
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
 }
 
 .heading-display {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-family: var(--font-sans);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
   font-weight: 500;
   line-height: 1.15;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.06em;
 }
 
 .heading-section {
-  font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-family: var(--font-sans);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.06em;
 }
 
 .heading-card {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
   font-weight: 500;
   line-height: 1.3;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.05em;
 }
 
 .body-large {
   font-family: var(--font-sans);
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.75;
   font-weight: 300;
+  letter-spacing: 0.04em;
 }
 
 .body-regular {
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.6;
+  letter-spacing: 0.04em;
 }
 
 .body-small {
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   line-height: 1.5;
+  letter-spacing: 0.04em;
 }
 
 /* Container */

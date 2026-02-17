@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero + Carousel Section — compact so cards are visible on landing */}
-      <section className="pt-14 pb-8 md:pt-20 md:pb-12">
+      <section className="pt-4 pb-4 md:pt-8 md:pb-6">
         <div className="container-luxury text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -28,7 +28,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-            className="body-large text-stone max-w-xl mx-auto mb-8"
+            className="body-large text-stone max-w-xl mx-auto mb-6"
           >
             Personalised greeting cards crafted with care. AI-powered design,
             video messages, and premium quality printing.
@@ -46,7 +46,7 @@ export default function Home() {
             </Link>
             <Link href="/generate">
               <Button size="lg" variant="outline">
-                AI Designer
+                INKY AI Designer
               </Button>
             </Link>
           </motion.div>
@@ -54,9 +54,9 @@ export default function Home() {
       </section>
 
       {/* The Collection — carousel with hover pop */}
-      <section className="pb-20 md:pb-28">
+      <section className="pb-16 md:pb-24">
         <div className="container-luxury">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <h2 className="heading-display text-ink mb-2">The Collection</h2>
             <p className="text-stone text-base">Curated designs for every occasion</p>
           </div>
@@ -81,7 +81,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="mt-2 text-center">
-                    <p className="font-serif text-xs font-medium text-ink truncate">{card.title}</p>
+                    <p className="text-xs font-medium text-ink truncate">{card.title}</p>
                     <p className="text-xs text-stone">{formatPrice(card.price)}</p>
                   </div>
                 </Link>
@@ -109,7 +109,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+              <h3 className="text-xl font-medium text-ink mb-3 tracking-tight">
                 AI-Powered Design
               </h3>
               <p className="text-stone text-sm leading-relaxed">
@@ -123,7 +123,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+              <h3 className="text-xl font-medium text-ink mb-3 tracking-tight">
                 Video Greetings
               </h3>
               <p className="text-stone text-sm leading-relaxed">
@@ -137,7 +137,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h3 className="font-serif text-xl font-medium text-ink mb-3 tracking-tight">
+              <h3 className="text-xl font-medium text-ink mb-3 tracking-tight">
                 Premium Quality
               </h3>
               <p className="text-stone text-sm leading-relaxed">
@@ -180,12 +180,12 @@ export default function Home() {
           >
             <Link href="/generate">
               <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
-                Start with AI
+                INKY AI GENERATOR
               </Button>
             </Link>
             <Link href="/cards">
               <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink">
-                Browse Collection
+                View All Cards
               </Button>
             </Link>
           </motion.div>

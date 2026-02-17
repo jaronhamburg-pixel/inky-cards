@@ -2,14 +2,14 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-paper/90 mt-24">
-      <div className="container-luxury py-16">
+    <footer className="bg-ink text-paper/90 mt-24 pt-14">
+      <div className="container-luxury pt-12 pb-16">
         {/* Logo */}
         <div className="text-center mb-12">
-          <Link href="/" className="font-serif text-3xl font-semibold tracking-[0.15em]">
+          <Link href="/" className="text-2xl font-semibold tracking-widest">
             INKY
           </Link>
-          <p className="mt-3 text-sm text-paper/50 max-w-md mx-auto">
+          <p className="mt-8 text-sm text-paper/50 max-w-md mx-auto">
             Premium greeting cards worth keeping.
           </p>
         </div>
@@ -20,7 +20,7 @@ export function Footer() {
             Shop
           </Link>
           <Link href="/generate" className="text-paper/60 hover:text-paper transition-colors">
-            Create
+            INKY AI Designer
           </Link>
           <Link href="/about" className="text-paper/60 hover:text-paper transition-colors">
             About

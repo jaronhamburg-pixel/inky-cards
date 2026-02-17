@@ -13,16 +13,16 @@ export default function ContactPage() {
 
         <div className="bg-white border border-silk rounded-lg p-8 text-left space-y-6 mb-12">
           <div>
-            <h3 className="font-serif text-lg font-medium text-ink mb-2">Email</h3>
+            <h3 className="text-lg font-medium text-ink mb-2">Email</h3>
             <p className="text-stone">hello@inkycards.com</p>
           </div>
           <div>
-            <h3 className="font-serif text-lg font-medium text-ink mb-2">Customer Support</h3>
+            <h3 className="text-lg font-medium text-ink mb-2">Customer Support</h3>
             <p className="text-stone">support@inkycards.com</p>
             <p className="text-sm text-stone/60 mt-1">Monday &ndash; Friday, 9am &ndash; 5pm GMT</p>
           </div>
           <div>
-            <h3 className="font-serif text-lg font-medium text-ink mb-2">Press &amp; Partnerships</h3>
+            <h3 className="text-lg font-medium text-ink mb-2">Press &amp; Partnerships</h3>
             <p className="text-stone">press@inkycards.com</p>
           </div>
         </div>

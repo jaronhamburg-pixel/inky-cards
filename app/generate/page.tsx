@@ -97,7 +97,7 @@ export default function GeneratePage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <h1 className="heading-display text-ink mb-4">Inky AI Designer</h1>
+          <h1 className="heading-display text-ink mb-4">INKY AI Designer</h1>
           <p className="body-large text-stone max-w-xl mx-auto">
             Describe your vision and our AI will craft a unique, personalised card
           </p>
@@ -106,7 +106,7 @@ export default function GeneratePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left: Form */}
           <div className="bg-white border border-silk rounded-lg p-8">
-            <h2 className="font-serif text-lg font-medium text-ink mb-6">Design Your Card</h2>
+            <h2 className="text-lg font-medium text-ink mb-6">Design Your Card</h2>
 
             {/* Occasion — centered in grid */}
             <div className="mb-6">
@@ -213,7 +213,7 @@ export default function GeneratePage() {
 
           {/* Right: Preview */}
           <div className="bg-white border border-silk rounded-lg p-8">
-            <h2 className="font-serif text-lg font-medium text-ink mb-6">Preview</h2>
+            <h2 className="text-lg font-medium text-ink mb-6">Preview</h2>
 
             {!generatedCard && !isGenerating && (
               <div className="flex items-center justify-center h-[500px] border border-dashed border-silk rounded-lg">
@@ -251,14 +251,14 @@ export default function GeneratePage() {
                   <Image src={generatedCard.imageUrl} alt="Generated card" fill className="object-cover" />
                   {generatedCard.frontText && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <p className="text-white text-xl font-serif px-6 text-center">{generatedCard.frontText}</p>
+                      <p className="text-white text-xl px-6 text-center">{generatedCard.frontText}</p>
                     </div>
                   )}
                 </div>
 
                 <div className="flex items-center justify-between py-4 border-t border-silk">
                   <span className="text-stone text-sm">Price</span>
-                  <span className="text-xl font-serif font-semibold text-ink">{formatPrice(4.99)}</span>
+                  <span className="text-xl font-semibold text-ink">{formatPrice(4.99)}</span>
                 </div>
 
                 <div className="space-y-3">

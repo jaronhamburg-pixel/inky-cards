@@ -45,7 +45,7 @@ export default function TheEditPage() {
                   <span className="text-xs uppercase tracking-widest text-white/60 mb-3 block">
                     {featured.category}
                   </span>
-                  <h1 className="font-serif text-4xl md:text-6xl font-medium text-white tracking-tight leading-tight mb-4">
+                  <h1 className="text-2xl md:text-4xl font-medium text-white tracking-tight leading-tight mb-4">
                     {featured.title}
                   </h1>
                   <p className="text-white/70 text-lg leading-relaxed max-w-xl mb-4">
@@ -89,7 +89,7 @@ export default function TheEditPage() {
                   <span className="text-xs uppercase tracking-widest text-stone">
                     {article.category}
                   </span>
-                  <h3 className="font-serif text-xl font-medium text-ink mt-2 mb-2 tracking-tight leading-snug group-hover:underline decoration-1 underline-offset-4">
+                  <h3 className="text-base font-medium text-ink mt-2 mb-2 tracking-tight leading-snug group-hover:underline decoration-1 underline-offset-4">
                     {article.title}
                   </h3>
                   <p className="text-sm text-stone leading-relaxed line-clamp-2">
@@ -124,7 +124,7 @@ export default function TheEditPage() {
             </Link>
             <Link href="/generate">
               <button className="px-8 py-3 text-sm uppercase tracking-widest border border-paper/30 text-paper/60 rounded hover:bg-paper hover:text-ink transition-colors">
-                AI Designer
+                INKY AI Designer
               </button>
             </Link>
           </div>
