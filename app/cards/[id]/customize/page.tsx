@@ -248,12 +248,12 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
             {/* Card Preview — smaller aspect ratio to fit screen */}
             {currentView === 'front' ? (
               <div className="aspect-[4/5] max-h-[55vh] relative overflow-hidden rounded-lg bg-silk card-3d-face mx-auto">
-                <Image
-                  src={card.images.front}
-                  alt={card.title}
-                  fill
-                  className="object-cover"
-                />
+                {card.images.front.startsWith('data:') ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={card.images.front} alt={card.title} className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <Image src={card.images.front} alt={card.title} fill className="object-cover" />
+                )}
               </div>
             ) : (
               <div className="aspect-[3/2] max-h-[55vh] relative overflow-hidden rounded-lg border border-silk card-3d-face mx-auto flex">

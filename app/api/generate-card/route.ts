@@ -29,15 +29,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate card text using AI
-    const { frontText, insideText } = await generateCardText({
-      occasion,
-      prompt,
-      tone: tone || 'heartfelt',
-    });
-
-    // Generate image URL
-    const imageUrl = generateCardImage(occasion, style || 'elegant');
+    // Generate card text and image in parallel
+    const [{ frontText, insideText }, imageUrl] = await Promise.all([
+      generateCardText({ occasion, prompt, tone: tone || 'heartfelt' }),
+      generateCardImage(occasion, style || 'elegant', prompt),
+    ]);
 
     return NextResponse.json({
       success: true,

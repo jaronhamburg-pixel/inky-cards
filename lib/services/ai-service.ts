@@ -1,6 +1,6 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import OpenAI from 'openai';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
 
 export interface GenerateCardTextParams {
   occasion: string;
@@ -20,8 +20,6 @@ export async function generateCardText({
   tone = 'heartfelt',
 }: GenerateCardTextParams): Promise<{ frontText: string; insideText: string }> {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
-
     const toneDescriptions = {
       formal: 'elegant, sophisticated, and professionally worded',
       casual: 'friendly, relaxed, and conversational',
@@ -29,47 +27,39 @@ export async function generateCardText({
       humorous: 'light-hearted, witty, and fun',
     };
 
-    const enhancedPrompt = `
-You are a luxury greeting card writer for Inky Cards, a premium greeting card brand.
-
-Create card text with these specifications:
+    const result = await openai.chat.completions.create({
+      model: 'gpt-5.2',
+      response_format: { type: 'json_object' },
+      messages: [
+        {
+          role: 'system',
+          content: `You are a luxury greeting card writer for Inky Cards, a premium greeting card brand. You always respond in valid JSON with keys "frontText" and "insideText".`,
+        },
+        {
+          role: 'user',
+          content: `Create card text with these specifications:
 - Occasion: ${occasion}
 - Customer Request: ${prompt}
 - Tone: ${toneDescriptions[tone]}
 
 Requirements:
-- Front text: A brief, elegant heading or greeting (2-8 words maximum)
-- Inside text: A thoughtful message (2-4 sentences, maximum 150 words)
+- frontText: A brief, elegant heading or greeting (2-8 words maximum)
+- insideText: A thoughtful message (2-4 sentences, maximum 150 words)
 - Style: Sophisticated, meaningful, and appropriate for a luxury greeting card
 - No profanity, controversial content, or generic phrases
-- Make it personal and memorable
+- Make it personal and memorable`,
+        },
+      ],
+    });
 
-Format your response as JSON with this structure:
-{
-  "frontText": "Your front text here",
-  "insideText": "Your inside text here"
-}
-
-Provide ONLY the JSON, no additional commentary.
-`;
-
-    const result = await model.generateContent(enhancedPrompt);
-    const responseText = result.response.text();
-
-    // Parse JSON from response
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('Invalid response format from AI');
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]);
+    const text = result.choices[0].message.content || '{}';
+    const parsed = JSON.parse(text);
     return {
       frontText: parsed.frontText || 'Celebrate',
       insideText: parsed.insideText || prompt,
     };
   } catch (error) {
     console.error('Error generating card text:', error);
-    // Fallback response
     return {
       frontText: 'Special Wishes',
       insideText:
@@ -78,21 +68,48 @@ Provide ONLY the JSON, no additional commentary.
   }
 }
 
-export function generateCardImage(occasion: string, style: string = 'elegant'): string {
-  // For MVP: Use picsum.photos with seeded URLs for consistent placeholder images
-  // In production, this would use Gemini Imagen or another AI image generator
+export async function generateCardImage(occasion: string, style: string = 'elegant', userPrompt: string = ''): Promise<string> {
+  try {
+    const styleDescriptions: Record<string, string> = {
+      elegant: 'refined, sophisticated watercolour with gold accents and delicate flourishes',
+      minimalist: 'clean, minimal line art with ample white space and subtle tones',
+      artistic: 'bold, expressive illustration with rich textures and vibrant colour',
+      modern: 'contemporary graphic design with geometric shapes and a fresh palette',
+    };
 
-  const seed = `${occasion}-${style}`;
+    const imagePrompt = `Design the front of a premium luxury greeting card for a ${occasion} occasion. Style: ${styleDescriptions[style] || style}. ${userPrompt ? `Theme: ${userPrompt}.` : ''} The design should be beautiful, print-ready, portrait orientation, with no text or words on the image. High quality, elegant, suitable for a luxury stationery brand.`;
 
-  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200`;
+    const result = await openai.images.generate({
+      model: 'gpt-image-1.5',
+      prompt: imagePrompt,
+      size: '1024x1792',
+      quality: 'high',
+    });
+
+    const image = result.data?.[0];
+    if (!image) throw new Error('No image data returned');
+
+    if (image.b64_json) {
+      return `data:image/png;base64,${image.b64_json}`;
+    }
+
+    if (image.url) {
+      return image.url;
+    }
+
+    throw new Error('No image data returned');
+  } catch (error) {
+    console.error('Error generating card image:', error);
+    // Fallback to placeholder
+    const seed = `${occasion}-${style}`;
+    return `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200`;
+  }
 }
 
 export function containsInappropriateContent(text: string): boolean {
-  // Basic content moderation
   const inappropriateWords = [
     'badword1',
     'badword2',
-    // Add more as needed for production
   ];
 
   const lowerText = text.toLowerCase();

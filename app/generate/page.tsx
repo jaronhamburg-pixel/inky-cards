@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/input';
@@ -208,7 +207,7 @@ export default function GeneratePage() {
               {isGenerating ? 'Generating...' : 'Generate Card'}
             </Button>
 
-            <p className="text-xs text-stone mt-4 text-center">Powered by Google Gemini AI</p>
+            <p className="text-xs text-stone mt-4 text-center">Powered by OpenAI</p>
           </div>
 
           {/* Right: Preview */}
@@ -248,7 +247,8 @@ export default function GeneratePage() {
               >
                 {/* Card preview */}
                 <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden card-3d-face">
-                  <Image src={generatedCard.imageUrl} alt="Generated card" fill className="object-cover" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={generatedCard.imageUrl} alt="Generated card" className="absolute inset-0 w-full h-full object-cover" />
                   {generatedCard.frontText && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                       <p className="text-white text-xl px-6 text-center">{generatedCard.frontText}</p>
