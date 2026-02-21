@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCartStore } from '@/lib/store/cart-store';
+import { useAuth } from '@/lib/context/auth-context';
 import { checkoutSchema, type CheckoutFormData } from '@/lib/utils/validation';
-import { createOrder } from '@/lib/data/mock-orders';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { formatPrice } from '@/lib/utils/formatting';
@@ -17,7 +17,13 @@ type CheckoutStep = 1 | 2 | 3;
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, getTotal, clearCart } = useCartStore();
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(1);
+
+  const defaultAddress = useMemo(() => {
+    if (!user) return null;
+    return user.addresses.find((a) => a.isDefault) || user.addresses[0] || null;
+  }, [user]);
 
   const {
     register,
@@ -26,7 +32,17 @@ export default function CheckoutPage() {
     trigger,
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { country: 'US' },
+    defaultValues: {
+      email: user?.email || '',
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      phone: user?.phone || '',
+      address: defaultAddress?.address || '',
+      city: defaultAddress?.city || '',
+      state: defaultAddress?.state || '',
+      zip: defaultAddress?.zip || '',
+      country: defaultAddress?.country || 'GB',
+    },
   });
 
   const subtotal = getTotal();
@@ -60,17 +76,23 @@ export default function CheckoutPage() {
     setCurrentStep((prev) => Math.max(1, prev - 1) as CheckoutStep);
   };
 
-  const onSubmit = (data: CheckoutFormData) => {
-    const order = createOrder({
-      items,
-      customer: { email: data.email, firstName: data.firstName, lastName: data.lastName, phone: data.phone },
-      shipping: { address: data.address, city: data.city, state: data.state, zip: data.zip, country: data.country || 'US' },
-      subtotal,
-      shipping_cost: shipping,
-      tax,
-      total,
-      status: 'pending',
+  const onSubmit = async (data: CheckoutFormData) => {
+    const res = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...(user ? { userId: user.id } : {}),
+        items,
+        customer: { email: data.email, firstName: data.firstName, lastName: data.lastName, phone: data.phone },
+        shipping: { address: data.address, city: data.city, state: data.state, zip: data.zip, country: data.country || 'GB' },
+        subtotal,
+        shipping_cost: shipping,
+        tax,
+        total,
+        status: 'pending',
+      }),
     });
+    const order = await res.json();
     clearCart();
     router.push(`/checkout/success?orderId=${order.id}`);
   };

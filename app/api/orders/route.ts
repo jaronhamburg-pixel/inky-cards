@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { items, customer, shipping, videoMessage, subtotal, shipping_cost, tax, total, status } = body;
+    const { items, customer, shipping, videoMessage, subtotal, shipping_cost, tax, total, status, userId } = body;
 
     if (!items || !customer || !shipping) {
       return NextResponse.json(
@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     const newOrder = createOrder({
+      ...(userId ? { userId } : {}),
       items,
       customer,
       shipping,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cart-store';
@@ -18,6 +18,11 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const getTotal = useCartStore((state) => state.getTotal);
   const getItemCount = useCartStore((state) => state.getItemCount);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -63,7 +68,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         <div className="flex items-center justify-between border-b border-silk px-6 py-4">
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-medium text-ink">Basket</h2>
-            {itemCount > 0 && (
+            {mounted && itemCount > 0 && (
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[10px] font-semibold text-white">
                 {itemCount}
               </span>

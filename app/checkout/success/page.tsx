@@ -1,10 +1,10 @@
 'use client';
 
-import { use, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getOrderById } from '@/lib/data/mock-orders';
+import { Order } from '@/types/order';
 import { Button } from '@/components/ui/button';
 import { formatPrice, formatDate, formatOrderNumber } from '@/lib/utils/formatting';
 import { QRDisplay } from '@/components/video/qr-display';
@@ -12,24 +12,38 @@ import { QRDisplay } from '@/components/video/qr-display';
 function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!orderId) {
+  useEffect(() => {
+    if (!orderId) {
+      setLoading(false);
+      return;
+    }
+    fetch(`/api/orders/${orderId}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          setOrder({ ...data, createdAt: new Date(data.createdAt), updatedAt: new Date(data.updatedAt) });
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [orderId]);
+
+  if (loading) {
     return (
       <div className="container-luxury py-20 text-center">
-        <h1 className="heading-display text-luxury-charcoal mb-4">Order Not Found</h1>
-        <Link href="/cards">
-          <Button>Continue Shopping</Button>
-        </Link>
+        <div className="w-20 h-20 bg-silk rounded-full mx-auto mb-6 animate-pulse" />
+        <div className="h-8 bg-silk rounded w-64 mx-auto mb-4 animate-pulse" />
+        <div className="h-4 bg-silk rounded w-48 mx-auto animate-pulse" />
       </div>
     );
   }
 
-  const order = getOrderById(orderId);
-
   if (!order) {
     return (
       <div className="container-luxury py-20 text-center">
-        <h1 className="heading-display text-luxury-charcoal mb-4">Order Not Found</h1>
+        <h1 className="heading-display text-ink mb-4">Order Not Found</h1>
         <Link href="/cards">
           <Button>Continue Shopping</Button>
         </Link>

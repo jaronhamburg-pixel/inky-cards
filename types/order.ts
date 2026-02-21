@@ -29,6 +29,7 @@ export type OrderStatus = 'pending' | 'processing' | 'printing' | 'shipped' | 'd
 export interface Order {
   id: string;
   orderNumber: string;
+  userId?: string;
   items: OrderItem[];
   customer: CustomerInfo;
   shipping: ShippingInfo;

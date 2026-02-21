@@ -5,6 +5,7 @@ export const mockOrders: Order[] = [
   {
     id: '1',
     orderNumber: 'INK-2026-001',
+    userId: '1',
     items: [
       {
         id: '1',
@@ -42,6 +43,7 @@ export const mockOrders: Order[] = [
   {
     id: '2',
     orderNumber: 'INK-2026-002',
+    userId: '2',
     items: [
       {
         id: '2',
@@ -159,4 +161,16 @@ export function deleteOrder(id: string): boolean {
     return true;
   }
   return false;
+}
+
+export function getOrdersByUserId(userId: string): Order[] {
+  return orderStorage
+    .filter((o) => o.userId === userId)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+}
+
+export function getOrdersByEmail(email: string): Order[] {
+  return orderStorage
+    .filter((o) => o.customer.email.toLowerCase() === email.toLowerCase())
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }

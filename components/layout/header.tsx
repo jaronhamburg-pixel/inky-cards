@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cart-store';
 import { CartDrawer } from '@/components/cart/cart-drawer';
+import { useAuth } from '@/lib/context/auth-context';
 
 export function Header() {
   const itemCount = useCartStore((state) => state.getItemCount());
+  const { user } = useAuth();
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -70,7 +72,7 @@ export function Header() {
                 href="/account"
                 className="hidden md:block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                Account
+                {user ? user.firstName : 'Account'}
               </Link>
               <button
                 onClick={() => setCartOpen(true)}
@@ -129,7 +131,7 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
                 className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
-                Account
+                {user ? user.firstName : 'Account'}
               </Link>
             </div>
           )}
