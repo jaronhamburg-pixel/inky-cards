@@ -82,7 +82,7 @@ export async function generateCardImage(occasion: string, style: string = 'elega
     const result = await openai.images.generate({
       model: 'gpt-image-1.5',
       prompt: imagePrompt,
-      size: '1024x1792',
+      size: '1024x1536',
       quality: 'high',
     });
 
