@@ -1,12 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateCardText, generateCardImage, containsInappropriateContent } from '@/lib/services/ai-service';
+import { generateCardText, generateCardImage, refineCardImage, containsInappropriateContent } from '@/lib/services/ai-service';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { occasion, prompt, tone, style } = body;
+    const { occasion, prompt, tone, style, previousResponseId, refinementPrompt } = body;
 
-    // Validation
+    // Refinement mode — tweak existing image
+    if (previousResponseId && refinementPrompt) {
+      if (containsInappropriateContent(refinementPrompt)) {
+        return NextResponse.json(
+          { error: 'Your prompt contains inappropriate content. Please revise and try again.' },
+          { status: 400 }
+        );
+      }
+
+      const { imageUrl, responseId } = await refineCardImage(previousResponseId, refinementPrompt);
+
+      return NextResponse.json({
+        success: true,
+        imageUrl,
+        responseId,
+      });
+    }
+
+    // Initial generation
     if (!occasion || !prompt) {
       return NextResponse.json(
         { error: 'Occasion and prompt are required' },
@@ -21,7 +39,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Content moderation
     if (containsInappropriateContent(prompt)) {
       return NextResponse.json(
         { error: 'Your prompt contains inappropriate content. Please revise and try again.' },
@@ -30,7 +47,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate card text and image in parallel
-    const [{ frontText, insideText }, imageUrl] = await Promise.all([
+    const [{ frontText, insideText }, { imageUrl, responseId }] = await Promise.all([
       generateCardText({ occasion, prompt, tone: tone || 'heartfelt' }),
       generateCardImage(occasion, style || 'elegant', prompt),
     ]);
@@ -44,6 +61,7 @@ export async function POST(request: NextRequest) {
         occasion,
         style: style || 'elegant',
       },
+      responseId,
     });
   } catch (error) {
     console.error('Error in generate-card API:', error);

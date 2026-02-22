@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/input';
+import { Input, Textarea } from '@/components/ui/input';
 import { Card as CardType } from '@/types/card';
 import { formatPrice } from '@/lib/utils/formatting';
 
@@ -28,7 +28,10 @@ export default function GeneratePage() {
   const [tone, setTone] = useState<Tone>('heartfelt');
   const [style, setStyle] = useState<Style>('elegant');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isRefining, setIsRefining] = useState(false);
   const [generatedCard, setGeneratedCard] = useState<GeneratedCard | null>(null);
+  const [responseId, setResponseId] = useState('');
+  const [refinementPrompt, setRefinementPrompt] = useState('');
   const [error, setError] = useState('');
 
   const handleGenerate = async () => {
@@ -50,10 +53,37 @@ export default function GeneratePage() {
       if (!response.ok) throw new Error(data.error || 'Failed to generate card');
       // Clear inside text — user should personalise it themselves
       setGeneratedCard({ ...data.card, insideText: '' });
+      setResponseId(data.responseId || '');
+      setRefinementPrompt('');
     } catch (err: any) {
       setError(err.message || 'Failed to generate card. Please try again.');
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleRefine = async () => {
+    if (!refinementPrompt.trim() || !responseId) return;
+
+    setIsRefining(true);
+    setError('');
+    try {
+      const response = await fetch('/api/generate-card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ previousResponseId: responseId, refinementPrompt }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to refine card');
+
+      setGeneratedCard((prev) => prev ? { ...prev, imageUrl: data.imageUrl } : prev);
+      setResponseId(data.responseId || responseId);
+      setRefinementPrompt('');
+    } catch (err: any) {
+      setError(err.message || 'Failed to refine card. Please try again.');
+    } finally {
+      setIsRefining(false);
     }
   };
 
@@ -211,7 +241,7 @@ export default function GeneratePage() {
           </div>
 
           {/* Right: Preview */}
-          <div className="bg-white border border-silk rounded-lg p-8">
+          <div className="bg-white border border-silk rounded-lg p-8 relative">
             <h2 className="text-lg font-medium text-ink mb-6">Preview</h2>
 
             {!generatedCard && !isGenerating && (
@@ -225,7 +255,7 @@ export default function GeneratePage() {
               </div>
             )}
 
-            {isGenerating && (
+            {(isGenerating || (isRefining && !generatedCard)) && (
               <div className="flex items-center justify-center h-[500px]">
                 <motion.div
                   className="text-center"
@@ -239,6 +269,16 @@ export default function GeneratePage() {
               </div>
             )}
 
+            {generatedCard && !isGenerating && (
+              isRefining && (
+                <div className="absolute inset-0 z-10 bg-paper/80 backdrop-blur-sm flex items-center justify-center rounded-lg">
+                  <div className="text-center">
+                    <div className="w-10 h-10 border-2 border-ink border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-ink font-medium text-sm">Refining design...</p>
+                  </div>
+                </div>
+              )
+            )}
             {generatedCard && !isGenerating && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -256,6 +296,31 @@ export default function GeneratePage() {
                   )}
                 </div>
 
+                {/* Refine design */}
+                {responseId && (
+                  <div className="border border-silk rounded-lg p-4 space-y-3">
+                    <label className="block text-sm font-medium text-ink uppercase tracking-wider">Tweak Design</label>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="e.g. Make the flowers larger, add more blue..."
+                        value={refinementPrompt}
+                        onChange={(e) => setRefinementPrompt(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleRefine(); }}
+                      />
+                      <Button
+                        variant="outline"
+                        onClick={handleRefine}
+                        isLoading={isRefining}
+                        disabled={!refinementPrompt.trim() || isRefining}
+                        className="shrink-0"
+                      >
+                        Refine
+                      </Button>
+                    </div>
+                    <p className="text-[11px] text-stone">Describe what to change — the AI will adjust your existing design</p>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between py-4 border-t border-silk">
                   <span className="text-stone text-sm">Price</span>
                   <span className="text-xl font-semibold text-ink">{formatPrice(4.99)}</span>
@@ -266,7 +331,7 @@ export default function GeneratePage() {
                     Personalise
                   </Button>
                   <Button size="lg" variant="outline" className="w-full" onClick={handleGenerate}>
-                    Generate Another
+                    Start Over
                   </Button>
                 </div>
               </motion.div>

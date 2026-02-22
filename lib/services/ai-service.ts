@@ -8,12 +8,6 @@ export interface GenerateCardTextParams {
   tone?: 'formal' | 'casual' | 'heartfelt' | 'humorous';
 }
 
-export interface GeneratedCard {
-  frontText: string;
-  insideText: string;
-  imageUrl: string;
-}
-
 export async function generateCardText({
   occasion,
   prompt,
@@ -68,7 +62,16 @@ Requirements:
   }
 }
 
-export async function generateCardImage(occasion: string, style: string = 'elegant', userPrompt: string = ''): Promise<string> {
+export interface ImageGenerationResult {
+  imageUrl: string;
+  responseId: string;
+}
+
+export async function generateCardImage(
+  occasion: string,
+  style: string = 'elegant',
+  userPrompt: string = '',
+): Promise<ImageGenerationResult> {
   try {
     const styleDescriptions: Record<string, string> = {
       elegant: 'refined, sophisticated watercolour with gold accents and delicate flourishes',
@@ -77,41 +80,61 @@ export async function generateCardImage(occasion: string, style: string = 'elega
       modern: 'contemporary graphic design with geometric shapes and a fresh palette',
     };
 
-    const imagePrompt = `Design the front of a premium luxury greeting card for a ${occasion} occasion. Style: ${styleDescriptions[style] || style}. ${userPrompt ? `Theme: ${userPrompt}.` : ''} The design should be beautiful, print-ready, portrait orientation, with no text or words on the image. High quality, elegant, suitable for a luxury stationery brand.`;
+    const input = `Generate an image: the front of a premium luxury greeting card for a ${occasion} occasion. Style: ${styleDescriptions[style] || style}. ${userPrompt ? `Theme: ${userPrompt}.` : ''} The design should be beautiful, print-ready, portrait orientation, with no text or words on the image. High quality, elegant, suitable for a luxury stationery brand.`;
 
-    const result = await openai.images.generate({
-      model: 'gpt-image-1.5',
-      prompt: imagePrompt,
-      size: '1024x1536',
-      quality: 'high',
-    });
+    const response = await openai.responses.create({
+      model: 'gpt-5',
+      input,
+      tools: [{ type: 'image_generation', size: '1024x1536', quality: 'high' }],
+    } as any);
 
-    const image = result.data?.[0];
-    if (!image) throw new Error('No image data returned');
-
-    if (image.b64_json) {
-      return `data:image/png;base64,${image.b64_json}`;
+    const imageUrl = extractImageFromResponse(response);
+    if (imageUrl) {
+      return { imageUrl, responseId: (response as any).id };
     }
 
-    if (image.url) {
-      return image.url;
-    }
-
-    throw new Error('No image data returned');
+    throw new Error('No image data in response');
   } catch (error) {
     console.error('Error generating card image:', error);
-    // Fallback to placeholder
     const seed = `${occasion}-${style}`;
-    return `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200`;
+    return {
+      imageUrl: `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200`,
+      responseId: '',
+    };
   }
 }
 
-export function containsInappropriateContent(text: string): boolean {
-  const inappropriateWords = [
-    'badword1',
-    'badword2',
-  ];
+export async function refineCardImage(
+  previousResponseId: string,
+  refinementPrompt: string,
+): Promise<ImageGenerationResult> {
+  const response = await openai.responses.create({
+    model: 'gpt-5',
+    previous_response_id: previousResponseId,
+    input: refinementPrompt,
+    tools: [{ type: 'image_generation' }],
+  } as any);
 
+  const imageUrl = extractImageFromResponse(response);
+  if (imageUrl) {
+    return { imageUrl, responseId: (response as any).id };
+  }
+
+  throw new Error('No image data in refinement response');
+}
+
+function extractImageFromResponse(response: any): string | null {
+  const outputs = response.output || [];
+  for (const item of outputs) {
+    if (item.type === 'image_generation_call' && item.result) {
+      return `data:image/png;base64,${item.result}`;
+    }
+  }
+  return null;
+}
+
+export function containsInappropriateContent(text: string): boolean {
+  const inappropriateWords = ['badword1', 'badword2'];
   const lowerText = text.toLowerCase();
   return inappropriateWords.some((word) => lowerText.includes(word));
 }
