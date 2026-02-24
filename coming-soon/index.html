@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inky Cards — Coming Soon</title>
+  <meta name="description" content="Personalised greeting cards crafted with care. AI-powered design, video messages, and premium quality printing. Coming soon." />
+  <meta property="og:title" content="Inky Cards — Coming Soon" />
+  <meta property="og:description" content="Personalised greeting cards crafted with care. Coming soon." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root {
+      --ink: #1a1a1a;
+      --paper: #faf9f7;
+      --stone: #6b6b6b;
+      --silk: #e8e6e3;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { height: 100%; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Layout ── */
+    .page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    .content {
+      max-width: 560px;
+      width: 100%;
+    }
+
+    /* ── Brand ── */
+    .brand {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 4rem;
+      opacity: 0;
+      animation: fadeDown 0.8s ease forwards;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--silk);
+      margin: 0 auto 3rem;
+      opacity: 0;
+      animation: fadeIn 0.6s ease 0.3s forwards;
+    }
+
+    /* ── Typography ── */
+    .heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .subheading {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--stone);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+
+    /* ── Form ── */
+    .form-wrapper {
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.6s forwards;
+    }
+
+    .form {
+      display: flex;
+      gap: 0;
+      max-width: 440px;
+      margin: 0 auto;
+      border: 1px solid var(--silk);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .form:focus-within {
+      border-color: var(--ink);
+    }
+
+    .form input {
+      flex: 1;
+      padding: 0.875rem 1.25rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .form input::placeholder {
+      color: var(--stone);
+      opacity: 0.6;
+    }
+
+    .form button {
+      padding: 0.875rem 1.75rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--paper);
+      background: var(--ink);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .form button:hover {
+      background: #333;
+    }
+
+    .form button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--stone);
+      margin-top: 1rem;
+      opacity: 0.7;
+    }
+
+    /* ── Success State ── */
+    .success {
+      display: none;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 1.25rem;
+      border: 1px solid var(--silk);
+      border-radius: 4px;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .success p {
+      font-size: 0.875rem;
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    .success .check {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Features ── */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-top: 4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.8s forwards;
+    }
+
+    .feature {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    .feature-dot {
+      color: var(--silk);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.6875rem;
+      color: var(--stone);
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeIn 0.6s ease 1s forwards;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .page { padding: 2.5rem 1.25rem; }
+      .brand { margin-bottom: 3rem; }
+      .features { flex-direction: column; gap: 0.75rem; align-items: center; }
+      .feature-dot { display: none; }
+      .form { flex-direction: column; }
+      .form button { padding: 0.875rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="content">
+      <div class="brand">Inky</div>
+      <div class="divider"></div>
+
+      <h1 class="heading">Something beautiful<br />is on its way.</h1>
+      <p class="subheading">
+        Personalised greeting cards crafted with care. AI-powered design,
+        video messages, and premium quality printing.
+      </p>
+
+      <div class="form-wrapper">
+        <form class="form" id="signup-form" onsubmit="handleSubmit(event)">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            autocomplete="email"
+            id="email-input"
+          />
+          <button type="submit" id="submit-btn">Notify Me</button>
+        </form>
+        <p class="form-note">Be the first to know when we launch. No spam, ever.</p>
+
+        <div class="success" id="success-msg">
+          <div class="check">&#10003;</div>
+          <p>You're on the list. We'll be in touch.</p>
+        </div>
+      </div>
+
+      <div class="features">
+        <span class="feature">AI Design</span>
+        <span class="feature-dot">&middot;</span>
+        <span class="feature">Video Greetings</span>
+        <span class="feature-dot">&middot;</span>
+        <span class="feature">Premium Print</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 Inky Cards. All rights reserved.
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      var form = document.getElementById('signup-form');
+      var success = document.getElementById('success-msg');
+      var email = document.getElementById('email-input').value;
+
+      // TODO: Replace with your email service endpoint
+      // Examples:
+      //   Formspree:    fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: new FormData(form) })
+      //   Mailchimp:    Use their embedded form action URL
+      //   ConvertKit:   fetch('https://app.convertkit.com/forms/YOUR_ID/subscriptions', ...)
+      //
+      // For now, emails are logged to console and stored in localStorage
+      console.log('Email signup:', email);
+
+      var emails = JSON.parse(localStorage.getItem('inky-signups') || '[]');
+      emails.push({ email: email, date: new Date().toISOString() });
+      localStorage.setItem('inky-signups', JSON.stringify(emails));
+
+      form.style.display = 'none';
+      document.querySelector('.form-note').style.display = 'none';
+      success.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
