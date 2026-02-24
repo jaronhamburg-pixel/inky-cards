@@ -7,45 +7,42 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Modal } from '@/components/ui/modal';
 import { formatPrice } from '@/lib/utils/formatting';
-import type { Card, CardCategory, CardOccasion } from '@/types/card';
+import type { Card, CardCategory } from '@/types/card';
 
-const CATEGORIES: CardCategory[] = ['luxury', 'minimalist', 'artistic', 'vintage', 'modern'];
-
-const OCCASIONS: CardOccasion[] = [
+const CATEGORIES: CardCategory[] = [
   'birthday',
-  'wedding',
   'anniversary',
-  'thank-you',
-  'sympathy',
+  'wedding',
   'congratulations',
-  'holiday',
-  'just-because',
+  'new-baby',
+  'new-home',
+  'new-job',
+  'good-luck',
+  'get-well-soon',
+  'thinking-of-you',
+  'for-you',
+  'misc',
 ];
 
-const OCCASION_LABELS: Record<CardOccasion, string> = {
-  birthday: 'Birthday',
-  wedding: 'Wedding',
-  anniversary: 'Anniversary',
-  'thank-you': 'Thank You',
-  sympathy: 'Sympathy',
-  congratulations: 'Congratulations',
-  holiday: 'Holiday',
-  'just-because': 'Just Because',
-};
-
 const CATEGORY_LABELS: Record<CardCategory, string> = {
-  luxury: 'Luxury',
-  minimalist: 'Minimalist',
-  artistic: 'Artistic',
-  vintage: 'Vintage',
-  modern: 'Modern',
+  anniversary: 'Anniversary',
+  birthday: 'Birthday',
+  congratulations: 'Congratulations',
+  'for-you': 'For You',
+  'get-well-soon': 'Get Well Soon',
+  'good-luck': 'Good Luck',
+  misc: 'Misc',
+  'new-baby': 'New Baby',
+  'new-home': 'New Home',
+  'new-job': 'New Job',
+  'thinking-of-you': 'Thinking of You',
+  wedding: 'Wedding',
 };
 
 interface CardFormData {
   title: string;
   description: string;
   category: CardCategory;
-  occasions: CardOccasion[];
   price: number;
   frontImage: string;
   backImage: string;
@@ -57,8 +54,7 @@ interface CardFormData {
 const EMPTY_FORM: CardFormData = {
   title: '',
   description: '',
-  category: 'luxury',
-  occasions: [],
+  category: 'birthday',
   price: 0,
   frontImage: '',
   backImage: '',
@@ -72,7 +68,6 @@ function formDataToCard(form: CardFormData): Omit<Card, 'id'> {
     title: form.title,
     description: form.description,
     category: form.category,
-    occasions: form.occasions,
     price: form.price,
     images: {
       front: form.frontImage,
@@ -93,7 +88,6 @@ function cardToFormData(card: Card): CardFormData {
     title: card.title,
     description: card.description,
     category: card.category,
-    occasions: [...card.occasions],
     price: card.price,
     frontImage: card.images.front,
     backImage: card.images.back,
@@ -117,8 +111,7 @@ export default function AdminCardsPage() {
     return cards.filter(
       (card) =>
         card.title.toLowerCase().includes(query) ||
-        card.category.toLowerCase().includes(query) ||
-        card.occasions.some((occ) => occ.toLowerCase().includes(query))
+        card.category.toLowerCase().includes(query)
     );
   }, [cards, searchQuery]);
 
@@ -165,15 +158,6 @@ export default function AdminCardsPage() {
     [refreshCards]
   );
 
-  const toggleOccasion = useCallback((occasion: CardOccasion) => {
-    setFormData((prev) => ({
-      ...prev,
-      occasions: prev.occasions.includes(occasion)
-        ? prev.occasions.filter((o) => o !== occasion)
-        : [...prev.occasions, occasion],
-    }));
-  }, []);
-
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -191,7 +175,7 @@ export default function AdminCardsPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div className="w-full sm:w-80">
             <Input
-              placeholder="Search cards by title, category, or occasion..."
+              placeholder="Search cards by title or category..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="bg-white"
@@ -221,9 +205,6 @@ export default function AdminCardsPage() {
                     Category
                   </th>
                   <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                    Occasions
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
                     Price
                   </th>
                   <th className="text-right px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
@@ -234,7 +215,7 @@ export default function AdminCardsPage() {
               <tbody className="divide-y divide-neutral-100">
                 {filteredCards.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-12 text-center text-neutral-400">
+                    <td colSpan={4} className="px-6 py-12 text-center text-neutral-400">
                       {searchQuery
                         ? 'No cards match your search criteria.'
                         : 'No cards found. Add your first card to get started.'}
@@ -263,20 +244,9 @@ export default function AdminCardsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <Badge
-                          variant={card.category === 'luxury' ? 'warning' : 'default'}
-                        >
+                        <Badge variant="default">
                           {CATEGORY_LABELS[card.category]}
                         </Badge>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-wrap gap-1 max-w-[220px]">
-                          {card.occasions.map((occasion) => (
-                            <Badge key={occasion} variant="info">
-                              {OCCASION_LABELS[occasion]}
-                            </Badge>
-                          ))}
-                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-sm font-semibold text-luxury-charcoal">
@@ -411,31 +381,6 @@ export default function AdminCardsPage() {
                   }))
                 }
               />
-            </div>
-
-            {/* Occasions */}
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Occasions
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {OCCASIONS.map((occasion) => (
-                  <label
-                    key={occasion}
-                    className="flex items-center gap-2 p-2 rounded-md border border-neutral-200 hover:border-luxury-gold cursor-pointer transition-colors duration-150 has-[:checked]:border-luxury-gold has-[:checked]:bg-amber-50"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.occasions.includes(occasion)}
-                      onChange={() => toggleOccasion(occasion)}
-                      className="w-4 h-4 rounded border-neutral-300 text-luxury-gold focus:ring-luxury-gold"
-                    />
-                    <span className="text-sm text-neutral-700">
-                      {OCCASION_LABELS[occasion]}
-                    </span>
-                  </label>
-                ))}
-              </div>
             </div>
 
             {/* Image URLs */}

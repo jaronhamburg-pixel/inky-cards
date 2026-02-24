@@ -138,9 +138,9 @@ export default function AdminDashboardPage() {
             <div className="text-2xl">⭐</div>
             <div>
               <p className="font-semibold text-luxury-charcoal">
-                {mockCards.filter((c) => c.category === 'luxury').length}
+                {new Set(mockCards.map((c) => c.category)).size}
               </p>
-              <p className="text-sm text-neutral-600">Luxury Cards</p>
+              <p className="text-sm text-neutral-600">Categories</p>
             </div>
           </div>
         </div>

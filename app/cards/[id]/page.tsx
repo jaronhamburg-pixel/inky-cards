@@ -50,7 +50,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
   };
 
   const relatedCards = mockCards.filter(
-    (c) => c.id !== card.id && (c.category === card.category || c.occasions.some((occ) => card.occasions.includes(occ)))
+    (c) => c.id !== card.id && c.category === card.category
   ).slice(0, 4);
 
   return (
@@ -111,18 +111,6 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
           <div className="mb-8">
             <span className="text-3xl font-semibold text-ink">{formatPrice(card.price)}</span>
             <span className="text-stone ml-2 text-sm">per card</span>
-          </div>
-
-          {/* Occasions */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-ink mb-2 uppercase tracking-wider">Perfect For</h3>
-            <div className="flex flex-wrap gap-2">
-              {card.occasions.map((occasion) => (
-                <Badge key={occasion} variant="default" className="capitalize">
-                  {occasion.replace('-', ' ')}
-                </Badge>
-              ))}
-            </div>
           </div>
 
           {/* Customisation options */}

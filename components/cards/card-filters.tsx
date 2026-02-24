@@ -1,42 +1,34 @@
 'use client';
 
-import { CardCategory, CardOccasion } from '@/types/card';
+import { CardCategory } from '@/types/card';
 
 interface CardFiltersProps {
   selectedCategories: CardCategory[];
-  selectedOccasions: CardOccasion[];
   priceRange: [number, number];
   onCategoryChange: (categories: CardCategory[]) => void;
-  onOccasionChange: (occasions: CardOccasion[]) => void;
   onPriceRangeChange: (range: [number, number]) => void;
   onReset: () => void;
 }
 
 const categories: { value: CardCategory; label: string }[] = [
-  { value: 'luxury', label: 'Luxury' },
-  { value: 'minimalist', label: 'Minimalist' },
-  { value: 'artistic', label: 'Artistic' },
-  { value: 'vintage', label: 'Vintage' },
-  { value: 'modern', label: 'Modern' },
-];
-
-const occasions: { value: CardOccasion; label: string }[] = [
   { value: 'birthday', label: 'Birthday' },
-  { value: 'wedding', label: 'Wedding' },
   { value: 'anniversary', label: 'Anniversary' },
-  { value: 'thank-you', label: 'Thank You' },
-  { value: 'sympathy', label: 'Sympathy' },
+  { value: 'wedding', label: 'Wedding' },
   { value: 'congratulations', label: 'Congratulations' },
-  { value: 'holiday', label: 'Holiday' },
-  { value: 'just-because', label: 'Just Because' },
+  { value: 'new-baby', label: 'New Baby' },
+  { value: 'new-home', label: 'New Home' },
+  { value: 'new-job', label: 'New Job' },
+  { value: 'good-luck', label: 'Good Luck' },
+  { value: 'get-well-soon', label: 'Get Well Soon' },
+  { value: 'thinking-of-you', label: 'Thinking of You' },
+  { value: 'for-you', label: 'For You' },
+  { value: 'misc', label: 'Misc' },
 ];
 
 export function CardFilters({
   selectedCategories,
-  selectedOccasions,
   priceRange,
   onCategoryChange,
-  onOccasionChange,
   onPriceRangeChange,
   onReset,
 }: CardFiltersProps) {
@@ -48,17 +40,8 @@ export function CardFilters({
     }
   };
 
-  const handleOccasionToggle = (occasion: CardOccasion) => {
-    if (selectedOccasions.includes(occasion)) {
-      onOccasionChange(selectedOccasions.filter((o) => o !== occasion));
-    } else {
-      onOccasionChange([...selectedOccasions, occasion]);
-    }
-  };
-
   const hasFilters =
     selectedCategories.length > 0 ||
-    selectedOccasions.length > 0 ||
     priceRange[0] !== 0 ||
     priceRange[1] !== 30;
 
@@ -95,25 +78,6 @@ export function CardFilters({
         </div>
       </div>
 
-      <div className="mb-8">
-        <h4 className="font-medium text-neutral-700 mb-3 text-sm">Occasion</h4>
-        <div className="space-y-2">
-          {occasions.map((occasion) => (
-            <label key={occasion.value} className="flex items-center cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={selectedOccasions.includes(occasion.value)}
-                onChange={() => handleOccasionToggle(occasion.value)}
-                className="w-4 h-4 text-ink border-silk rounded focus:ring-ink"
-              />
-              <span className="ml-3 text-sm text-neutral-700 group-hover:text-ink transition-colors">
-                {occasion.label}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-
       <div>
         <h4 className="font-medium text-neutral-700 mb-3 text-sm">Price Range</h4>
         <div className="space-y-4">
@@ -127,8 +91,8 @@ export function CardFilters({
             className="w-full h-2 bg-silk rounded-lg appearance-none cursor-pointer accent-ink"
           />
           <div className="flex items-center justify-between text-sm text-stone">
-            <span>£{priceRange[0]}</span>
-            <span>£{priceRange[1]}+</span>
+            <span>&pound;{priceRange[0]}</span>
+            <span>&pound;{priceRange[1]}+</span>
           </div>
         </div>
       </div>

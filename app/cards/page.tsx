@@ -1,37 +1,31 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { CardCategory, CardOccasion } from '@/types/card';
+import { CardCategory } from '@/types/card';
 import { mockCards } from '@/lib/data/mock-cards';
 import { CardGrid } from '@/components/cards/card-grid';
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest';
 
-const occasions: { value: CardOccasion | 'all'; label: string }[] = [
+const categories: { value: CardCategory | 'all'; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'birthday', label: 'Birthday' },
-  { value: 'wedding', label: 'Wedding' },
   { value: 'anniversary', label: 'Anniversary' },
-  { value: 'thank-you', label: 'Thank You' },
+  { value: 'wedding', label: 'Wedding' },
   { value: 'congratulations', label: 'Congratulations' },
-  { value: 'sympathy', label: 'Sympathy' },
-  { value: 'holiday', label: 'Holiday' },
-  { value: 'just-because', label: 'Just Because' },
-];
-
-const styles: { value: CardCategory | 'all'; label: string }[] = [
-  { value: 'all', label: 'All Styles' },
-  { value: 'luxury', label: 'Luxury' },
-  { value: 'minimalist', label: 'Minimalist' },
-  { value: 'artistic', label: 'Artistic' },
-  { value: 'vintage', label: 'Vintage' },
-  { value: 'modern', label: 'Modern' },
+  { value: 'new-baby', label: 'New Baby' },
+  { value: 'new-home', label: 'New Home' },
+  { value: 'new-job', label: 'New Job' },
+  { value: 'good-luck', label: 'Good Luck' },
+  { value: 'get-well-soon', label: 'Get Well Soon' },
+  { value: 'thinking-of-you', label: 'Thinking of You' },
+  { value: 'for-you', label: 'For You' },
+  { value: 'misc', label: 'Misc' },
 ];
 
 export default function CardsPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedOccasion, setSelectedOccasion] = useState<CardOccasion | 'all'>('all');
-  const [selectedStyle, setSelectedStyle] = useState<CardCategory | 'all'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CardCategory | 'all'>('all');
   const [sortBy, setSortBy] = useState<SortOption>('featured');
 
   const filteredCards = useMemo(() => {
@@ -43,17 +37,12 @@ export default function CardsPage() {
         (card) =>
           card.title.toLowerCase().includes(query) ||
           card.description.toLowerCase().includes(query) ||
-          card.category.toLowerCase().includes(query) ||
-          card.occasions.some((occ) => occ.toLowerCase().includes(query))
+          card.category.toLowerCase().includes(query)
       );
     }
 
-    if (selectedOccasion !== 'all') {
-      filtered = filtered.filter((card) => card.occasions.includes(selectedOccasion));
-    }
-
-    if (selectedStyle !== 'all') {
-      filtered = filtered.filter((card) => card.category === selectedStyle);
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter((card) => card.category === selectedCategory);
     }
 
     switch (sortBy) {
@@ -71,7 +60,7 @@ export default function CardsPage() {
     }
 
     return filtered;
-  }, [searchQuery, selectedOccasion, selectedStyle, sortBy]);
+  }, [searchQuery, selectedCategory, sortBy]);
 
   return (
     <div className="container-luxury py-12 animate-fade-in">
@@ -85,41 +74,25 @@ export default function CardsPage() {
 
       {/* Filter bar */}
       <div className="mb-8 pb-8 border-b border-silk space-y-5">
-        {/* Occasion pills — primary filter */}
+        {/* Category pills */}
         <div className="flex flex-wrap gap-2">
-          {occasions.map((occ) => (
+          {categories.map((cat) => (
             <button
-              key={occ.value}
-              onClick={() => setSelectedOccasion(occ.value)}
+              key={cat.value}
+              onClick={() => setSelectedCategory(cat.value)}
               className={`px-4 py-1.5 text-sm rounded-full border transition-colors ${
-                selectedOccasion === occ.value
+                selectedCategory === cat.value
                   ? 'bg-ink text-white border-ink'
                   : 'border-silk text-stone hover:border-ink hover:text-ink'
               }`}
             >
-              {occ.label}
+              {cat.label}
             </button>
           ))}
         </div>
 
-        {/* Style pills + search + sort */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-wrap gap-2">
-            {styles.map((style) => (
-              <button
-                key={style.value}
-                onClick={() => setSelectedStyle(style.value)}
-                className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-                  selectedStyle === style.value
-                    ? 'bg-stone text-white border-stone'
-                    : 'border-silk text-stone/70 hover:border-stone hover:text-stone'
-                }`}
-              >
-                {style.label}
-              </button>
-            ))}
-          </div>
-
+        {/* Search + sort */}
+        <div className="flex flex-col md:flex-row md:items-center justify-end gap-4">
           <div className="flex items-center gap-4">
             {/* Search */}
             <div className="relative">

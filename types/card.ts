@@ -1,14 +1,16 @@
-export type CardCategory = 'luxury' | 'minimalist' | 'artistic' | 'vintage' | 'modern';
-
-export type CardOccasion =
-  | 'birthday'
-  | 'wedding'
+export type CardCategory =
   | 'anniversary'
-  | 'thank-you'
-  | 'sympathy'
+  | 'birthday'
   | 'congratulations'
-  | 'holiday'
-  | 'just-because';
+  | 'for-you'
+  | 'get-well-soon'
+  | 'good-luck'
+  | 'misc'
+  | 'new-baby'
+  | 'new-home'
+  | 'new-job'
+  | 'thinking-of-you'
+  | 'wedding';
 
 export interface TextTemplate {
   placeholder: string;
@@ -25,7 +27,6 @@ export interface Card {
   title: string;
   description: string;
   category: CardCategory;
-  occasions: CardOccasion[];
   price: number;
   images: {
     front: string;
