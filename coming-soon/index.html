@@ -48,7 +48,7 @@
     }
 
     .content {
-      max-width: 560px;
+      max-width: 780px;
       width: 100%;
     }
 
@@ -77,12 +77,13 @@
     /* ── Typography ── */
     .heading {
       font-family: var(--font-serif);
-      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 300;
       line-height: 1.1;
       letter-spacing: -0.02em;
       color: var(--ink);
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      white-space: nowrap;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
     }
@@ -95,7 +96,7 @@
       color: var(--stone);
       margin-bottom: 3rem;
       opacity: 0;
-      animation: fadeUp 0.7s ease 0.4s forwards;
+      animation: fadeUp 0.7s ease 0.6s forwards;
     }
 
     /* ── Form ── */
@@ -190,6 +191,16 @@
     }
 
     /* ── Features ── */
+    .launch-note {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.6s forwards;
+    }
+
     .features {
       display: flex;
       justify-content: center;
@@ -242,6 +253,7 @@
     @media (max-width: 600px) {
       .page { padding: 2.5rem 1.25rem; }
       .brand { margin-bottom: 3rem; }
+      .heading { white-space: normal; }
       .features { flex-direction: column; gap: 0.75rem; align-items: center; }
       .feature-dot { display: none; }
       .form { flex-direction: column; }
@@ -252,15 +264,14 @@
 <body>
   <main class="page">
     <div class="content">
-      <div class="brand">Inky</div>
+      <div class="brand">Inky Cards</div>
       <div class="divider"></div>
 
-      <h1 class="heading">Something beautiful<br />is on its way.</h1>
+      <h1 class="heading">Make Every Greeting Unforgettable</h1>
       <p class="subheading">
-        Personalised greeting cards crafted with care. AI-powered design,
-        video messages, and premium quality printing.
+        Personalised greeting cards crafted with care.<br />
+        AI-powered design, video messages, and premium quality printing.
       </p>
-
       <div class="form-wrapper">
         <form class="form" id="signup-form" onsubmit="handleSubmit(event)">
           <input
@@ -284,10 +295,11 @@
       <div class="features">
         <span class="feature">AI Design</span>
         <span class="feature-dot">&middot;</span>
-        <span class="feature">Video Greetings</span>
+        <span class="feature">Video Messages</span>
         <span class="feature-dot">&middot;</span>
-        <span class="feature">Premium Print</span>
+        <span class="feature">Premium Cards</span>
       </div>
+
     </div>
   </main>
 
