@@ -139,12 +139,12 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/generate">
-              <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
+              <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink min-w-[200px]">
                 Try Inky AI Designer
               </Button>
             </Link>
             <Link href="/cards">
-              <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink">
+              <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink min-w-[200px]">
                 View All Cards
               </Button>
             </Link>

@@ -118,12 +118,12 @@ export default function TheEditPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/cards">
-              <button className="px-8 py-3 text-sm uppercase tracking-widest border border-paper text-paper rounded hover:bg-paper hover:text-ink transition-colors">
+              <button className="px-8 py-3 text-sm uppercase tracking-widest border border-paper text-paper rounded hover:bg-paper hover:text-ink transition-colors min-w-[200px]">
                 Shop Cards
               </button>
             </Link>
             <Link href="/generate">
-              <button className="px-8 py-3 text-sm uppercase tracking-widest border border-paper/30 text-paper/60 rounded hover:bg-paper hover:text-ink transition-colors">
+              <button className="px-8 py-3 text-sm uppercase tracking-widest border border-paper/30 text-paper/60 rounded hover:bg-paper hover:text-ink transition-colors min-w-[200px]">
                 Inky AI Designer
               </button>
             </Link>
