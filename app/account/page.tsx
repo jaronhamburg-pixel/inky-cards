@@ -96,10 +96,11 @@ function AuthForms({
 
           <div className="mt-6 pt-6 border-t border-silk text-center">
             <p className="text-sm text-stone">
-              {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+              {isSignUp ? 'Already have an account?' : "Don't have an account?"}
+              <br />
               <button
                 onClick={() => { setIsSignUp(!isSignUp); setError(''); }}
-                className="text-ink font-medium hover:underline"
+                className="text-ink font-medium hover:underline uppercase mt-2 inline-block"
               >
                 {isSignUp ? 'Sign In' : 'Create Account'}
               </button>
@@ -107,9 +108,6 @@ function AuthForms({
           </div>
         </div>
 
-        <p className="text-center text-xs text-stone mt-6">
-          Demo accounts: sarah@example.com / password123
-        </p>
       </div>
     </div>
   );
@@ -175,7 +173,7 @@ function AccountDashboard({
     <div className="container-luxury py-12 animate-fade-in">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <div>
+          <div className="text-center flex-1">
             <h1 className="heading-display text-ink">My Account</h1>
             <p className="text-stone text-sm mt-1">Welcome back, {user.firstName}</p>
           </div>

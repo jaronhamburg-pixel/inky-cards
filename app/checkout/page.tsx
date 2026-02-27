@@ -105,7 +105,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="container-luxury py-12 animate-fade-in">
-      <h1 className="heading-display text-ink mb-8">Checkout</h1>
+      <h1 className="heading-display text-ink mb-8 text-center">Checkout</h1>
 
       {/* Progress */}
       <div className="mb-12">
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
                   <Input {...register('firstName')} label="First Name" placeholder="Jane" error={errors.firstName?.message} required />
                   <Input {...register('lastName')} label="Last Name" placeholder="Smith" error={errors.lastName?.message} required />
                 </div>
-                <Input {...register('phone')} label="Phone (optional)" type="tel" placeholder="(555) 555-5555" error={errors.phone?.message} />
+                <Input {...register('phone')} label="Phone (optional)" type="tel" placeholder="07123 456789" error={errors.phone?.message} />
               </div>
             )}
 

@@ -44,7 +44,7 @@ export default function CartPage() {
 
   return (
     <div className="container-luxury py-12 animate-fade-in">
-      <h1 className="heading-display text-ink mb-8">Basket</h1>
+      <h1 className="heading-display text-ink mb-8 text-center">Basket</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}

@@ -65,7 +65,7 @@ export default function CardsPage() {
   return (
     <div className="container-luxury py-12 animate-fade-in">
       {/* Header */}
-      <div className="mb-10">
+      <div className="mb-10 text-center">
         <h1 className="heading-display text-ink mb-3">Shop Cards</h1>
         <p className="text-stone">
           {filteredCards.length} card{filteredCards.length !== 1 ? 's' : ''}

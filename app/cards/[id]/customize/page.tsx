@@ -199,7 +199,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
           &larr; {card.id.startsWith('ai-') ? 'Back to designer' : 'Back to card'}
         </Link>
         <div className="flex items-center justify-between">
-          <div>
+          <div className="text-center flex-1">
             <h1 className="heading-display text-ink mb-1">Personalise</h1>
             <p className="text-stone text-sm">{card.title}</p>
           </div>
