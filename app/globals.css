@@ -211,6 +211,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Smaller fonts on mobile */
+@media (max-width: 640px) {
+  html {
+    font-size: 13px;
+  }
+}
+
 /* Selection color */
 ::selection {
   background-color: rgba(26, 26, 26, 0.12);

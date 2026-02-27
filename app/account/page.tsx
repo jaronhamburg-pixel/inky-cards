@@ -102,7 +102,7 @@ function AuthForms({
                 onClick={() => { setIsSignUp(!isSignUp); setError(''); }}
                 className="text-ink font-medium hover:underline uppercase mt-2 inline-block"
               >
-                {isSignUp ? 'Sign In' : 'Create Account'}
+                {isSignUp ? 'Sign In' : 'Create'}
               </button>
             </p>
           </div>
