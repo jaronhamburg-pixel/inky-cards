@@ -8,6 +8,7 @@ import { getCardById } from '@/lib/data/mock-cards';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import { VideoRecorder } from '@/components/video/video-recorder';
+import { PhotoCapture } from '@/components/video/photo-capture';
 
 type EditorView = 'front' | 'inside';
 type TextAlignment = 'left' | 'center' | 'right';
@@ -71,6 +72,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   const [mediaUrl, setMediaUrl] = useState<string>('');
   const [mediaBlob, setMediaBlob] = useState<Blob | null>(null);
   const [showRecorder, setShowRecorder] = useState(false);
+  const [showCapture, setShowCapture] = useState(false);
   const [mediaMode, setMediaMode] = useState<MediaMode>('video');
   const [qrImageUrl, setQrImageUrl] = useState<string>('');
 
@@ -168,6 +170,15 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setMediaBlob(file);
+    setMediaUrl(url);
+    setShowRecorder(false);
+  };
+
+  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const url = URL.createObjectURL(file);
@@ -453,26 +464,38 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
               <label className="block text-sm font-medium text-ink mb-2 uppercase tracking-wider">
                 Add Video or Photo (+£2)
               </label>
-              {!mediaUrl && !showRecorder && (
-                <div className="space-y-2">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => { setMediaMode('video'); setShowRecorder(true); }}
-                      className="flex-1 py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors"
-                    >
-                      Record Video
-                    </button>
-                    <label className="flex-1 py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors cursor-pointer text-center">
-                      Upload Photo
-                      <input
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        className="hidden"
-                        onChange={handlePhotoUpload}
-                      />
-                    </label>
-                  </div>
+              {!mediaUrl && !showRecorder && !showCapture && (
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => { setMediaMode('video'); setShowRecorder(true); }}
+                    className="py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors normal-case"
+                  >
+                    Record video
+                  </button>
+                  <button
+                    onClick={() => setShowCapture(true)}
+                    className="py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors normal-case"
+                  >
+                    Take photo
+                  </button>
+                  <label className="py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors cursor-pointer text-center normal-case">
+                    Upload video
+                    <input
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={handleVideoUpload}
+                    />
+                  </label>
+                  <label className="py-3 px-4 border border-dashed border-silk rounded text-sm text-stone hover:border-ink hover:text-ink transition-colors cursor-pointer text-center normal-case">
+                    Upload photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handlePhotoUpload}
+                    />
+                  </label>
                 </div>
               )}
               {showRecorder && !mediaUrl && mediaMode === 'video' && (
@@ -484,6 +507,16 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                     setShowRecorder(false);
                   }}
                   onCancel={() => setShowRecorder(false)}
+                />
+              )}
+              {showCapture && !mediaUrl && (
+                <PhotoCapture
+                  onPhotoReady={(blob, previewUrl) => {
+                    setMediaBlob(blob);
+                    setMediaUrl(previewUrl);
+                    setShowCapture(false);
+                  }}
+                  onCancel={() => setShowCapture(false)}
                 />
               )}
               {mediaUrl && (
