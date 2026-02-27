@@ -17,7 +17,7 @@ export default function CartPage() {
   const [discountError, setDiscountError] = useState('');
 
   const subtotal = getTotal();
-  const shipping = subtotal > 50 ? 0 : 8.99;
+  const shipping = subtotal > 50 ? 0 : 1.99;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 

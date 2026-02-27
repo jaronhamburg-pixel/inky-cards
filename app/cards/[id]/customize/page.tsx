@@ -68,6 +68,15 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   const [textAlign, setTextAlign] = useState<TextAlignment>('center');
   const [quantity, setQuantity] = useState(1);
 
+  // Font scale: smaller on mobile so text fits the smaller card preview
+  const [fontScale, setFontScale] = useState(0.6);
+  useEffect(() => {
+    const updateScale = () => setFontScale(window.innerWidth < 640 ? 0.36 : 0.6);
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
   // Video / Photo / QR
   const [mediaUrl, setMediaUrl] = useState<string>('');
   const [mediaBlob, setMediaBlob] = useState<Blob | null>(null);
@@ -326,7 +335,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                       className="w-full h-full resize-none border-0 bg-transparent focus:outline-none placeholder:text-neutral-300 overflow-hidden"
                       style={{
                         fontFamily,
-                        fontSize: `${Math.round(fontSize * 0.6)}px`,
+                        fontSize: `${Math.round(fontSize * fontScale)}px`,
                         color: textColor,
                         textAlign,
                         lineHeight: 1.5,
@@ -338,7 +347,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                       className="w-full text-neutral-300 italic text-center"
                       style={{
                         fontFamily,
-                        fontSize: `${Math.round(fontSize * 0.6)}px`,
+                        fontSize: `${Math.round(fontSize * fontScale)}px`,
                         lineHeight: 1.5,
                       }}
                     >
