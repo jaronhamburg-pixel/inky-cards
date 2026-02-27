@@ -22,7 +22,7 @@ export default function Home() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="heading-hero text-ink mb-4"
           >
-            Cards worth keeping.
+            Make Every Greeting Unforgettable
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 15 }}
@@ -30,8 +30,8 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
             className="body-large text-stone max-w-xl mx-auto mb-6"
           >
-            Personalised greeting cards crafted with care. AI-powered design,
-            video messages, and premium quality printing.
+            Personalised greeting cards crafted with care.<br />
+            AI-powered design, video messages, and premium quality printing.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
@@ -46,7 +46,7 @@ export default function Home() {
             </Link>
             <Link href="/generate">
               <Button size="lg" variant="outline">
-                INKY AI Designer
+                Inky AI Designer
               </Button>
             </Link>
           </motion.div>
@@ -180,7 +180,7 @@ export default function Home() {
           >
             <Link href="/generate">
               <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
-                INKY AI GENERATOR
+                Inky AI Generator
               </Button>
             </Link>
             <Link href="/cards">

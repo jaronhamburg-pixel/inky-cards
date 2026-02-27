@@ -64,7 +64,7 @@ function AuthForms({
           </h1>
           <p className="text-stone text-sm">
             {isSignUp
-              ? 'Join INKY for personalised card recommendations and order tracking.'
+              ? 'Join Inky Cards for personalised card recommendations and order tracking.'
               : 'Welcome back. Sign in to your account.'}
           </p>
         </div>

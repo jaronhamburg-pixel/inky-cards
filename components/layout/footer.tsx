@@ -6,8 +6,8 @@ export function Footer() {
       <div className="container-luxury pt-12 pb-16">
         {/* Logo */}
         <div className="text-center mb-12">
-          <Link href="/" className="text-2xl font-semibold tracking-widest">
-            INKY
+          <Link href="/" className="text-lg font-bold tracking-[0.35em] uppercase">
+            Inky Cards
           </Link>
           <p className="mt-8 text-sm text-paper/50 max-w-md mx-auto">
             Premium greeting cards worth keeping.
@@ -20,7 +20,7 @@ export function Footer() {
             Shop
           </Link>
           <Link href="/generate" className="text-paper/60 hover:text-paper transition-colors">
-            INKY AI Designer
+            Inky AI Designer
           </Link>
           <Link href="/about" className="text-paper/60 hover:text-paper transition-colors">
             About

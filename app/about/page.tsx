@@ -135,12 +135,12 @@ export default function AboutPage() {
         <div className="container-luxury text-center">
           <h2 className="heading-display text-paper mb-6">Make it personal.</h2>
           <p className="body-large text-paper/60 mb-12 max-w-lg mx-auto">
-            Join thousands of customers who trust INKY for their most important moments.
+            Join thousands of customers who trust Inky Cards for their most important moments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/generate">
               <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
-                Try INKY AI Generator
+                Try Inky AI Generator
               </Button>
             </Link>
             <Link href="/cards">

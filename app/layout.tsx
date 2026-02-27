@@ -7,7 +7,7 @@ import { AuthProvider } from "@/lib/context/auth-context";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-cormorant",
 });
 
@@ -18,7 +18,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "INKY — Premium Greeting Cards",
+  title: "Inky Cards — Premium Greeting Cards",
   description: "Personalised greeting cards worth keeping. AI-powered customisation, video messages, and premium quality.",
 };
 

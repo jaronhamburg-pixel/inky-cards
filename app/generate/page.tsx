@@ -125,7 +125,7 @@ export default function GeneratePage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <h1 className="heading-display text-ink mb-4">INKY AI Designer</h1>
+          <h1 className="heading-display text-ink mb-4">Inky AI Designer</h1>
           <p className="body-large text-stone max-w-xl mx-auto">
             Describe your vision and our AI will craft a unique, personalised card
           </p>
