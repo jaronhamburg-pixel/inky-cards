@@ -92,7 +92,7 @@ export const mockArticles: Article[] = [
     date: '2025-10-12',
     readTime: '3 min read',
     image:
-      'https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=800&h=500&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1457530378978-8bac673b8062?w=800&h=500&fit=crop&q=80',
     content: [
       'Spring is the busiest season for greeting cards, and for good reason. The calendar is stacked with occasions that call for something more than a text message.',
       'Mother\'s Day sits at the centre of it all. The cards that resonate most are the ones that avoid cliché. Skip the generic florals and think about what actually defines your relationship. Is your mother the person who always has the right book recommendation? The one who sends voice notes instead of texts? The card should reflect the specific, not the universal.',
@@ -110,7 +110,7 @@ export const mockArticles: Article[] = [
     date: '2025-09-25',
     readTime: '5 min read',
     image:
-      'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=800&h=500&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&h=500&fit=crop&q=80',
     content: [
       'There is a moment in the print process that never gets old: the first sheet coming off the press, still warm, the ink wet enough to smell. It is the point where a digital file becomes a physical object, and it is where most of the craft lives.',
       'Every INKY card is printed on 350gsm textured stock. The weight matters — a flimsy card undermines even the most beautiful design. At 350gsm, you feel the card before you see it. The texture adds a tactile dimension that smooth paper simply cannot match.',
