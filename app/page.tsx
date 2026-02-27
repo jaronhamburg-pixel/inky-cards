@@ -67,11 +67,11 @@ export default function Home() {
                 key={card.id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                whileHover={{ scale: 1.12, y: -12, zIndex: 20 }}
+                transition={{ duration: 0.1, delay: i * 0.05 }}
+                whileHover={{ scale: 1.08, y: -10, zIndex: 20, transition: { duration: 0.1 } }}
                 className="flex-shrink-0 relative z-0"
               >
-                <Link href={`/cards/${card.id}`} className="block">
+                <Link href={`/cards/${card.id}`} className="block group">
                   <div className="w-36 md:w-44 aspect-[3/4] relative overflow-hidden rounded-lg card-3d-face shadow-md transition-shadow duration-300 hover:shadow-xl">
                     <Image
                       src={card.images.thumbnail}

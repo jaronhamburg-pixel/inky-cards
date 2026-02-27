@@ -164,7 +164,7 @@ body {
 
 /* Card Inside - Open Card Fold Effect */
 .card-inside-left {
-  background: linear-gradient(135deg, #f5f2ed 0%, #ede9e2 100%);
+  background: #ffffff;
 }
 
 .card-fold-line {

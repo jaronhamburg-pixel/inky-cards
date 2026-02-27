@@ -1,10 +1,10 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+
 import { getCardById, mockCards } from '@/lib/data/mock-cards';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +18,12 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
   const card = getCardById(id);
   const addItem = useCartStore((state) => state.addItem);
   const [quantity, setQuantity] = useState(1);
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [showBack, setShowBack] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
 
   if (!card) {
     return (
@@ -59,43 +64,23 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
         {/* 3D Interactive Card */}
         <div className="flex flex-col items-center">
           <div
-            className="perspective-[1200px] cursor-pointer mb-4 w-full max-w-md"
-            onClick={() => setIsFlipped(!isFlipped)}
+            className="w-full max-w-md aspect-[3/4] relative rounded-lg overflow-hidden card-3d-face cursor-pointer"
+            onClick={() => setShowBack(!showBack)}
           >
-            <motion.div
-              className="relative w-full aspect-[3/4]"
-              animate={{ rotateY: isFlipped ? 180 : 0 }}
-              transition={{ duration: 0.6, ease: 'easeInOut' }}
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {/* Front */}
-              <div
-                className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
-                style={{ backfaceVisibility: 'hidden' }}
-              >
-                <Image
-                  src={card.images.front}
-                  alt={card.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              {/* Back — branded */}
-              <div
-                className="absolute inset-0 rounded-lg overflow-hidden card-3d-face bg-paper flex flex-col items-center justify-center"
-                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-              >
-                <div className="absolute inset-0 border border-silk/60 rounded-lg m-4" />
-                <span className="text-2xl md:text-3xl font-semibold tracking-widest text-ink mb-3">
-                  INKY
-                </span>
-                <div className="w-8 h-px bg-silk mb-3" />
-                <p className="text-xs uppercase tracking-[0.25em] text-stone">Designed by Inky Cards</p>
-              </div>
-            </motion.div>
+            <Image
+              src={card.images.front}
+              alt={card.title}
+              fill
+              className={`object-cover transition-opacity duration-500 ${showBack ? 'opacity-0' : 'opacity-100'}`}
+              priority
+            />
+            <Image
+              src={card.images.back}
+              alt={`${card.title} — inside`}
+              fill
+              className={`object-cover transition-opacity duration-500 ${showBack ? 'opacity-100' : 'opacity-0'}`}
+            />
           </div>
-          <p className="text-center text-xs text-stone">Click card to flip</p>
         </div>
 
         {/* Card Information */}
@@ -186,6 +171,7 @@ export default function CardDetailPage({ params }: { params: Promise<{ id: strin
               >
                 <Card3D
                   frontImage={relatedCard.images.thumbnail}
+                  backImage={relatedCard.images.back}
                   alt={relatedCard.title}
                   hoverEffect="open"
                 />

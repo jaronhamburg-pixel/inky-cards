@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Card } from '@/types/card';
-import { Card3D } from '@/components/cards/card-3d';
 import { formatPrice } from '@/lib/utils/formatting';
 
 interface CardGridProps {
@@ -33,11 +33,20 @@ export function CardGrid({ cards }: CardGridProps) {
             href={`/cards/${card.id}`}
             className="group block"
           >
-            <Card3D
-              frontImage={card.images.thumbnail}
-              alt={card.title}
-              hoverEffect="open"
-            />
+            <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden card-3d-face">
+              <Image
+                src={card.images.thumbnail}
+                alt={card.title}
+                fill
+                className="object-cover transition-opacity duration-500 group-hover:opacity-0"
+              />
+              <Image
+                src={card.images.back}
+                alt={`${card.title} — inside`}
+                fill
+                className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+            </div>
             <h3 className="text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
               {card.title}
             </h3>

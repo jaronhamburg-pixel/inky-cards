@@ -258,7 +258,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
             ) : (
               <div className="aspect-[3/2] max-h-[55vh] relative overflow-hidden rounded-lg border border-silk card-3d-face mx-auto flex">
                 {/* Left half — back of front cover */}
-                <div className="card-inside-left w-1/2 h-full relative">
+                <div className="w-1/2 h-full relative bg-white">
                   {qrImageUrl && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
@@ -276,7 +276,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                 </div>
                 {/* Right half — editable message area */}
                 <div
-                  className="w-1/2 h-full bg-white flex items-center justify-center p-6 cursor-text"
+                  className="w-1/2 h-full bg-white flex items-center justify-center p-6 cursor-text overflow-hidden"
                   onClick={() => {
                     const el = document.getElementById('card-text-input');
                     if (el) el.focus();
@@ -286,19 +286,39 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                     <textarea
                       id="card-text-input"
                       value={currentText}
-                      onChange={(e) => setCurrentText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          const el = e.target as HTMLTextAreaElement;
+                          // Test if adding a newline would overflow
+                          const testVal = el.value.slice(0, el.selectionStart) + '\n' + el.value.slice(el.selectionEnd);
+                          const origVal = el.value;
+                          el.value = testVal;
+                          if (el.scrollHeight > el.clientHeight) {
+                            el.value = origVal;
+                            e.preventDefault();
+                          } else {
+                            el.value = origVal;
+                          }
+                        }
+                      }}
+                      onChange={(e) => {
+                        const el = e.target;
+                        if (el.scrollHeight > el.clientHeight) {
+                          el.value = currentText;
+                          return;
+                        }
+                        setCurrentText(e.target.value);
+                      }}
                       onBlur={pushHistory}
                       placeholder="Your Message"
                       maxLength={currentTemplate?.maxLength}
-                      className="w-full h-full resize-none border-0 bg-transparent focus:outline-none placeholder:text-neutral-300 flex items-center"
+                      className="w-full h-full resize-none border-0 bg-transparent focus:outline-none placeholder:text-neutral-300 overflow-hidden"
                       style={{
                         fontFamily,
                         fontSize: `${Math.round(fontSize * 0.6)}px`,
                         color: textColor,
                         textAlign,
                         lineHeight: 1.5,
-                        display: 'flex',
-                        alignItems: 'center',
                         paddingTop: '35%',
                       }}
                     />

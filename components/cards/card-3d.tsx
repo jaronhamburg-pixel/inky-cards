@@ -27,11 +27,18 @@ interface Card3DProps {
 
 export function Card3D({
   frontImage,
+  backImage,
   alt,
   className = '',
   hoverEffect = 'open',
 }: Card3DProps) {
   const [isHovered, setIsHovered] = useState(false);
+
+  const backContent = backImage ? (
+    <Image src={backImage} alt={`${alt} — inside`} fill className="object-cover" />
+  ) : (
+    <BrandedBack />
+  );
 
   if (hoverEffect === 'flip') {
     return (
@@ -56,7 +63,7 @@ export function Card3D({
             className="absolute inset-0 rounded-lg overflow-hidden card-3d-face"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
-            <BrandedBack />
+            {backContent}
           </div>
         </motion.div>
       </div>
@@ -71,9 +78,9 @@ export function Card3D({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative w-full aspect-[3/4]">
-        {/* Inside — branded back */}
+        {/* Inside — 2D / back image */}
         <div className="absolute inset-0 rounded-lg overflow-hidden card-3d-face">
-          <BrandedBack />
+          {backContent}
         </div>
 
         {/* Front cover — pivots from left edge */}

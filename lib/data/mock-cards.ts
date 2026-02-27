@@ -9,7 +9,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/a-matcha-made-in-heaven.png',
-      back: '/cards/anniversary/a-matcha-made-in-heaven.png',
+      back: '/cards/anniversary/a-matcha-made-in-heaven-2d.png',
       thumbnail: '/cards/anniversary/a-matcha-made-in-heaven.png',
     },
     customizable: {
@@ -46,7 +46,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/a-dinner-out.png',
-      back: '/cards/anniversary/a-dinner-out.png',
+      back: '/cards/anniversary/a-dinner-out-2d.png',
       thumbnail: '/cards/anniversary/a-dinner-out.png',
     },
     customizable: {
@@ -83,7 +83,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/cheers-to-you.png',
-      back: '/cards/anniversary/cheers-to-you.png',
+      back: '/cards/anniversary/cheers-to-you-2d.png',
       thumbnail: '/cards/anniversary/cheers-to-you.png',
     },
     customizable: {
@@ -120,7 +120,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/flower-hearts.png',
-      back: '/cards/anniversary/flower-hearts.png',
+      back: '/cards/anniversary/flower-hearts-2d.png',
       thumbnail: '/cards/anniversary/flower-hearts.png',
     },
     customizable: {
@@ -157,7 +157,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/hearts.png',
-      back: '/cards/anniversary/hearts.png',
+      back: '/cards/anniversary/hearts-2d.png',
       thumbnail: '/cards/anniversary/hearts.png',
     },
     customizable: {
@@ -194,7 +194,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/jukebox.png',
-      back: '/cards/anniversary/jukebox.png',
+      back: '/cards/anniversary/jukebox-2d.png',
       thumbnail: '/cards/anniversary/jukebox.png',
     },
     customizable: {
@@ -231,7 +231,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/kiss-kiss.png',
-      back: '/cards/anniversary/kiss-kiss.png',
+      back: '/cards/anniversary/kiss-kiss-2d.png',
       thumbnail: '/cards/anniversary/kiss-kiss.png',
     },
     customizable: {
@@ -268,7 +268,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/knockout.png',
-      back: '/cards/anniversary/knockout.png',
+      back: '/cards/anniversary/knockout-2d.png',
       thumbnail: '/cards/anniversary/knockout.png',
     },
     customizable: {
@@ -305,7 +305,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/love-you-daisy.png',
-      back: '/cards/anniversary/love-you-daisy.png',
+      back: '/cards/anniversary/love-you-daisy-2d.png',
       thumbnail: '/cards/anniversary/love-you-daisy.png',
     },
     customizable: {
@@ -342,7 +342,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/lucky-you.png',
-      back: '/cards/anniversary/lucky-you.png',
+      back: '/cards/anniversary/lucky-you-2d.png',
       thumbnail: '/cards/anniversary/lucky-you.png',
     },
     customizable: {
@@ -379,7 +379,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/romantic-songs.png',
-      back: '/cards/anniversary/romantic-songs.png',
+      back: '/cards/anniversary/romantic-songs-2d.png',
       thumbnail: '/cards/anniversary/romantic-songs.png',
     },
     customizable: {
@@ -416,7 +416,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/still-holding.png',
-      back: '/cards/anniversary/still-holding.png',
+      back: '/cards/anniversary/still-holding-2d.png',
       thumbnail: '/cards/anniversary/still-holding.png',
     },
     customizable: {
@@ -453,7 +453,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/xo.png',
-      back: '/cards/anniversary/xo.png',
+      back: '/cards/anniversary/xo-2d.png',
       thumbnail: '/cards/anniversary/xo.png',
     },
     customizable: {
@@ -490,7 +490,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/anniversary/youre-still-the-one.png',
-      back: '/cards/anniversary/youre-still-the-one.png',
+      back: '/cards/anniversary/youre-still-the-one-2d.png',
       thumbnail: '/cards/anniversary/youre-still-the-one.png',
     },
     customizable: {
@@ -527,7 +527,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/all-the-wheels.png',
-      back: '/cards/birthday/all-the-wheels.png',
+      back: '/cards/birthday/all-the-wheels-2d.png',
       thumbnail: '/cards/birthday/all-the-wheels.png',
     },
     customizable: {
@@ -564,7 +564,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/aztec-print.png',
-      back: '/cards/birthday/aztec-print.png',
+      back: '/cards/birthday/aztec-print-2d.png',
       thumbnail: '/cards/birthday/aztec-print.png',
     },
     customizable: {
@@ -601,7 +601,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/ballerina.png',
-      back: '/cards/birthday/ballerina.png',
+      back: '/cards/birthday/ballerina-2d.png',
       thumbnail: '/cards/birthday/ballerina.png',
     },
     customizable: {
@@ -638,7 +638,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/birthday-princess.png',
-      back: '/cards/birthday/birthday-princess.png',
+      back: '/cards/birthday/birthday-princess-2d.png',
       thumbnail: '/cards/birthday/birthday-princess.png',
     },
     customizable: {
@@ -675,7 +675,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/campavan-adventures.png',
-      back: '/cards/birthday/campavan-adventures.png',
+      back: '/cards/birthday/campavan-adventures-2d.png',
       thumbnail: '/cards/birthday/campavan-adventures.png',
     },
     customizable: {
@@ -712,7 +712,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/cartoon-fun.png',
-      back: '/cards/birthday/cartoon-fun.png',
+      back: '/cards/birthday/cartoon-fun-2d.png',
       thumbnail: '/cards/birthday/cartoon-fun.png',
     },
     customizable: {
@@ -749,7 +749,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/celebration-daddy.png',
-      back: '/cards/birthday/celebration-daddy.png',
+      back: '/cards/birthday/celebration-daddy-2d.png',
       thumbnail: '/cards/birthday/celebration-daddy.png',
     },
     customizable: {
@@ -786,7 +786,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/countryside.png',
-      back: '/cards/birthday/countryside.png',
+      back: '/cards/birthday/countryside-2d.png',
       thumbnail: '/cards/birthday/countryside.png',
     },
     customizable: {
@@ -823,7 +823,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/cowboy-saloon.png',
-      back: '/cards/birthday/cowboy-saloon.png',
+      back: '/cards/birthday/cowboy-saloon-2d.png',
       thumbnail: '/cards/birthday/cowboy-saloon.png',
     },
     customizable: {
@@ -860,7 +860,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/crepes-and-coffee.png',
-      back: '/cards/birthday/crepes-and-coffee.png',
+      back: '/cards/birthday/crepes-and-coffee-2d.png',
       thumbnail: '/cards/birthday/crepes-and-coffee.png',
     },
     customizable: {
@@ -897,7 +897,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/dance-all-night.png',
-      back: '/cards/birthday/dance-all-night.png',
+      back: '/cards/birthday/dance-all-night-2d.png',
       thumbnail: '/cards/birthday/dance-all-night.png',
     },
     customizable: {
@@ -934,7 +934,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/dried-flowers.png',
-      back: '/cards/birthday/dried-flowers.png',
+      back: '/cards/birthday/dried-flowers-2d.png',
       thumbnail: '/cards/birthday/dried-flowers.png',
     },
     customizable: {
@@ -971,7 +971,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/eat-sleep-padel-repeat.png',
-      back: '/cards/birthday/eat-sleep-padel-repeat.png',
+      back: '/cards/birthday/eat-sleep-padel-repeat-2d.png',
       thumbnail: '/cards/birthday/eat-sleep-padel-repeat.png',
     },
     customizable: {
@@ -1008,7 +1008,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/football-theme.png',
-      back: '/cards/birthday/football-theme.png',
+      back: '/cards/birthday/football-theme-2d.png',
       thumbnail: '/cards/birthday/football-theme.png',
     },
     customizable: {
@@ -1045,7 +1045,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/geometric.png',
-      back: '/cards/birthday/geometric.png',
+      back: '/cards/birthday/geometric-2d.png',
       thumbnail: '/cards/birthday/geometric.png',
     },
     customizable: {
@@ -1082,7 +1082,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/heart-of-flowers.png',
-      back: '/cards/birthday/heart-of-flowers.png',
+      back: '/cards/birthday/heart-of-flowers-2d.png',
       thumbnail: '/cards/birthday/heart-of-flowers.png',
     },
     customizable: {
@@ -1119,7 +1119,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/japanese-blossom.png',
-      back: '/cards/birthday/japanese-blossom.png',
+      back: '/cards/birthday/japanese-blossom-2d.png',
       thumbnail: '/cards/birthday/japanese-blossom.png',
     },
     customizable: {
@@ -1156,7 +1156,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/kids-crayons.png',
-      back: '/cards/birthday/kids-crayons.png',
+      back: '/cards/birthday/kids-crayons-2d.png',
       thumbnail: '/cards/birthday/kids-crayons.png',
     },
     customizable: {
@@ -1193,7 +1193,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/kids-drawing-board.png',
-      back: '/cards/birthday/kids-drawing-board.png',
+      back: '/cards/birthday/kids-drawing-board-2d.png',
       thumbnail: '/cards/birthday/kids-drawing-board.png',
     },
     customizable: {
@@ -1230,7 +1230,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/lavender.png',
-      back: '/cards/birthday/lavender.png',
+      back: '/cards/birthday/lavender-2d.png',
       thumbnail: '/cards/birthday/lavender.png',
     },
     customizable: {
@@ -1267,7 +1267,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/like-a-fine-wine.png',
-      back: '/cards/birthday/like-a-fine-wine.png',
+      back: '/cards/birthday/like-a-fine-wine-2d.png',
       thumbnail: '/cards/birthday/like-a-fine-wine.png',
     },
     customizable: {
@@ -1304,7 +1304,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/love-you-daddy.png',
-      back: '/cards/birthday/love-you-daddy.png',
+      back: '/cards/birthday/love-you-daddy-2d.png',
       thumbnail: '/cards/birthday/love-you-daddy.png',
     },
     customizable: {
@@ -1341,7 +1341,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/love-you-mummy.png',
-      back: '/cards/birthday/love-you-mummy.png',
+      back: '/cards/birthday/love-you-mummy-2d.png',
       thumbnail: '/cards/birthday/love-you-mummy.png',
     },
     customizable: {
@@ -1378,7 +1378,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/many-many.png',
-      back: '/cards/birthday/many-many.png',
+      back: '/cards/birthday/many-many-2d.png',
       thumbnail: '/cards/birthday/many-many.png',
     },
     customizable: {
@@ -1415,7 +1415,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/many-many-many-birthdays.png',
-      back: '/cards/birthday/many-many-many-birthdays.png',
+      back: '/cards/birthday/many-many-many-birthdays-2d.png',
       thumbnail: '/cards/birthday/many-many-many-birthdays.png',
     },
     customizable: {
@@ -1452,7 +1452,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/mountains.png',
-      back: '/cards/birthday/mountains.png',
+      back: '/cards/birthday/mountains-2d.png',
       thumbnail: '/cards/birthday/mountains.png',
     },
     customizable: {
@@ -1489,7 +1489,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/old-car.png',
-      back: '/cards/birthday/old-car.png',
+      back: '/cards/birthday/old-car-2d.png',
       thumbnail: '/cards/birthday/old-car.png',
     },
     customizable: {
@@ -1526,7 +1526,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/ski-time.png',
-      back: '/cards/birthday/ski-time.png',
+      back: '/cards/birthday/ski-time-2d.png',
       thumbnail: '/cards/birthday/ski-time.png',
     },
     customizable: {
@@ -1563,7 +1563,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/sushi-time.png',
-      back: '/cards/birthday/sushi-time.png',
+      back: '/cards/birthday/sushi-time-2d.png',
       thumbnail: '/cards/birthday/sushi-time.png',
     },
     customizable: {
@@ -1600,7 +1600,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/tacos.png',
-      back: '/cards/birthday/tacos.png',
+      back: '/cards/birthday/tacos-2d.png',
       thumbnail: '/cards/birthday/tacos.png',
     },
     customizable: {
@@ -1637,7 +1637,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/take-it-easy.png',
-      back: '/cards/birthday/take-it-easy.png',
+      back: '/cards/birthday/take-it-easy-2d.png',
       thumbnail: '/cards/birthday/take-it-easy.png',
     },
     customizable: {
@@ -1674,7 +1674,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/to-the-gym.png',
-      back: '/cards/birthday/to-the-gym.png',
+      back: '/cards/birthday/to-the-gym-2d.png',
       thumbnail: '/cards/birthday/to-the-gym.png',
     },
     customizable: {
@@ -1711,7 +1711,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/up-to-par.png',
-      back: '/cards/birthday/up-to-par.png',
+      back: '/cards/birthday/up-to-par-2d.png',
       thumbnail: '/cards/birthday/up-to-par.png',
     },
     customizable: {
@@ -1748,7 +1748,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/birthday/yoga.png',
-      back: '/cards/birthday/yoga.png',
+      back: '/cards/birthday/yoga-2d.png',
       thumbnail: '/cards/birthday/yoga.png',
     },
     customizable: {
@@ -1785,7 +1785,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/congratulations/congratulations-confetti.png',
-      back: '/cards/congratulations/congratulations-confetti.png',
+      back: '/cards/congratulations/congratulations-confetti-2d.png',
       thumbnail: '/cards/congratulations/congratulations-confetti.png',
     },
     customizable: {
@@ -1822,7 +1822,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/for-you/flowers.png',
-      back: '/cards/for-you/flowers.png',
+      back: '/cards/for-you/flowers-2d.png',
       thumbnail: '/cards/for-you/flowers.png',
     },
     customizable: {
@@ -1859,7 +1859,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/for-you/tulips-with-love.png',
-      back: '/cards/for-you/tulips-with-love.png',
+      back: '/cards/for-you/tulips-with-love-2d.png',
       thumbnail: '/cards/for-you/tulips-with-love.png',
     },
     customizable: {
@@ -1896,7 +1896,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/get-well-soon/get-well-soon-heart.png',
-      back: '/cards/get-well-soon/get-well-soon-heart.png',
+      back: '/cards/get-well-soon/get-well-soon-heart-2d.png',
       thumbnail: '/cards/get-well-soon/get-well-soon-heart.png',
     },
     customizable: {
@@ -1933,7 +1933,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/get-well-soon/get-well-soon-well.png',
-      back: '/cards/get-well-soon/get-well-soon-well.png',
+      back: '/cards/get-well-soon/get-well-soon-well-2d.png',
       thumbnail: '/cards/get-well-soon/get-well-soon-well.png',
     },
     customizable: {
@@ -1970,7 +1970,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/adventure-time.png',
-      back: '/cards/good-luck/adventure-time.png',
+      back: '/cards/good-luck/adventure-time-2d.png',
       thumbnail: '/cards/good-luck/adventure-time.png',
     },
     customizable: {
@@ -2007,7 +2007,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/blocks-you-got-this.png',
-      back: '/cards/good-luck/blocks-you-got-this.png',
+      back: '/cards/good-luck/blocks-you-got-this-2d.png',
       thumbnail: '/cards/good-luck/blocks-you-got-this.png',
     },
     customizable: {
@@ -2044,7 +2044,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/bon-voyage-suitcase.png',
-      back: '/cards/good-luck/bon-voyage-suitcase.png',
+      back: '/cards/good-luck/bon-voyage-suitcase-2d.png',
       thumbnail: '/cards/good-luck/bon-voyage-suitcase.png',
     },
     customizable: {
@@ -2081,7 +2081,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/enjoy-your-trip.png',
-      back: '/cards/good-luck/enjoy-your-trip.png',
+      back: '/cards/good-luck/enjoy-your-trip-2d.png',
       thumbnail: '/cards/good-luck/enjoy-your-trip.png',
     },
     customizable: {
@@ -2118,7 +2118,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/fingers-crossed.png',
-      back: '/cards/good-luck/fingers-crossed.png',
+      back: '/cards/good-luck/fingers-crossed-2d.png',
       thumbnail: '/cards/good-luck/fingers-crossed.png',
     },
     customizable: {
@@ -2155,7 +2155,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/lightbulb-you-got-this.png',
-      back: '/cards/good-luck/lightbulb-you-got-this.png',
+      back: '/cards/good-luck/lightbulb-you-got-this-2d.png',
       thumbnail: '/cards/good-luck/lightbulb-you-got-this.png',
     },
     customizable: {
@@ -2192,7 +2192,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/safe-travels.png',
-      back: '/cards/good-luck/safe-travels.png',
+      back: '/cards/good-luck/safe-travels-2d.png',
       thumbnail: '/cards/good-luck/safe-travels.png',
     },
     customizable: {
@@ -2229,7 +2229,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/travel-icons.png',
-      back: '/cards/good-luck/travel-icons.png',
+      back: '/cards/good-luck/travel-icons-2d.png',
       thumbnail: '/cards/good-luck/travel-icons.png',
     },
     customizable: {
@@ -2266,7 +2266,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/good-luck/you-got-this.png',
-      back: '/cards/good-luck/you-got-this.png',
+      back: '/cards/good-luck/you-got-this-2d.png',
       thumbnail: '/cards/good-luck/you-got-this.png',
     },
     customizable: {
@@ -2303,7 +2303,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/misc/wish-you-were-here.png',
-      back: '/cards/misc/wish-you-were-here.png',
+      back: '/cards/misc/wish-you-were-here-2d.png',
       thumbnail: '/cards/misc/wish-you-were-here.png',
     },
     customizable: {
@@ -2340,7 +2340,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/baby-boxes.png',
-      back: '/cards/new-baby/baby-boxes.png',
+      back: '/cards/new-baby/baby-boxes-2d.png',
       thumbnail: '/cards/new-baby/baby-boxes.png',
     },
     customizable: {
@@ -2377,7 +2377,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/enjoy-the-ride.png',
-      back: '/cards/new-baby/enjoy-the-ride.png',
+      back: '/cards/new-baby/enjoy-the-ride-2d.png',
       thumbnail: '/cards/new-baby/enjoy-the-ride.png',
     },
     customizable: {
@@ -2414,7 +2414,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/its-a-boy.png',
-      back: '/cards/new-baby/its-a-boy.png',
+      back: '/cards/new-baby/its-a-boy-2d.png',
       thumbnail: '/cards/new-baby/its-a-boy.png',
     },
     customizable: {
@@ -2451,7 +2451,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/its-a-boy-babygrow.png',
-      back: '/cards/new-baby/its-a-boy-babygrow.png',
+      back: '/cards/new-baby/its-a-boy-babygrow-2d.png',
       thumbnail: '/cards/new-baby/its-a-boy-babygrow.png',
     },
     customizable: {
@@ -2488,7 +2488,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/its-a-girl.png',
-      back: '/cards/new-baby/its-a-girl.png',
+      back: '/cards/new-baby/its-a-girl-2d.png',
       thumbnail: '/cards/new-baby/its-a-girl.png',
     },
     customizable: {
@@ -2525,7 +2525,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/just-keep-washing.png',
-      back: '/cards/new-baby/just-keep-washing.png',
+      back: '/cards/new-baby/just-keep-washing-2d.png',
       thumbnail: '/cards/new-baby/just-keep-washing.png',
     },
     customizable: {
@@ -2562,7 +2562,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/toys-its-a-boy.png',
-      back: '/cards/new-baby/toys-its-a-boy.png',
+      back: '/cards/new-baby/toys-its-a-boy-2d.png',
       thumbnail: '/cards/new-baby/toys-its-a-boy.png',
     },
     customizable: {
@@ -2599,7 +2599,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/welcome-cars.png',
-      back: '/cards/new-baby/welcome-cars.png',
+      back: '/cards/new-baby/welcome-cars-2d.png',
       thumbnail: '/cards/new-baby/welcome-cars.png',
     },
     customizable: {
@@ -2636,7 +2636,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/welcome-to-the-world.png',
-      back: '/cards/new-baby/welcome-to-the-world.png',
+      back: '/cards/new-baby/welcome-to-the-world-2d.png',
       thumbnail: '/cards/new-baby/welcome-to-the-world.png',
     },
     customizable: {
@@ -2673,7 +2673,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/young-boy.png',
-      back: '/cards/new-baby/young-boy.png',
+      back: '/cards/new-baby/young-boy-2d.png',
       thumbnail: '/cards/new-baby/young-boy.png',
     },
     customizable: {
@@ -2710,7 +2710,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-baby/your-new-home.png',
-      back: '/cards/new-baby/your-new-home.png',
+      back: '/cards/new-baby/your-new-home-2d.png',
       thumbnail: '/cards/new-baby/your-new-home.png',
     },
     customizable: {
@@ -2747,7 +2747,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/all-the-doors.png',
-      back: '/cards/new-home/all-the-doors.png',
+      back: '/cards/new-home/all-the-doors-2d.png',
       thumbnail: '/cards/new-home/all-the-doors.png',
     },
     customizable: {
@@ -2784,7 +2784,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/front-door.png',
-      back: '/cards/new-home/front-door.png',
+      back: '/cards/new-home/front-door-2d.png',
       thumbnail: '/cards/new-home/front-door.png',
     },
     customizable: {
@@ -2821,7 +2821,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/girl-on-a-swing.png',
-      back: '/cards/new-home/girl-on-a-swing.png',
+      back: '/cards/new-home/girl-on-a-swing-2d.png',
       thumbnail: '/cards/new-home/girl-on-a-swing.png',
     },
     customizable: {
@@ -2858,7 +2858,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/kids-drawn-home.png',
-      back: '/cards/new-home/kids-drawn-home.png',
+      back: '/cards/new-home/kids-drawn-home-2d.png',
       thumbnail: '/cards/new-home/kids-drawn-home.png',
     },
     customizable: {
@@ -2895,7 +2895,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/moving-van.png',
-      back: '/cards/new-home/moving-van.png',
+      back: '/cards/new-home/moving-van-2d.png',
       thumbnail: '/cards/new-home/moving-van.png',
     },
     customizable: {
@@ -2932,7 +2932,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/new-home.png',
-      back: '/cards/new-home/new-home.png',
+      back: '/cards/new-home/new-home-2d.png',
       thumbnail: '/cards/new-home/new-home.png',
     },
     customizable: {
@@ -2969,7 +2969,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/new-set-up.png',
-      back: '/cards/new-home/new-set-up.png',
+      back: '/cards/new-home/new-set-up-2d.png',
       thumbnail: '/cards/new-home/new-set-up.png',
     },
     customizable: {
@@ -3006,7 +3006,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/swirls-home-sweet-home.png',
-      back: '/cards/new-home/swirls-home-sweet-home.png',
+      back: '/cards/new-home/swirls-home-sweet-home-2d.png',
       thumbnail: '/cards/new-home/swirls-home-sweet-home.png',
     },
     customizable: {
@@ -3043,7 +3043,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/unpacking-boxes.png',
-      back: '/cards/new-home/unpacking-boxes.png',
+      back: '/cards/new-home/unpacking-boxes-2d.png',
       thumbnail: '/cards/new-home/unpacking-boxes.png',
     },
     customizable: {
@@ -3080,7 +3080,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/welcome-mats.png',
-      back: '/cards/new-home/welcome-mats.png',
+      back: '/cards/new-home/welcome-mats-2d.png',
       thumbnail: '/cards/new-home/welcome-mats.png',
     },
     customizable: {
@@ -3117,7 +3117,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-home/welcome-sign-home-sweet-home.png',
-      back: '/cards/new-home/welcome-sign-home-sweet-home.png',
+      back: '/cards/new-home/welcome-sign-home-sweet-home-2d.png',
       thumbnail: '/cards/new-home/welcome-sign-home-sweet-home.png',
     },
     customizable: {
@@ -3154,7 +3154,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-job/handshake.png',
-      back: '/cards/new-job/handshake.png',
+      back: '/cards/new-job/handshake-2d.png',
       thumbnail: '/cards/new-job/handshake.png',
     },
     customizable: {
@@ -3191,7 +3191,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-job/nailed-it.png',
-      back: '/cards/new-job/nailed-it.png',
+      back: '/cards/new-job/nailed-it-2d.png',
       thumbnail: '/cards/new-job/nailed-it.png',
     },
     customizable: {
@@ -3228,7 +3228,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-job/you-got-this.png',
-      back: '/cards/new-job/you-got-this.png',
+      back: '/cards/new-job/you-got-this-2d.png',
       thumbnail: '/cards/new-job/you-got-this.png',
     },
     customizable: {
@@ -3265,7 +3265,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/new-job/you-rock.png',
-      back: '/cards/new-job/you-rock.png',
+      back: '/cards/new-job/you-rock-2d.png',
       thumbnail: '/cards/new-job/you-rock.png',
     },
     customizable: {
@@ -3302,7 +3302,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/thinking-of-you/flower-delivery.png',
-      back: '/cards/thinking-of-you/flower-delivery.png',
+      back: '/cards/thinking-of-you/flower-delivery-2d.png',
       thumbnail: '/cards/thinking-of-you/flower-delivery.png',
     },
     customizable: {
@@ -3339,7 +3339,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/wedding/congratulations-wedding-car.png',
-      back: '/cards/wedding/congratulations-wedding-car.png',
+      back: '/cards/wedding/congratulations-wedding-car-2d.png',
       thumbnail: '/cards/wedding/congratulations-wedding-car.png',
     },
     customizable: {
@@ -3376,7 +3376,7 @@ export const mockCards: Card[] = [
     price: 4.99,
     images: {
       front: '/cards/wedding/just-married-old-car.png',
-      back: '/cards/wedding/just-married-old-car.png',
+      back: '/cards/wedding/just-married-old-car-2d.png',
       thumbnail: '/cards/wedding/just-married-old-car.png',
     },
     customizable: {
