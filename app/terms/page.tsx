@@ -38,7 +38,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-medium text-ink mb-3">4. AI-Generated Content</h2>
             <p className="text-stone leading-relaxed text-sm">
-              Cards created using our AI generator are unique designs produced for your personal use.
+              Cards created using our AI designer are unique designs produced for your personal use.
               You retain the right to use your personalised card for its intended purpose. We do not
               claim ownership of AI-generated designs created through your prompts.
             </p>

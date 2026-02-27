@@ -63,7 +63,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   const [frontText, setFrontText] = useState(card?.templates.front?.placeholder || '');
   const [insideText, setInsideText] = useState('');
   const [fontFamily, setFontFamily] = useState('Cormorant Garamond');
-  const [fontSize, setFontSize] = useState(28);
+  const [fontSize, setFontSize] = useState(25);
   const [textColor, setTextColor] = useState('#1a1a1a');
   const [textAlign, setTextAlign] = useState<TextAlignment>('center');
   const [quantity, setQuantity] = useState(1);
@@ -330,7 +330,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
                         color: textColor,
                         textAlign,
                         lineHeight: 1.5,
-                        paddingTop: '35%',
+                        paddingTop: '1rem',
                       }}
                     />
                   ) : (

@@ -40,12 +40,12 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link href="/cards">
-              <Button size="lg" variant="primary">
+              <Button size="lg" variant="primary" className="min-w-[200px]">
                 Shop Cards
               </Button>
             </Link>
             <Link href="/generate">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="min-w-[200px]">
                 Inky AI Designer
               </Button>
             </Link>
@@ -57,8 +57,8 @@ export default function Home() {
       <section className="pb-16 md:pb-24">
         <div className="container-luxury">
           <div className="text-center mb-8">
-            <h2 className="heading-display text-ink mb-2">The Collection</h2>
-            <p className="text-stone text-base">Curated designs for every occasion</p>
+            <h2 className="heading-section text-ink mb-2">The Collection</h2>
+            <p className="body-large text-stone">Curated designs for every occasion</p>
           </div>
 
           <div className="flex items-center justify-center gap-3 md:gap-5 overflow-x-auto py-6 px-4 scrollbar-hide">
@@ -179,12 +179,12 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link href="/generate">
-              <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
-                Inky AI Generator
+              <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink min-w-[200px]">
+                Inky AI Designer
               </Button>
             </Link>
             <Link href="/cards">
-              <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink">
+              <Button size="lg" variant="outline" className="border-paper/30 text-paper/60 hover:bg-paper hover:text-ink min-w-[200px]">
                 View All Cards
               </Button>
             </Link>

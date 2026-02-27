@@ -105,7 +105,7 @@ export default function AboutPage() {
           <h2 className="heading-display text-ink text-center mb-14">How It Works</h2>
           <div className="space-y-10">
             {[
-              { step: '01', title: 'Choose or Create', desc: 'Browse our curated collection or use our AI generator to create a unique design from scratch.' },
+              { step: '01', title: 'Choose or Create', desc: 'Browse our curated collection or use our AI designer to create a unique design from scratch.' },
               { step: '02', title: 'Personalise', desc: 'Customise your message, choose fonts, and add optional video greetings with our intuitive editor.' },
               { step: '03', title: 'We Print & Ship', desc: 'Your card is professionally printed on premium materials and shipped with care, ready to make someone\'s day.' },
             ].map((item) => (
@@ -140,7 +140,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/generate">
               <Button size="lg" variant="outline" className="border-paper text-paper hover:bg-paper hover:text-ink">
-                Try Inky AI Generator
+                Try Inky AI Designer
               </Button>
             </Link>
             <Link href="/cards">

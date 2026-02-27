@@ -69,7 +69,7 @@ export const mockArticles: Article[] = [
     slug: 'how-ai-is-changing-personalisation',
     title: 'How AI Is Changing Personalisation',
     excerpt:
-      'From generic templates to genuinely unique designs. The technology behind INKY\'s AI card generator.',
+      'From generic templates to genuinely unique designs. The technology behind INKY\'s AI card designer.',
     category: 'Technology',
     date: '2025-10-30',
     readTime: '4 min read',
