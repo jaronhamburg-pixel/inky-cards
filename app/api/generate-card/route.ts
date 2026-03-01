@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateCardText, generateCardImage, refineCardImage, containsInappropriateContent } from '@/lib/services/ai-service';
+import { generateCard, refineCardImage, containsInappropriateContent } from '@/lib/services/ai-service';
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,11 +46,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate card text and image in parallel
-    const [{ frontText, insideText }, { imageUrl, responseId }] = await Promise.all([
-      generateCardText({ occasion, prompt, tone: tone || 'heartfelt' }),
-      generateCardImage(occasion, style || 'elegant', prompt),
-    ]);
+    // Generate card text and image in a single call
+    const { frontText, insideText, imageUrl, responseId } = await generateCard({
+      occasion,
+      prompt,
+      tone: tone || 'heartfelt',
+      style: style || 'elegant',
+    });
 
     return NextResponse.json({
       success: true,

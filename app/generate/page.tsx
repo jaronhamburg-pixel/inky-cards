@@ -236,7 +236,7 @@ export default function GeneratePage() {
               {isGenerating ? 'Generating...' : 'Generate Card'}
             </Button>
 
-            <p className="text-xs text-stone mt-4 text-center">Powered by OpenAI</p>
+            <p className="text-xs text-stone mt-4 text-center">Powered by Gemini</p>
           </div>
 
           {/* Right: Preview */}
@@ -288,11 +288,6 @@ export default function GeneratePage() {
                 <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden card-3d-face">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={generatedCard.imageUrl} alt="Generated card" className="absolute inset-0 w-full h-full object-cover" />
-                  {generatedCard.frontText && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <p className="text-white text-xl px-6 text-center">{generatedCard.frontText}</p>
-                    </div>
-                  )}
                 </div>
 
                 {/* Refine design */}
