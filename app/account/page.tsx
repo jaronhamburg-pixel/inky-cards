@@ -13,6 +13,7 @@ import {
   addressSchema, type AddressFormData,
 } from '@/lib/utils/validation';
 import { formatPrice, formatDate } from '@/lib/utils/formatting';
+import Link from 'next/link';
 import { PublicUser, UserAddress } from '@/types/user';
 import { Order } from '@/types/order';
 
@@ -508,7 +509,7 @@ function OrdersTab() {
   return (
     <div className="space-y-4">
       {orders.map((order) => (
-        <div key={order.id} className="bg-white border border-silk rounded-lg p-6">
+        <Link key={order.id} href={`/orders/${order.id}`} className="block bg-white border border-silk rounded-lg p-6 hover:border-stone transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
               <span className="font-medium text-ink">{order.orderNumber}</span>
@@ -529,7 +530,7 @@ function OrdersTab() {
             <span className="text-sm text-stone">{order.items.reduce((s, i) => s + i.quantity, 0)} items</span>
             <span className="font-medium text-ink">{formatPrice(order.total)}</span>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

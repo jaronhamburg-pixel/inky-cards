@@ -20,7 +20,7 @@ import { formatPrice } from '@/lib/utils/formatting';
 import { UserAddress } from '@/types/user';
 import Link from 'next/link';
 
-type CheckoutStep = 1 | 2 | 3 | 4;
+type CheckoutStep = 1 | 2 | 3;
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -29,7 +29,6 @@ export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(1);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [creatingPayment, setCreatingPayment] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
 
@@ -140,21 +139,15 @@ export default function CheckoutPage() {
       if (!success) return;
     }
 
-    setCurrentStep((prev) => Math.min(4, prev + 1) as CheckoutStep);
+    setCurrentStep((prev) => Math.min(3, prev + 1) as CheckoutStep);
   };
 
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(1, prev - 1) as CheckoutStep);
   };
 
-  const handlePaymentSuccess = (confirmedPaymentIntentId: string) => {
+  const handlePaymentSuccess = async (confirmedPaymentIntentId: string) => {
     setPaymentIntentId(confirmedPaymentIntentId);
-    setPaymentConfirmed(true);
-    setCurrentStep(4);
-  };
-
-  const placeOrder = async () => {
-    if (!paymentConfirmed || !paymentIntentId) return;
 
     const data = getValues();
     const res = await fetch('/api/orders', {
@@ -170,7 +163,7 @@ export default function CheckoutPage() {
         tax,
         total,
         status: 'processing',
-        paymentIntentId,
+        paymentIntentId: confirmedPaymentIntentId,
       }),
     });
     const order = await res.json();
@@ -182,7 +175,6 @@ export default function CheckoutPage() {
     { number: 1, label: 'Contact' },
     { number: 2, label: 'Shipping' },
     { number: 3, label: 'Payment' },
-    { number: 4, label: 'Review' },
   ];
 
   const stripeAppearance = {
@@ -220,7 +212,7 @@ export default function CheckoutPage() {
 
       {/* Progress */}
       <div className="mb-12">
-        <div className="flex items-center justify-between max-w-xl mx-auto">
+        <div className="flex items-center justify-between max-w-lg mx-auto">
           {steps.map((step, index) => (
             <div key={step.number} className="flex items-center flex-1">
               <div className="flex flex-col items-center">
@@ -330,39 +322,12 @@ export default function CheckoutPage() {
               </Elements>
             )}
 
-            {/* Step 4: Review */}
-            {currentStep === 4 && (
-              <div className="space-y-6">
-                <h2 className="text-lg font-medium text-ink mb-4">Review Your Order</h2>
-                {paymentConfirmed && (
-                  <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded text-sm flex items-center gap-2">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Payment confirmed successfully
-                  </div>
-                )}
-                <div className="space-y-3">
-                  {items.map((item) => (
-                    <div key={item.id} className="flex gap-4 p-4 bg-paper border border-silk rounded">
-                      <div className="font-medium text-ink flex-1 text-sm">
-                        {item.card.title} &times; {item.quantity}
-                      </div>
-                      <div className="text-ink font-semibold text-sm">
-                        {formatPrice(item.price * item.quantity)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Nav */}
-            <div className="flex gap-4 mt-8 pt-8 border-t border-silk">
-              {currentStep > 1 && currentStep !== 3 && (
-                <Button type="button" variant="outline" onClick={handleBack}>Back</Button>
-              )}
-              {currentStep < 3 ? (
+            {currentStep < 3 && (
+              <div className="flex gap-4 mt-8 pt-8 border-t border-silk">
+                {currentStep > 1 && (
+                  <Button type="button" variant="outline" onClick={handleBack}>Back</Button>
+                )}
                 <Button
                   type="button"
                   variant="primary"
@@ -372,10 +337,8 @@ export default function CheckoutPage() {
                 >
                   {creatingPayment ? 'Preparing payment...' : 'Continue'}
                 </Button>
-              ) : currentStep === 4 ? (
-                <Button type="button" variant="primary" className="ml-auto" onClick={placeOrder}>Place Order</Button>
-              ) : null}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
