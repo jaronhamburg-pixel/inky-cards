@@ -1,9 +1,9 @@
 'use client';
 
-import { use } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getOrderById } from '@/lib/data/mock-orders';
+import { Order } from '@/types/order';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { formatPrice, formatDate, formatOrderNumber } from '@/lib/utils/formatting';
@@ -11,7 +11,29 @@ import { QRDisplay } from '@/components/video/qr-display';
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const order = getOrderById(id);
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/orders/${id}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          setOrder({ ...data, createdAt: new Date(data.createdAt), updatedAt: new Date(data.updatedAt) });
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="container-luxury py-20 text-center">
+        <div className="w-20 h-20 bg-silk rounded-full mx-auto mb-6 animate-pulse" />
+        <div className="h-8 bg-silk rounded w-64 mx-auto mb-4 animate-pulse" />
+        <div className="h-4 bg-silk rounded w-48 mx-auto animate-pulse" />
+      </div>
+    );
+  }
 
   if (!order) {
     return (

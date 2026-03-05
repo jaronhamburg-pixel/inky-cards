@@ -26,6 +26,8 @@ export interface OrderItem {
 
 export type OrderStatus = 'pending' | 'processing' | 'printing' | 'shipped' | 'delivered';
 
+export type PaymentStatus = 'pending' | 'succeeded' | 'failed';
+
 export interface Order {
   id: string;
   orderNumber: string;
@@ -42,6 +44,8 @@ export interface Order {
   tax: number;
   total: number;
   status: OrderStatus;
+  paymentIntentId?: string;
+  paymentStatus?: PaymentStatus;
   createdAt: Date;
   updatedAt: Date;
 }
