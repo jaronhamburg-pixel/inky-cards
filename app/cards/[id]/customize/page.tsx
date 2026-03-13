@@ -198,7 +198,45 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
     );
   }
 
-  const handleAddToCart = () => {
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+
+  const handleAddToCart = async () => {
+    setUploadError('');
+
+    let videoMessage: { url: string; qrCodeUrl: string; videoId?: string } | undefined;
+
+    // Upload video/photo to server if user added media
+    if (mediaBlob) {
+      setIsUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append('video', mediaBlob);
+
+        const res = await fetch('/api/upload-video', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({ error: 'Upload failed' }));
+          throw new Error(data.error || 'Failed to upload media');
+        }
+
+        const data = await res.json();
+        videoMessage = {
+          url: data.url,
+          qrCodeUrl: data.qrCodeUrl,
+          videoId: data.videoId,
+        };
+      } catch (err: unknown) {
+        setUploadError(err instanceof Error ? err.message : 'Failed to upload media. Please try again.');
+        setIsUploading(false);
+        return;
+      }
+      setIsUploading(false);
+    }
+
     addItem({
       cardId: card.id,
       card,
@@ -211,6 +249,7 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
       },
       quantity,
       price: mediaUrl ? card.price + 2 : card.price,
+      videoMessage,
     });
     router.push('/cart');
   };
@@ -644,8 +683,11 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
 
             {/* Actions */}
             <div className="space-y-3 pt-5 border-t border-silk">
-              <Button size="lg" variant="primary" className="w-full" onClick={handleAddToCart}>
-                Add to Basket
+              {uploadError && (
+                <p className="text-sm text-red-600">{uploadError}</p>
+              )}
+              <Button size="lg" variant="primary" className="w-full" onClick={handleAddToCart} isLoading={isUploading} disabled={isUploading}>
+                {isUploading ? 'Uploading media...' : 'Add to Basket'}
               </Button>
               <Button
                 size="lg"

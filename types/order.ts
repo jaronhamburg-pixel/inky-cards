@@ -22,6 +22,11 @@ export interface OrderItem {
   customization: CardCustomization;
   quantity: number;
   price: number;
+  videoMessage?: {
+    url: string;
+    qrCodeUrl: string;
+    videoId?: string;
+  };
 }
 
 export type OrderStatus = 'pending' | 'pending_payment' | 'processing' | 'printing' | 'shipped' | 'delivered' | 'cancelled';

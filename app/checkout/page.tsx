@@ -153,6 +153,9 @@ export default function CheckoutPage() {
 
     const data = getValues();
     try {
+      // Find the first item with a video message to attach to the order
+      const videoItem = items.find((item) => item.videoMessage);
+
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -166,6 +169,7 @@ export default function CheckoutPage() {
           })),
           customer: { email: data.email, firstName: data.firstName, lastName: data.lastName, phone: data.phone },
           shipping: { address: data.address, city: data.city, state: data.state, zip: data.zip, country: data.country || 'GB' },
+          ...(videoItem?.videoMessage ? { videoMessage: videoItem.videoMessage } : {}),
           subtotal,
           shipping_cost: shipping,
           tax,
