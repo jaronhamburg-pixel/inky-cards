@@ -4,7 +4,6 @@ import { use, useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getCardById } from '@/lib/data/mock-cards';
 import type { Card } from '@/types/card';
 import { useAiCardStore } from '@/lib/store/ai-card-store';
 import { useCartStore } from '@/lib/store/cart-store';
@@ -38,10 +37,18 @@ interface HistoryEntry {
   textAlign: TextAlignment;
 }
 
-function getCard(id: string, aiCard: Card | null) {
-  // Try mock data first, then check in-memory store for AI-generated cards
-  const mockCard = getCardById(id);
-  if (mockCard) return mockCard;
+async function fetchCard(id: string): Promise<Card | null> {
+  try {
+    const res = await fetch(`/api/cards/${id}`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+function getCard(id: string, aiCard: Card | null, fetchedCard: Card | null) {
+  if (fetchedCard) return fetchedCard;
   if (aiCard && aiCard.id === id) return aiCard;
   return null;
 }
@@ -114,21 +121,27 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
 
   // Load card on client (supports in-memory store for AI-generated cards)
   useEffect(() => {
-    const found = getCard(id, aiCard);
-    setCard(found);
-    if (found) {
-      const placeholder = found.templates.front?.placeholder || '';
-      setFrontText(placeholder);
-      setHistory([{
-        frontText: placeholder,
-        insideText: '',
-        fontFamily: 'Cormorant Garamond',
-        fontSize: 25,
-        textColor: '#1a1a1a',
-        textAlign: 'center',
-      }]);
-    }
-    setLoading(false);
+    let cancelled = false;
+    (async () => {
+      const fetched = await fetchCard(id);
+      if (cancelled) return;
+      const found = getCard(id, aiCard, fetched);
+      setCard(found);
+      if (found) {
+        const placeholder = found.templates.front?.placeholder || '';
+        setFrontText(placeholder);
+        setHistory([{
+          frontText: placeholder,
+          insideText: '',
+          fontFamily: 'Cormorant Garamond',
+          fontSize: 25,
+          textColor: '#1a1a1a',
+          textAlign: 'center',
+        }]);
+      }
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
   }, [id, aiCard]);
 
   const pushHistory = useCallback(() => {

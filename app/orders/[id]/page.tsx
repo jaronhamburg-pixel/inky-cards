@@ -49,10 +49,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
   const statusColors: Record<typeof order.status, 'default' | 'warning' | 'success' | 'info'> = {
     pending: 'warning',
+    pending_payment: 'warning',
     processing: 'info',
     printing: 'info',
     shipped: 'success',
     delivered: 'success',
+    cancelled: 'default',
   };
 
   return (

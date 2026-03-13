@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrderById, updateOrderStatus, deleteOrder } from '@/lib/data/mock-orders';
+import { getOrderById, updateOrderStatus, deleteOrder } from '@/lib/db/orders';
 
 export async function GET(
   request: NextRequest,
@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const order = getOrderById(id);
+    const order = await getOrderById(id);
 
     if (!order) {
       return NextResponse.json(
@@ -42,7 +42,7 @@ export async function PATCH(
       );
     }
 
-    const updatedOrder = updateOrderStatus(id, status);
+    const updatedOrder = await updateOrderStatus(id, status);
 
     if (!updatedOrder) {
       return NextResponse.json(
@@ -67,7 +67,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const deleted = deleteOrder(id);
+    const deleted = await deleteOrder(id);
 
     if (!deleted) {
       return NextResponse.json(

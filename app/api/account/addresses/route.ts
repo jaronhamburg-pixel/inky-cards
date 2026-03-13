@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/session';
-import { getUserById, addUserAddress, toPublicUser } from '@/lib/data/mock-users';
+import { addUserAddress } from '@/lib/db/users';
 import { addressSchema } from '@/lib/utils/validation';
+import { sanitizeObject } from '@/lib/utils/sanitize';
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const address = addUserAddress(user.id, parsed.data);
+    const address = await addUserAddress(user.id, sanitizeObject(parsed.data));
     if (!address) {
       return NextResponse.json({ error: 'Failed to add address' }, { status: 500 });
     }

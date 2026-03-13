@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getUserByEmail, createUser, toPublicUser } from '@/lib/data/mock-users';
+import { getUserByEmail, createUser, toPublicUser } from '@/lib/db/users';
+import { signUserToken } from '@/lib/auth/jwt';
 import { signUpSchema } from '@/lib/utils/validation';
+import { sanitizeText } from '@/lib/utils/sanitize';
 
 export async function POST(request: Request) {
   try {
@@ -14,20 +16,24 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email, password, firstName, lastName } = parsed.data;
+    const { email, password } = parsed.data;
+    const firstName = sanitizeText(parsed.data.firstName);
+    const lastName = sanitizeText(parsed.data.lastName);
 
-    if (getUserByEmail(email)) {
+    if (await getUserByEmail(email)) {
       return NextResponse.json(
         { error: 'An account with this email already exists' },
         { status: 409 }
       );
     }
 
-    const user = createUser(email, password, firstName, lastName);
+    const user = await createUser(email, password, firstName, lastName);
+    const token = await signUserToken(user.id, user.email);
 
     const response = NextResponse.json({ user: toPublicUser(user) }, { status: 201 });
-    response.cookies.set('user-session', user.id, {
+    response.cookies.set('user-session', token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       sameSite: 'lax',

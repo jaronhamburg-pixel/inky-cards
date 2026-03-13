@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/session';
-import { updateUserAddress, deleteUserAddress } from '@/lib/data/mock-users';
+import { updateUserAddress, deleteUserAddress } from '@/lib/db/users';
 import { addressSchema } from '@/lib/utils/validation';
+import { sanitizeObject } from '@/lib/utils/sanitize';
 
 export async function PATCH(
   request: Request,
@@ -24,7 +25,7 @@ export async function PATCH(
       );
     }
 
-    const address = updateUserAddress(user.id, id, parsed.data);
+    const address = await updateUserAddress(user.id, id, sanitizeObject(parsed.data));
     if (!address) {
       return NextResponse.json({ error: 'Address not found' }, { status: 404 });
     }
@@ -45,7 +46,7 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const deleted = deleteUserAddress(user.id, id);
+  const deleted = await deleteUserAddress(user.id, id);
   if (!deleted) {
     return NextResponse.json({ error: 'Address not found' }, { status: 404 });
   }

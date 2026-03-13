@@ -1,0 +1,141 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import { CardCategory, Card } from '@/types/card';
+import { CardGrid } from '@/components/cards/card-grid';
+
+type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest';
+
+const categories: { value: CardCategory | 'all'; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'birthday', label: 'Birthday' },
+  { value: 'anniversary', label: 'Anniversary' },
+  { value: 'wedding', label: 'Wedding' },
+  { value: 'congratulations', label: 'Congratulations' },
+  { value: 'new-baby', label: 'New Baby' },
+  { value: 'new-home', label: 'New Home' },
+  { value: 'new-job', label: 'New Job' },
+  { value: 'good-luck', label: 'Good Luck' },
+  { value: 'get-well-soon', label: 'Get Well Soon' },
+  { value: 'thinking-of-you', label: 'Thinking of You' },
+  { value: 'for-you', label: 'For You' },
+  { value: 'misc', label: 'Misc' },
+];
+
+export default function CardsContent({ cards }: { cards: Card[] }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<CardCategory | 'all'>('all');
+  const [sortBy, setSortBy] = useState<SortOption>('featured');
+
+  const filteredCards = useMemo(() => {
+    let filtered = [...cards];
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (card) =>
+          card.title.toLowerCase().includes(query) ||
+          card.description.toLowerCase().includes(query) ||
+          card.category.toLowerCase().includes(query)
+      );
+    }
+
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter((card) => card.category === selectedCategory);
+    }
+
+    switch (sortBy) {
+      case 'price-low':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'newest':
+        filtered.reverse();
+        break;
+      default:
+        break;
+    }
+
+    return filtered;
+  }, [cards, searchQuery, selectedCategory, sortBy]);
+
+  return (
+    <div className="container-luxury py-12 animate-fade-in">
+      {/* Header */}
+      <div className="mb-10 text-center">
+        <h1 className="heading-display text-ink mb-3">Shop Cards</h1>
+        <p className="text-stone">
+          {filteredCards.length} card{filteredCards.length !== 1 ? 's' : ''}
+        </p>
+      </div>
+
+      {/* Filter bar */}
+      <div className="mb-8 pb-8 border-b border-silk space-y-5">
+        {/* Category pills */}
+        <div className="flex flex-wrap gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat.value}
+              onClick={() => setSelectedCategory(cat.value)}
+              className={`px-4 py-1.5 text-sm rounded-full border transition-colors ${
+                selectedCategory === cat.value
+                  ? 'bg-ink text-white border-ink'
+                  : 'border-silk text-stone hover:border-ink hover:text-ink'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Search + sort */}
+        <div className="flex flex-col md:flex-row md:items-center justify-end gap-4">
+          <div className="flex items-center gap-4">
+            {/* Search */}
+            <div className="relative">
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-48 pl-9 pr-4 py-2 text-sm border border-silk rounded bg-white focus:outline-none focus:ring-2 focus:ring-ink focus:border-transparent"
+              />
+            </div>
+
+            {/* Sort */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="px-4 py-2 text-sm border border-silk rounded bg-white focus:outline-none focus:ring-2 focus:ring-ink focus:border-transparent"
+            >
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="newest">Newest</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Card Grid — 4 columns */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <CardGrid cards={filteredCards} />
+      </div>
+    </div>
+  );
+}

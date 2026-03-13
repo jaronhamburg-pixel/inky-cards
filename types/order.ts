@@ -24,9 +24,9 @@ export interface OrderItem {
   price: number;
 }
 
-export type OrderStatus = 'pending' | 'processing' | 'printing' | 'shipped' | 'delivered';
+export type OrderStatus = 'pending' | 'pending_payment' | 'processing' | 'printing' | 'shipped' | 'delivered' | 'cancelled';
 
-export type PaymentStatus = 'pending' | 'succeeded' | 'failed';
+export type PaymentStatus = 'pending' | 'succeeded' | 'paid' | 'failed' | 'refunded';
 
 export interface Order {
   id: string;

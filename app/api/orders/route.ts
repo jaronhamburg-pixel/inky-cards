@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllOrders, createOrder } from '@/lib/data/mock-orders';
+import { getAllOrders, createOrder } from '@/lib/db/orders';
 import { stripe } from '@/lib/stripe';
+import { sanitizeObject } from '@/lib/utils/sanitize';
 
 export async function GET() {
   try {
-    const orders = getAllOrders();
+    const orders = await getAllOrders();
     return NextResponse.json(orders);
   } catch (error) {
     console.error('Error fetching orders:', error);
@@ -19,7 +20,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { items, customer, shipping, videoMessage, subtotal, shipping_cost, tax, total, status, userId, paymentIntentId } = body;
+    const sanitized = sanitizeObject(body);
+    const { items, customer, shipping, videoMessage, subtotal, shipping_cost, tax, total, status, userId, paymentIntentId } = sanitized;
 
     if (!items || !customer || !shipping) {
       return NextResponse.json(
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
       paymentStatus = 'succeeded';
     }
 
-    const newOrder = createOrder({
+    const newOrder = await createOrder({
       ...(userId ? { userId } : {}),
       items,
       customer,
@@ -51,7 +53,7 @@ export async function POST(request: NextRequest) {
       shipping_cost,
       tax,
       total,
-      status: paymentIntentId ? 'processing' : (status || 'pending'),
+      status: paymentIntentId ? 'pending_payment' : (status || 'pending'),
       paymentIntentId,
       paymentStatus,
     });

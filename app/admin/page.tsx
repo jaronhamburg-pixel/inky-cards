@@ -1,10 +1,10 @@
-import { getAllOrders } from '@/lib/data/mock-orders';
-import { mockCards } from '@/lib/data/mock-cards';
+import { getAllOrders } from '@/lib/db/orders';
+import { getAllCards } from '@/lib/db/cards';
 import { formatPrice } from '@/lib/utils/formatting';
 import { Badge } from '@/components/ui/badge';
 
-export default function AdminDashboardPage() {
-  const orders = getAllOrders();
+export default async function AdminDashboardPage() {
+  const [orders, cards] = await Promise.all([getAllOrders(), getAllCards()]);
   const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
   const pendingOrders = orders.filter((order) => order.status === 'pending').length;
   const thisWeekOrders = orders.filter((order) => {
@@ -130,7 +130,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg">
             <div className="text-2xl">🎴</div>
             <div>
-              <p className="font-semibold text-luxury-charcoal">{mockCards.length}</p>
+              <p className="font-semibold text-luxury-charcoal">{cards.length}</p>
               <p className="text-sm text-neutral-600">Total Cards</p>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function AdminDashboardPage() {
             <div className="text-2xl">⭐</div>
             <div>
               <p className="font-semibold text-luxury-charcoal">
-                {new Set(mockCards.map((c) => c.category)).size}
+                {new Set(cards.map((c) => c.category)).size}
               </p>
               <p className="text-sm text-neutral-600">Categories</p>
             </div>

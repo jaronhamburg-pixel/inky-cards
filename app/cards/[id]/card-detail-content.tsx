@@ -1,0 +1,176 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card3D } from '@/components/cards/card-3d';
+import { formatPrice } from '@/lib/utils/formatting';
+import { useCartStore } from '@/lib/store/cart-store';
+import type { Card } from '@/types/card';
+
+export default function CardDetailContent({
+  card,
+  relatedCards,
+}: {
+  card: Card;
+  relatedCards: Card[];
+}) {
+  const router = useRouter();
+  const addItem = useCartStore((state) => state.addItem);
+  const [quantity, setQuantity] = useState(1);
+  const [showBack, setShowBack] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [card.id]);
+
+  const handleAddToCart = () => {
+    addItem({
+      cardId: card.id,
+      card,
+      customization: {},
+      quantity,
+      price: card.price,
+    });
+    router.push('/cart');
+  };
+
+  const handleCustomize = () => {
+    router.push(`/cards/${card.id}/customize`);
+  };
+
+  return (
+    <div className="container-luxury py-12 animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+        {/* 3D Interactive Card */}
+        <div className="flex flex-col items-center">
+          <div
+            className="w-full max-w-md aspect-[3/4] relative rounded-lg overflow-hidden card-3d-face cursor-pointer"
+            onClick={() => setShowBack(!showBack)}
+          >
+            <Image
+              src={card.images.front}
+              alt={card.title}
+              fill
+              className={`object-cover transition-opacity duration-500 ${showBack ? 'opacity-0' : 'opacity-100'}`}
+              priority
+            />
+            <Image
+              src={card.images.back}
+              alt={`${card.title} — inside`}
+              fill
+              className={`object-cover transition-opacity duration-500 ${showBack ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </div>
+        </div>
+
+        {/* Card Information */}
+        <div>
+          <div className="mb-6">
+            <Badge variant="default" className="mb-3 capitalize">
+              {card.category}
+            </Badge>
+            <h1 className="heading-display text-ink mb-4">{card.title}</h1>
+            <p className="body-large text-stone mb-6">{card.description}</p>
+          </div>
+
+          <div className="mb-8">
+            <span className="text-3xl font-semibold text-ink">{formatPrice(card.price)}</span>
+            <span className="text-stone ml-2 text-sm">per card</span>
+          </div>
+
+          {/* Customisation options */}
+          <div className="mb-8 p-5 bg-paper border border-silk rounded-lg">
+            <h3 className="text-sm font-medium text-ink mb-3 uppercase tracking-wider">Customisation</h3>
+            <ul className="space-y-1.5 text-sm text-stone">
+              {card.customizable.insideText && <li>Inside message personalisation</li>}
+              {card.customizable.backText && <li>Back text personalisation</li>}
+              <li>Font & colour selection</li>
+              <li>Optional video or photo greeting with QR code</li>
+            </ul>
+          </div>
+
+          {/* Quantity */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-ink mb-2 uppercase tracking-wider">Quantity</label>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="w-10 h-10 border border-silk rounded hover:border-ink transition-colors"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-16 text-center px-3 py-2 border border-silk rounded focus:outline-none focus:ring-2 focus:ring-ink"
+              />
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                className="w-10 h-10 border border-silk rounded hover:border-ink transition-colors"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button size="lg" variant="primary" onClick={handleCustomize} className="flex-1">
+              Personalise
+            </Button>
+            <Button size="lg" variant="outline" onClick={handleAddToCart} className="flex-1">
+              Add to Basket
+            </Button>
+          </div>
+
+          {/* Additional Info */}
+          <div className="mt-10 pt-8 border-t border-silk">
+            <h3 className="text-sm font-medium text-ink mb-3 uppercase tracking-wider">Includes</h3>
+            <ul className="space-y-1.5 text-sm text-stone">
+              <li>Premium heavyweight cardstock</li>
+              <li>Matching envelope</li>
+              <li>Free personalisation</li>
+              <li>Protective packaging</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Related Cards */}
+      {relatedCards.length > 0 && (
+        <div className="border-t border-silk pt-16">
+          <h2 className="heading-section text-ink mb-8">You May Also Like</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {relatedCards.map((relatedCard) => (
+              <Link
+                key={relatedCard.id}
+                href={`/cards/${relatedCard.id}`}
+                className="group block"
+              >
+                <Card3D
+                  frontImage={relatedCard.images.thumbnail}
+                  backImage={relatedCard.images.back}
+                  alt={relatedCard.title}
+                  hoverEffect="open"
+                />
+                <h3 className="text-sm font-medium text-ink tracking-tight line-clamp-1 mt-3">
+                  {relatedCard.title}
+                </h3>
+                <p className="text-xs text-stone mt-0.5">
+                  {formatPrice(relatedCard.price)}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

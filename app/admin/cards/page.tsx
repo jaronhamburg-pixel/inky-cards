@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
-import { getAllCards, addCard, updateCard, deleteCard } from '@/lib/data/mock-cards';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -98,7 +97,8 @@ function cardToFormData(card: Card): CardFormData {
 }
 
 export default function AdminCardsPage() {
-  const [cards, setCards] = useState<Card[]>(() => getAllCards());
+  const [cards, setCards] = useState<Card[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<Card | null>(null);
@@ -115,9 +115,20 @@ export default function AdminCardsPage() {
     );
   }, [cards, searchQuery]);
 
-  const refreshCards = useCallback(() => {
-    setCards(getAllCards());
+  const refreshCards = useCallback(async () => {
+    try {
+      const res = await fetch('/api/cards');
+      if (!res.ok) throw new Error('Failed to fetch cards');
+      const data = await res.json();
+      setCards(data);
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+    }
   }, []);
+
+  useEffect(() => {
+    refreshCards().finally(() => setLoading(false));
+  }, [refreshCards]);
 
   const openAddModal = useCallback(() => {
     setEditingCard(null);
@@ -137,23 +148,42 @@ export default function AdminCardsPage() {
     setFormData(EMPTY_FORM);
   }, []);
 
-  const handleFormSubmit = useCallback(() => {
+  const handleFormSubmit = useCallback(async () => {
     if (!formData.title.trim() || !formData.description.trim()) return;
 
-    if (editingCard) {
-      updateCard(editingCard.id, formDataToCard(formData));
-    } else {
-      addCard(formDataToCard(formData));
+    try {
+      if (editingCard) {
+        const res = await fetch(`/api/cards/${editingCard.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formDataToCard(formData)),
+        });
+        if (!res.ok) throw new Error('Failed to update card');
+      } else {
+        const res = await fetch('/api/cards', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formDataToCard(formData)),
+        });
+        if (!res.ok) throw new Error('Failed to add card');
+      }
+      await refreshCards();
+      closeModal();
+    } catch (error) {
+      console.error('Error saving card:', error);
     }
-    refreshCards();
-    closeModal();
   }, [formData, editingCard, refreshCards, closeModal]);
 
   const handleDelete = useCallback(
-    (id: string) => {
-      deleteCard(id);
-      refreshCards();
-      setDeleteConfirmId(null);
+    async (id: string) => {
+      try {
+        const res = await fetch(`/api/cards/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete card');
+        await refreshCards();
+        setDeleteConfirmId(null);
+      } catch (error) {
+        console.error('Error deleting card:', error);
+      }
     },
     [refreshCards]
   );
@@ -189,7 +219,7 @@ export default function AdminCardsPage() {
 
         {/* Results count */}
         <div className="mb-4 text-sm text-neutral-500">
-          Showing {filteredCards.length} of {cards.length} cards
+          {loading ? 'Loading cards...' : `Showing ${filteredCards.length} of ${cards.length} cards`}
         </div>
 
         {/* Data Table */}
@@ -213,7 +243,30 @@ export default function AdminCardsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-100">
-                {filteredCards.length === 0 ? (
+                {loading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded bg-neutral-200 animate-pulse flex-shrink-0" />
+                          <div className="space-y-2">
+                            <div className="h-4 w-32 bg-neutral-200 rounded animate-pulse" />
+                            <div className="h-3 w-48 bg-neutral-100 rounded animate-pulse" />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="h-5 w-20 bg-neutral-200 rounded animate-pulse" />
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="h-4 w-16 bg-neutral-200 rounded animate-pulse" />
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="h-8 w-24 bg-neutral-100 rounded animate-pulse ml-auto" />
+                      </td>
+                    </tr>
+                  ))
+                ) : filteredCards.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="px-6 py-12 text-center text-neutral-400">
                       {searchQuery

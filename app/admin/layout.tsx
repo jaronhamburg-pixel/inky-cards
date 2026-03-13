@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import { cookies } from 'next/headers';
+import { getAdminSession } from '@/lib/auth/session';
 import { AdminNav } from './admin-nav';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = await cookies();
-  const session = cookieStore.get('admin-session');
-  const isAuthenticated = session?.value === (process.env.ADMIN_SECRET || 'admin123');
+  const isAuthenticated = await getAdminSession();
 
   if (!isAuthenticated) {
     // Render children without sidebar so the login page works

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/session';
-import { getOrdersByUserId, getOrdersByEmail } from '@/lib/data/mock-orders';
+import { getOrdersByUserId, getOrdersByEmail } from '@/lib/db/orders';
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -9,9 +9,9 @@ export async function GET() {
   }
 
   // Try userId first, fall back to email match
-  let orders = getOrdersByUserId(user.id);
+  let orders = await getOrdersByUserId(user.id);
   if (orders.length === 0) {
-    orders = getOrdersByEmail(user.email);
+    orders = await getOrdersByEmail(user.email);
   }
 
   return NextResponse.json({ orders });

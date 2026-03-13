@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/session';
-import { updateUser, getUserById, toPublicUser } from '@/lib/data/mock-users';
+import { updateUser, toPublicUser } from '@/lib/db/users';
 import { profileSchema } from '@/lib/utils/validation';
+import { sanitizeObject } from '@/lib/utils/sanitize';
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -28,7 +29,7 @@ export async function PATCH(request: Request) {
       );
     }
 
-    const updated = updateUser(currentUser.id, parsed.data);
+    const updated = await updateUser(currentUser.id, sanitizeObject(parsed.data));
     if (!updated) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }

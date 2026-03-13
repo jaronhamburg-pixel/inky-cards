@@ -1,33 +1,61 @@
 'use client';
 
-import { useState } from 'react';
-import { getAllOrders, updateOrderStatus } from '@/lib/data/mock-orders';
+import { useState, useEffect } from 'react';
 import { formatPrice, formatOrderNumber } from '@/lib/utils/formatting';
 import { Badge } from '@/components/ui/badge';
-import type { OrderStatus } from '@/types/order';
+import type { Order, OrderStatus } from '@/types/order';
 
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState(getAllOrders());
+  const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState<OrderStatus | 'all'>('all');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/orders')
+      .then((res) => res.json())
+      .then((data) => {
+        setOrders(data.map((o: Order) => ({ ...o, createdAt: new Date(o.createdAt), updatedAt: new Date(o.updatedAt) })));
+        setLoading(false);
+      });
+  }, []);
 
   const filteredOrders = filter === 'all' ? orders : orders.filter((o) => o.status === filter);
 
-  const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
-    const updated = updateOrderStatus(orderId, newStatus);
-    if (updated) {
-      setOrders(getAllOrders());
+  const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
+    const res = await fetch(`/api/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    if (res.ok) {
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus, updatedAt: new Date() } : o))
+      );
     }
   };
 
   const statusColors: Record<OrderStatus, 'default' | 'warning' | 'success' | 'info'> = {
     pending: 'warning',
+    pending_payment: 'warning',
     processing: 'info',
     printing: 'info',
     shipped: 'success',
     delivered: 'success',
+    cancelled: 'default',
   };
 
-  const statusOptions: OrderStatus[] = ['pending', 'processing', 'printing', 'shipped', 'delivered'];
+  const statusOptions: OrderStatus[] = ['pending', 'pending_payment', 'processing', 'printing', 'shipped', 'delivered', 'cancelled'];
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="heading-display text-luxury-charcoal mb-2">Orders</h1>
+          <p className="text-neutral-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
