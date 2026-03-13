@@ -145,36 +145,48 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         {/* Video Message */}
         {order.videoMessage && (
           <div className="bg-white border border-neutral-200 rounded-lg p-8 mb-8">
-            <h2 className="font-semibold text-lg text-luxury-charcoal mb-4">Video Greeting</h2>
-            <div className="aspect-video bg-neutral-900 rounded-lg mb-4 flex items-center justify-center">
-              <div className="text-center text-white">
-                <svg
-                  className="w-16 h-16 mx-auto mb-2 opacity-50"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
-                </svg>
-                <p className="text-sm">Video player (demo)</p>
-              </div>
+            <h2 className="font-semibold text-lg text-ink mb-4">Video Greeting</h2>
+            <div className="rounded-lg overflow-hidden bg-black mb-4">
+              <video
+                src={order.videoMessage.url}
+                controls
+                playsInline
+                className="w-full aspect-video"
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
-            <div className="flex items-start gap-6">
-              <QRDisplay
-                url={`${typeof window !== 'undefined' ? window.location.origin : ''}/orders/${order.id}`}
-                size={120}
-                downloadable={true}
-              />
-              <div className="flex-1">
-                <p className="text-sm text-neutral-600 mb-2">
-                  Scan the QR code on your card to view this video greeting on any device.
-                </p>
-                <a
-                  href="#"
-                  className="text-sm text-luxury-gold hover:underline"
+            <div className="flex items-center gap-4">
+              {order.videoMessage.videoId && (
+                <Link
+                  href={`/video/${order.videoMessage.videoId}`}
+                  className="text-sm text-stone hover:text-ink transition-colors"
                 >
-                </a>
-              </div>
+                  Open video page &rarr;
+                </Link>
+              )}
+              <a
+                href={order.videoMessage.url}
+                download
+                className="text-sm text-stone hover:text-ink transition-colors"
+              >
+                Download video
+              </a>
             </div>
+            {order.videoMessage.qrCodeUrl && (
+              <div className="flex items-start gap-6 mt-4 pt-4 border-t border-silk">
+                <QRDisplay
+                  url={`${typeof window !== 'undefined' ? window.location.origin : ''}/video/${order.videoMessage.videoId || order.id}`}
+                  size={120}
+                  downloadable={true}
+                />
+                <div className="flex-1">
+                  <p className="text-sm text-stone">
+                    Scan the QR code on your card to view this video greeting on any device.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
