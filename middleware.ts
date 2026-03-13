@@ -55,10 +55,13 @@ export async function middleware(request: NextRequest) {
     // Skip CSRF for Stripe webhooks (uses signature verification instead)
     if (!pathname.startsWith('/api/webhooks/')) {
       const origin = request.headers.get('origin');
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-
-      if (origin && !origin.startsWith(appUrl)) {
-        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      if (origin) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const allowedHost = new URL(appUrl).host;
+        const originHost = new URL(origin).host;
+        if (originHost !== allowedHost) {
+          return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
       }
     }
   }
