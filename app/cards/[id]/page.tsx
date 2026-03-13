@@ -4,6 +4,8 @@ import { getCardById, getCardsByCategory } from '@/lib/db/cards';
 import { productJsonLd } from '@/lib/seo/json-ld';
 import CardDetailContent from './card-detail-content';
 
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const card = await getCardById(id);

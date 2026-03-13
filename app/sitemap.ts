@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { getAllCards } from '@/lib/db/cards';
 import { getAllArticles } from '@/lib/db/articles';
 
+export const revalidate = 3600;
+
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://inkycards.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

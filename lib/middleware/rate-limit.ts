@@ -1,28 +1,5 @@
-/**
- * In-memory sliding window rate limiter.
- * For production with multiple serverless instances, upgrade to Upstash Redis (Phase C12).
- */
-
-interface RateLimitEntry {
-  timestamps: number[];
-}
-
-const store = new Map<string, RateLimitEntry>();
-
-// Clean up stale entries every 5 minutes
-const CLEANUP_INTERVAL = 5 * 60 * 1000;
-let lastCleanup = Date.now();
-
-function cleanup(windowMs: number) {
-  const now = Date.now();
-  if (now - lastCleanup < CLEANUP_INTERVAL) return;
-  lastCleanup = now;
-
-  for (const [key, entry] of store.entries()) {
-    entry.timestamps = entry.timestamps.filter((t) => now - t < windowMs);
-    if (entry.timestamps.length === 0) store.delete(key);
-  }
-}
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
 export interface RateLimitConfig {
   /** Maximum number of requests in the window */
@@ -43,33 +20,52 @@ export interface RateLimitResult {
   resetMs: number;
 }
 
-export function checkRateLimit(key: string, config: RateLimitConfig): RateLimitResult {
-  const now = Date.now();
-  cleanup(config.windowMs);
-
-  let entry = store.get(key);
-  if (!entry) {
-    entry = { timestamps: [] };
-    store.set(key, entry);
+function createRatelimiter(config: RateLimitConfig): Ratelimit | null {
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return null;
   }
 
-  // Remove expired timestamps
-  entry.timestamps = entry.timestamps.filter((t) => now - t < config.windowMs);
+  const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  });
 
-  if (entry.timestamps.length >= config.maxRequests) {
-    const oldestInWindow = entry.timestamps[0];
-    const resetMs = oldestInWindow + config.windowMs - now;
+  const windowSec = `${Math.round(config.windowMs / 1000)} s` as `${number} s`;
+
+  return new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(config.maxRequests, windowSec),
+    analytics: true,
+  });
+}
+
+const limiters = new Map<RateLimitConfig, Ratelimit | null>();
+
+function getLimiter(config: RateLimitConfig): Ratelimit | null {
+  if (!limiters.has(config)) {
+    limiters.set(config, createRatelimiter(config));
+  }
+  return limiters.get(config)!;
+}
+
+export async function checkRateLimit(key: string, config: RateLimitConfig): Promise<RateLimitResult> {
+  const limiter = getLimiter(config);
+
+  // Graceful fallback: no Redis configured (dev/build)
+  if (!limiter) {
+    return { allowed: true, remaining: config.maxRequests, resetMs: config.windowMs };
+  }
+
+  try {
+    const result = await limiter.limit(key);
     return {
-      allowed: false,
-      remaining: 0,
-      resetMs,
+      allowed: result.success,
+      remaining: result.remaining,
+      resetMs: result.reset - Date.now(),
     };
+  } catch (error) {
+    // Fail open: if Redis is unreachable, allow the request
+    console.error('[rate-limit] Redis error, failing open:', error);
+    return { allowed: true, remaining: config.maxRequests, resetMs: config.windowMs };
   }
-
-  entry.timestamps.push(now);
-  return {
-    allowed: true,
-    remaining: config.maxRequests - entry.timestamps.length,
-    resetMs: config.windowMs,
-  };
 }

@@ -68,13 +68,13 @@ export async function middleware(request: NextRequest) {
 
   // ── Rate limiting ──
   if (matchesAny(pathname, authPaths)) {
-    const result = checkRateLimit(`auth:${ip}`, RATE_LIMITS.auth);
+    const result = await checkRateLimit(`auth:${ip}`, RATE_LIMITS.auth);
     if (!result.allowed) return rateLimitResponse(result.resetMs);
   } else if (matchesAny(pathname, generatePaths)) {
-    const result = checkRateLimit(`generate:${ip}`, RATE_LIMITS.generate);
+    const result = await checkRateLimit(`generate:${ip}`, RATE_LIMITS.generate);
     if (!result.allowed) return rateLimitResponse(result.resetMs);
   } else if (pathname.startsWith('/api/')) {
-    const result = checkRateLimit(`general:${ip}`, RATE_LIMITS.general);
+    const result = await checkRateLimit(`general:${ip}`, RATE_LIMITS.general);
     if (!result.allowed) return rateLimitResponse(result.resetMs);
   }
 

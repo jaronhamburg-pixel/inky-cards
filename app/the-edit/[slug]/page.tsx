@@ -4,6 +4,8 @@ import { getArticleBySlug, getAllArticles } from '@/lib/db/articles';
 import { articleJsonLd } from '@/lib/seo/json-ld';
 import ArticleContent from './article-content';
 
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
