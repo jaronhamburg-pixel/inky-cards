@@ -38,6 +38,7 @@ export interface Order {
   videoMessage?: {
     url: string;
     qrCodeUrl: string;
+    videoId?: string;
   };
   subtotal: number;
   shipping_cost: number;

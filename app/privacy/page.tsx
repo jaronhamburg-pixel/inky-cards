@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'How Inky Cards collects, uses, and protects your personal information.',
+};
 
 export default function PrivacyPage() {
   return (

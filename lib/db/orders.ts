@@ -58,7 +58,7 @@ function toOrder(row: PrismaOrderWithItems): Order {
       country: row.shippingCountry,
     },
     videoMessage: row.videoUrl
-      ? { url: row.videoUrl, qrCodeUrl: row.videoQrCodeUrl! }
+      ? { url: row.videoUrl, qrCodeUrl: row.videoQrCodeUrl!, videoId: row.videoId ?? undefined }
       : undefined,
     subtotal: row.subtotal,
     shipping_cost: row.shippingCost,
@@ -109,6 +109,7 @@ export async function createOrder(
       shippingState: order.shipping.state,
       shippingZip: order.shipping.zip,
       shippingCountry: order.shipping.country,
+      videoId: order.videoMessage?.videoId || null,
       videoUrl: order.videoMessage?.url || null,
       videoQrCodeUrl: order.videoMessage?.qrCodeUrl || null,
       subtotal: order.subtotal,

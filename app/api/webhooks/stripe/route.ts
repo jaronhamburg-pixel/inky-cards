@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { updateOrderByPaymentIntentId } from '@/lib/db/orders';
+import { sendOrderConfirmation } from '@/lib/email/send';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -36,10 +37,17 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        await updateOrderByPaymentIntentId(paymentIntent.id, {
+        const updatedOrder = await updateOrderByPaymentIntentId(paymentIntent.id, {
           status: 'processing',
           paymentStatus: 'paid',
         });
+        if (updatedOrder) {
+          try {
+            await sendOrderConfirmation(updatedOrder);
+          } catch (emailErr) {
+            console.error('Failed to send order confirmation email:', emailErr);
+          }
+        }
         break;
       }
 

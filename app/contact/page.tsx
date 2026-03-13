@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Get in touch with the Inky Cards team for support, partnerships, or press enquiries.',
+};
 
 export default function ContactPage() {
   return (

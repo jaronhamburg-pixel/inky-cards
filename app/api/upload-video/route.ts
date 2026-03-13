@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { UTApi } from 'uploadthing/server';
 import { generateQRCodeDataUrl } from '@/lib/services/qr-service';
+
+const utapi = new UTApi();
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +16,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
     if (!video.type.startsWith('video/')) {
       return NextResponse.json(
         { error: 'Uploaded file must be a video' },
@@ -21,18 +23,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate a mock video URL (simulates uploading to a storage service)
-    const mockVideoId = crypto.randomUUID();
-    const mockVideoUrl = `/videos/${mockVideoId}.mp4`;
+    // Upload to UploadThing
+    const response = await utapi.uploadFiles(video);
 
-    // Generate a QR code that points to the video URL
+    if (response.error) {
+      console.error('UploadThing error:', response.error);
+      return NextResponse.json(
+        { error: 'Failed to upload video' },
+        { status: 500 }
+      );
+    }
+
+    const videoId = crypto.randomUUID();
+    const videoUrl = response.data.ufsUrl;
+
+    // Generate a QR code that points to the video playback page
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const videoPageUrl = `${baseUrl}/video/${mockVideoId}`;
+    const videoPageUrl = `${baseUrl}/video/${videoId}`;
     const qrCodeUrl = await generateQRCodeDataUrl(videoPageUrl);
 
     return NextResponse.json({
-      url: mockVideoUrl,
+      url: videoUrl,
       qrCodeUrl,
+      videoId,
     });
   } catch (error) {
     console.error('Error uploading video:', error);

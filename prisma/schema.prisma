@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  email        String        @unique
-  firstName    String
-  lastName     String
-  phone        String?
-  passwordHash String
-  addresses    UserAddress[]
-  orders       Order[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id               String        @id @default(cuid())
+  email            String        @unique
+  firstName        String
+  lastName         String
+  phone            String?
+  passwordHash     String
+  resetToken       String?       @unique
+  resetTokenExpiry DateTime?
+  addresses        UserAddress[]
+  orders           Order[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 }
 
 model UserAddress {
@@ -64,6 +66,7 @@ model Order {
   shippingState     String      @default("")
   shippingZip       String
   shippingCountry   String
+  videoId           String?   @unique
   videoUrl          String?
   videoQrCodeUrl    String?
   subtotal          Float

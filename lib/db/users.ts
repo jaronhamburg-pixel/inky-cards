@@ -156,3 +156,48 @@ export async function deleteUserAddress(userId: string, addressId: string): Prom
     return false;
   }
 }
+
+export async function setResetToken(
+  email: string
+): Promise<{ token: string; firstName: string } | null> {
+  const user = await prisma.user.findUnique({
+    where: { email: email.toLowerCase() },
+  });
+  if (!user) return null;
+
+  const token = crypto.randomUUID();
+  const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { resetToken: token, resetTokenExpiry: expiry },
+  });
+
+  return { token, firstName: user.firstName };
+}
+
+export async function resetPasswordWithToken(
+  token: string,
+  newPassword: string
+): Promise<boolean> {
+  const user = await prisma.user.findUnique({
+    where: { resetToken: token },
+  });
+
+  if (!user || !user.resetTokenExpiry || user.resetTokenExpiry < new Date()) {
+    return false;
+  }
+
+  const passwordHash = await hashPassword(newPassword);
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      passwordHash,
+      resetToken: null,
+      resetTokenExpiry: null,
+    },
+  });
+
+  return true;
+}

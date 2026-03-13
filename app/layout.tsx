@@ -18,8 +18,21 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Inky Cards — Premium Greeting Cards",
-  description: "Personalised greeting cards worth keeping. AI-powered customisation, video messages, and premium quality.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://inkycards.com'),
+  title: {
+    default: 'Inky Cards — Premium Greeting Cards',
+    template: '%s | Inky Cards',
+  },
+  description: 'Personalised greeting cards worth keeping. AI-powered customisation, video messages, and premium quality.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    siteName: 'Inky Cards',
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Inky Cards' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default function RootLayout({

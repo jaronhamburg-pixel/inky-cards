@@ -21,7 +21,7 @@ const adminProtectedApiPaths = ['/api/admin'];
 const adminExcludePaths = ['/admin/login'];
 const adminExcludeApiPaths = ['/api/admin/auth'];
 
-const authPaths = ['/api/auth/signin', '/api/auth/signup', '/api/admin/auth'];
+const authPaths = ['/api/auth/signin', '/api/auth/signup', '/api/admin/auth', '/api/auth/forgot-password', '/api/auth/reset-password'];
 const generatePaths = ['/api/generate-card'];
 const mutatingMethods = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
@@ -52,8 +52,8 @@ export async function middleware(request: NextRequest) {
 
   // ── CSRF: Origin header check for mutating API requests ──
   if (pathname.startsWith('/api/') && mutatingMethods.includes(method)) {
-    // Skip CSRF for Stripe webhooks (uses signature verification instead)
-    if (!pathname.startsWith('/api/webhooks/')) {
+    // Skip CSRF for Stripe webhooks and UploadThing (use their own security)
+    if (!pathname.startsWith('/api/webhooks/') && !pathname.startsWith('/api/uploadthing')) {
       const origin = request.headers.get('origin');
       if (origin) {
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';

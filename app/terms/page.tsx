@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+
+export const metadata: Metadata = {
+  title: 'Terms & Conditions',
+  description: 'Terms and conditions for using the Inky Cards website and purchasing our products.',
+};
 
 export default function TermsPage() {
   return (

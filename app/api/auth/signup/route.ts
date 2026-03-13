@@ -3,6 +3,7 @@ import { getUserByEmail, createUser, toPublicUser } from '@/lib/db/users';
 import { signUserToken } from '@/lib/auth/jwt';
 import { signUpSchema } from '@/lib/utils/validation';
 import { sanitizeText } from '@/lib/utils/sanitize';
+import { sendWelcomeEmail } from '@/lib/email/send';
 
 export async function POST(request: Request) {
   try {
@@ -29,6 +30,12 @@ export async function POST(request: Request) {
 
     const user = await createUser(email, password, firstName, lastName);
     const token = await signUserToken(user.id, user.email);
+
+    try {
+      await sendWelcomeEmail(email, firstName);
+    } catch (err) {
+      console.error('Failed to send welcome email:', err);
+    }
 
     const response = NextResponse.json({ user: toPublicUser(user) }, { status: 201 });
     response.cookies.set('user-session', token, {
