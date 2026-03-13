@@ -82,6 +82,8 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
   }, []);
 
   // Video / Photo / QR
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const [mediaUrl, setMediaUrl] = useState<string>('');
   const [mediaBlob, setMediaBlob] = useState<Blob | null>(null);
   const [showRecorder, setShowRecorder] = useState(false);
@@ -197,9 +199,6 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
       </div>
     );
   }
-
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadError, setUploadError] = useState('');
 
   const handleAddToCart = async () => {
     setUploadError('');
