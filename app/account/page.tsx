@@ -173,14 +173,16 @@ function AccountDashboard({
   return (
     <div className="container-luxury py-12 animate-fade-in">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div className="text-center flex-1">
+        <div className="relative mb-8">
+          <div className="text-center">
             <h1 className="heading-display text-ink">My Account</h1>
             <p className="text-stone text-sm mt-1">Welcome back, {user.firstName}</p>
           </div>
-          <Button variant="outline" size="sm" onClick={signOut}>
-            Sign Out
-          </Button>
+          <div className="absolute right-0 top-1/2 -translate-y-1/2">
+            <Button variant="outline" size="sm" onClick={signOut}>
+              Sign Out
+            </Button>
+          </div>
         </div>
 
         {/* Tabs */}
