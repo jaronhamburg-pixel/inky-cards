@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 interface PaymentFormProps {
-  onPaymentSuccess: (paymentIntentId: string) => void;
+  onPaymentSuccess: (paymentIntentId: string) => void | Promise<void>;
 }
 
 export function PaymentForm({ onPaymentSuccess }: PaymentFormProps) {
@@ -44,7 +44,7 @@ export function PaymentForm({ onPaymentSuccess }: PaymentFormProps) {
     }
 
     if (paymentIntent && paymentIntent.status === 'succeeded') {
-      onPaymentSuccess(paymentIntent.id);
+      await onPaymentSuccess(paymentIntent.id);
     } else {
       setError('Payment was not completed. Please try again.');
       setProcessing(false);

@@ -31,6 +31,7 @@ export default function CheckoutPage() {
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
   const [creatingPayment, setCreatingPayment] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
 
   const defaultAddress = useMemo(() => {
     if (!user) return null;
@@ -148,27 +149,44 @@ export default function CheckoutPage() {
 
   const handlePaymentSuccess = async (confirmedPaymentIntentId: string) => {
     setPaymentIntentId(confirmedPaymentIntentId);
+    setOrderError(null);
 
     const data = getValues();
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...(user ? { userId: user.id } : {}),
-        items,
-        customer: { email: data.email, firstName: data.firstName, lastName: data.lastName, phone: data.phone },
-        shipping: { address: data.address, city: data.city, state: data.state, zip: data.zip, country: data.country || 'GB' },
-        subtotal,
-        shipping_cost: shipping,
-        tax,
-        total,
-        status: 'processing',
-        paymentIntentId: confirmedPaymentIntentId,
-      }),
-    });
-    const order = await res.json();
-    clearCart();
-    router.push(`/checkout/success?orderId=${order.id}`);
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...(user ? { userId: user.id } : {}),
+          items: items.map((item) => ({
+            cardId: item.cardId,
+            customization: item.customization,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          customer: { email: data.email, firstName: data.firstName, lastName: data.lastName, phone: data.phone },
+          shipping: { address: data.address, city: data.city, state: data.state, zip: data.zip, country: data.country || 'GB' },
+          subtotal,
+          shipping_cost: shipping,
+          tax,
+          total,
+          status: 'processing',
+          paymentIntentId: confirmedPaymentIntentId,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Failed to create order' }));
+        setOrderError(err.error || 'Failed to create order. Your payment was successful — please contact support.');
+        return;
+      }
+
+      const order = await res.json();
+      clearCart();
+      router.push(`/checkout/success?orderId=${order.id}`);
+    } catch {
+      setOrderError('Something went wrong creating your order. Your payment was successful — please contact support.');
+    }
   };
 
   const steps = [
@@ -311,15 +329,22 @@ export default function CheckoutPage() {
 
             {/* Step 3: Payment */}
             {currentStep === 3 && clientSecret && (
-              <Elements
-                stripe={stripePromise}
-                options={{
-                  clientSecret,
-                  appearance: stripeAppearance,
-                }}
-              >
-                <PaymentForm onPaymentSuccess={handlePaymentSuccess} />
-              </Elements>
+              <>
+                <Elements
+                  stripe={stripePromise}
+                  options={{
+                    clientSecret,
+                    appearance: stripeAppearance,
+                  }}
+                >
+                  <PaymentForm onPaymentSuccess={handlePaymentSuccess} />
+                </Elements>
+                {orderError && (
+                  <div className="mt-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
+                    {orderError}
+                  </div>
+                )}
+              </>
             )}
 
             {/* Nav */}
