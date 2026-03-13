@@ -23,6 +23,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Limit file size to ~30MB (generous for 30s of video)
+    const MAX_SIZE = 30 * 1024 * 1024;
+    if (video.size > MAX_SIZE) {
+      return NextResponse.json(
+        { error: 'Video must be under 30MB (approx. 30 seconds)' },
+        { status: 400 }
+      );
+    }
+
     // Upload to UploadThing
     const response = await utapi.uploadFiles(video);
 

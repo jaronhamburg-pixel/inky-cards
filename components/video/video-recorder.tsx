@@ -15,7 +15,7 @@ interface VideoRecorderProps {
 export function VideoRecorder({
   onVideoReady,
   onCancel,
-  maxDuration = 60,
+  maxDuration = 30,
 }: VideoRecorderProps) {
   const [state, setState] = useState<RecorderState>('idle');
   const [countdownValue, setCountdownValue] = useState(3);

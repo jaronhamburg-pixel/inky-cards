@@ -4,7 +4,7 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   videoGreeting: f({
-    video: { maxFileSize: '64MB', maxFileCount: 1 },
+    video: { maxFileSize: '32MB', maxFileCount: 1 },
   }).onUploadComplete(({ file }) => {
     return { url: file.ufsUrl };
   }),
