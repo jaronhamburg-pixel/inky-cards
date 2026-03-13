@@ -69,6 +69,18 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'inky-cards-cart',
+      partialize: (state) => ({
+        items: state.items.map((item) => {
+          if (!item.card.images.front.startsWith('data:')) return item;
+          return {
+            ...item,
+            card: {
+              ...item.card,
+              images: { front: '', back: '', thumbnail: '' },
+            },
+          };
+        }),
+      } as unknown as CartStore),
     }
   )
 );

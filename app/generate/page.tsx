@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
 import { Card as CardType } from '@/types/card';
+import { useAiCardStore } from '@/lib/store/ai-card-store';
 import { formatPrice } from '@/lib/utils/formatting';
 
 type Occasion = 'birthday' | 'wedding' | 'anniversary' | 'thank-you' | 'sympathy' | 'congratulations' | 'holiday' | 'other';
@@ -22,6 +23,7 @@ interface GeneratedCard {
 
 export default function GeneratePage() {
   const router = useRouter();
+  const setAiCard = useAiCardStore((s) => s.setCard);
 
   const [occasion, setOccasion] = useState<Occasion>('birthday');
   const [prompt, setPrompt] = useState('');
@@ -104,8 +106,8 @@ export default function GeneratePage() {
       },
     };
 
-    // Store AI card in sessionStorage so the customize page can load it
-    sessionStorage.setItem('inky-ai-card', JSON.stringify(card));
+    // Store AI card in memory so the customize page can load it
+    setAiCard(card);
     router.push(`/cards/${cardId}/customize`);
   };
 

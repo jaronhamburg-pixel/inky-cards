@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCardById } from '@/lib/data/mock-cards';
+import type { Card } from '@/types/card';
+import { useAiCardStore } from '@/lib/store/ai-card-store';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import { VideoRecorder } from '@/components/video/video-recorder';
@@ -36,31 +38,26 @@ interface HistoryEntry {
   textAlign: TextAlignment;
 }
 
-function getCard(id: string) {
-  // Try mock data first, then check sessionStorage for AI-generated cards
+function getCard(id: string, aiCard: Card | null) {
+  // Try mock data first, then check in-memory store for AI-generated cards
   const mockCard = getCardById(id);
   if (mockCard) return mockCard;
-  if (typeof window !== 'undefined') {
-    try {
-      const stored = sessionStorage.getItem('inky-ai-card');
-      if (stored) {
-        const aiCard = JSON.parse(stored);
-        if (aiCard.id === id) return aiCard;
-      }
-    } catch {}
-  }
+  if (aiCard && aiCard.id === id) return aiCard;
   return null;
 }
 
 export default function CustomizePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const card = getCard(id);
   const addItem = useCartStore((state) => state.addItem);
+  const aiCard = useAiCardStore((s) => s.card);
+
+  const [card, setCard] = useState<Card | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Start on inside view (auto-open)
   const [currentView, setCurrentView] = useState<EditorView>('inside');
-  const [frontText, setFrontText] = useState(card?.templates.front?.placeholder || '');
+  const [frontText, setFrontText] = useState('');
   const [insideText, setInsideText] = useState('');
   const [fontFamily, setFontFamily] = useState('Cormorant Garamond');
   const [fontSize, setFontSize] = useState(25);
@@ -111,9 +108,28 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
 
   // Undo/Redo
   const [history, setHistory] = useState<HistoryEntry[]>([
-    { frontText: card?.templates.front?.placeholder || '', insideText: '', fontFamily: 'Cormorant Garamond', fontSize: 28, textColor: '#1a1a1a', textAlign: 'center' },
+    { frontText: '', insideText: '', fontFamily: 'Cormorant Garamond', fontSize: 25, textColor: '#1a1a1a', textAlign: 'center' },
   ]);
   const [historyIndex, setHistoryIndex] = useState(0);
+
+  // Load card on client (supports in-memory store for AI-generated cards)
+  useEffect(() => {
+    const found = getCard(id, aiCard);
+    setCard(found);
+    if (found) {
+      const placeholder = found.templates.front?.placeholder || '';
+      setFrontText(placeholder);
+      setHistory([{
+        frontText: placeholder,
+        insideText: '',
+        fontFamily: 'Cormorant Garamond',
+        fontSize: 25,
+        textColor: '#1a1a1a',
+        textAlign: 'center',
+      }]);
+    }
+    setLoading(false);
+  }, [id, aiCard]);
 
   const pushHistory = useCallback(() => {
     setHistory((prev) => {
@@ -149,6 +165,14 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
       setHistoryIndex(historyIndex + 1);
     }
   }, [history, historyIndex]);
+
+  if (loading) {
+    return (
+      <div className="container-luxury py-20 text-center">
+        <div className="w-8 h-8 border-2 border-ink border-t-transparent rounded-full animate-spin mx-auto" />
+      </div>
+    );
+  }
 
   if (!card) {
     return (
