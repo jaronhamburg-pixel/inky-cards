@@ -18,8 +18,10 @@ import Image from 'next/image';
 import { PublicUser, UserAddress } from '@/types/user';
 import { Order } from '@/types/order';
 import { SavedDesign } from '@/types/saved-design';
+import { SignificantDate, DATE_CATEGORIES, type DateCategory } from '@/types/significant-date';
+import { significantDateSchema, type SignificantDateFormData } from '@/lib/utils/validation';
 
-type Tab = 'profile' | 'addresses' | 'orders' | 'saved-designs';
+type Tab = 'profile' | 'addresses' | 'orders' | 'saved-designs' | 'dates';
 
 export default function AccountPage() {
   const { user, isLoading, signIn, signUp, signOut, refreshUser } = useAuth();
@@ -171,6 +173,7 @@ function AccountDashboard({
     { key: 'addresses', label: 'Addresses' },
     { key: 'orders', label: 'Orders' },
     { key: 'saved-designs', label: 'Designs' },
+    { key: 'dates', label: 'Dates' },
   ];
 
   return (
@@ -210,6 +213,7 @@ function AccountDashboard({
         {activeTab === 'addresses' && <AddressesTab user={user} refreshUser={refreshUser} />}
         {activeTab === 'orders' && <OrdersTab />}
         {activeTab === 'saved-designs' && <SavedDesignsTab />}
+        {activeTab === 'dates' && <DatesTab />}
       </div>
     </div>
   );
@@ -682,6 +686,267 @@ function SavedDesignsTab() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── Dates Tab ───────────────────────────────────────────
+
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+const CATEGORY_LABELS: Record<string, string> = {
+  birthday: 'Birthday',
+  anniversary: 'Anniversary',
+  wedding: 'Wedding',
+  holiday: 'Holiday',
+  other: 'Other',
+};
+
+function countdownText(daysUntil: number) {
+  if (daysUntil === 0) return { text: 'Today!', className: 'text-red-600 font-medium' };
+  if (daysUntil === 1) return { text: 'Tomorrow!', className: 'text-red-600 font-medium' };
+  if (daysUntil <= 7) return { text: `in ${daysUntil} days`, className: 'text-amber-600 font-medium' };
+  if (daysUntil <= 30) return { text: `in ${daysUntil} days`, className: 'text-ink' };
+  return { text: `in ${daysUntil} days`, className: 'text-stone' };
+}
+
+function DatesTab() {
+  const [dates, setDates] = useState<SignificantDate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [showNew, setShowNew] = useState(false);
+
+  const reload = async () => {
+    const res = await fetch('/api/account/dates');
+    if (res.ok) {
+      const data = await res.json();
+      setDates(data.dates || []);
+    }
+  };
+
+  useEffect(() => {
+    reload().finally(() => setLoading(false));
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    const res = await fetch(`/api/account/dates/${id}`, { method: 'DELETE' });
+    if (res.ok) await reload();
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2].map((i) => (
+          <div key={i} className="bg-white border border-silk rounded-lg p-6 animate-pulse">
+            <div className="h-4 bg-silk rounded w-32 mb-3" />
+            <div className="h-3 bg-silk rounded w-48" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {dates.map((date) =>
+        editingId === date.id ? (
+          <DateForm
+            key={date.id}
+            date={date}
+            onSave={async (data) => {
+              await fetch(`/api/account/dates/${date.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+              });
+              setEditingId(null);
+              await reload();
+            }}
+            onCancel={() => setEditingId(null)}
+          />
+        ) : (
+          <div key={date.id} className="bg-white border border-silk rounded-lg p-6">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-medium text-ink">{date.label}</span>
+                  <span className="text-[10px] uppercase tracking-wider bg-silk text-stone px-2 py-0.5 rounded">
+                    {CATEGORY_LABELS[date.category] || date.category}
+                  </span>
+                </div>
+                <p className="text-sm text-stone">{date.personName}</p>
+                <p className="text-sm text-stone mt-0.5">
+                  {date.day} {MONTH_NAMES[date.month - 1]}
+                </p>
+                {date.notes && (
+                  <p className="text-xs text-stone mt-1 italic">{date.notes}</p>
+                )}
+              </div>
+              <div className="flex items-center gap-4">
+                <span className={`text-sm ${countdownText(date.daysUntil).className}`}>
+                  {countdownText(date.daysUntil).text}
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setEditingId(date.id)}
+                    className="text-xs uppercase tracking-wider text-stone hover:text-ink transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(date.id)}
+                    className="text-xs uppercase tracking-wider text-red-600 hover:text-red-700 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      )}
+
+      {dates.length === 0 && !showNew && (
+        <div className="bg-white border border-silk rounded-lg p-8 text-center">
+          <p className="text-stone text-sm mb-2">No saved dates yet</p>
+          <p className="text-stone text-xs">
+            Add birthdays, anniversaries, and more to never miss an occasion
+          </p>
+        </div>
+      )}
+
+      {showNew ? (
+        <DateForm
+          onSave={async (data) => {
+            await fetch('/api/account/dates', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+            setShowNew(false);
+            await reload();
+          }}
+          onCancel={() => setShowNew(false)}
+        />
+      ) : (
+        <Button variant="outline" onClick={() => setShowNew(true)}>
+          Add Date
+        </Button>
+      )}
+    </div>
+  );
+}
+
+function DateForm({
+  date,
+  onSave,
+  onCancel,
+}: {
+  date?: SignificantDate;
+  onSave: (data: SignificantDateFormData) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignificantDateFormData>({
+    resolver: zodResolver(significantDateSchema),
+    defaultValues: date
+      ? {
+          label: date.label,
+          personName: date.personName,
+          day: date.day,
+          month: date.month,
+          category: date.category as DateCategory,
+          notes: date.notes || '',
+        }
+      : {
+          label: '',
+          personName: '',
+          day: 1,
+          month: 1,
+          category: 'birthday',
+          notes: '',
+        },
+  });
+
+  return (
+    <div className="bg-white border border-silk rounded-lg p-6">
+      <h3 className="text-lg font-medium text-ink mb-4">
+        {date ? 'Edit Date' : 'New Date'}
+      </h3>
+      <form onSubmit={handleSubmit(onSave)} className="space-y-4">
+        <Input
+          {...register('label')}
+          label="Label"
+          placeholder="Mum's Birthday"
+          error={errors.label?.message}
+          required
+        />
+        <Input
+          {...register('personName')}
+          label="Person Name"
+          placeholder="Mum"
+          error={errors.personName?.message}
+          required
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-ink mb-1.5">Day</label>
+            <select
+              {...register('day', { valueAsNumber: true })}
+              className="w-full px-3 py-2 border border-silk rounded text-sm focus:outline-none focus:ring-2 focus:ring-ink bg-white"
+            >
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+            {errors.day && <p className="text-xs text-red-600 mt-1">{errors.day.message}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink mb-1.5">Month</label>
+            <select
+              {...register('month', { valueAsNumber: true })}
+              className="w-full px-3 py-2 border border-silk rounded text-sm focus:outline-none focus:ring-2 focus:ring-ink bg-white"
+            >
+              {MONTH_NAMES.map((name, i) => (
+                <option key={i + 1} value={i + 1}>{name}</option>
+              ))}
+            </select>
+            {errors.month && <p className="text-xs text-red-600 mt-1">{errors.month.message}</p>}
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-ink mb-1.5">Category</label>
+          <select
+            {...register('category')}
+            className="w-full px-3 py-2 border border-silk rounded text-sm focus:outline-none focus:ring-2 focus:ring-ink bg-white"
+          >
+            {DATE_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
+            ))}
+          </select>
+          {errors.category && <p className="text-xs text-red-600 mt-1">{errors.category.message}</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-ink mb-1.5">Notes (optional)</label>
+          <textarea
+            {...register('notes')}
+            rows={2}
+            placeholder="Any notes or gift ideas..."
+            className="w-full px-3 py-2 border border-silk rounded text-sm focus:outline-none focus:ring-2 focus:ring-ink resize-none"
+          />
+          {errors.notes && <p className="text-xs text-red-600 mt-1">{errors.notes.message}</p>}
+        </div>
+        <div className="flex gap-3">
+          <Button type="submit" variant="primary" size="sm" isLoading={isSubmitting}>
+            {date ? 'Save' : 'Add Date'}
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

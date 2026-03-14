@@ -129,6 +129,19 @@ export const reviewUpdateSchema = z.object({
 
 export type ReviewUpdateFormData = z.infer<typeof reviewUpdateSchema>;
 
+// ─── Significant Dates ──────────────────────────────────
+
+export const significantDateSchema = z.object({
+  label: z.string().min(1, 'Label is required').max(100, 'Label must be 100 characters or less'),
+  personName: z.string().min(1, 'Person name is required').max(100, 'Person name must be 100 characters or less'),
+  day: z.number().int().min(1, 'Day must be between 1 and 31').max(31, 'Day must be between 1 and 31'),
+  month: z.number().int().min(1, 'Month must be between 1 and 12').max(12, 'Month must be between 1 and 12'),
+  category: z.enum(['birthday', 'anniversary', 'wedding', 'holiday', 'other']),
+  notes: z.string().max(500, 'Notes must be 500 characters or less').optional().nullable(),
+});
+
+export type SignificantDateFormData = z.infer<typeof significantDateSchema>;
+
 // ─── Helpers ─────────────────────────────────────────────
 
 export function validateTextLength(text: string, maxLength: number): boolean {

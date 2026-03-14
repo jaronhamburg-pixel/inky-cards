@@ -3,7 +3,9 @@ import { OrderConfirmationEmail } from './templates/order-confirmation';
 import { ShippingUpdateEmail } from './templates/shipping-update';
 import { PasswordResetEmail } from './templates/password-reset';
 import { WelcomeEmail } from './templates/welcome';
+import { DateReminderEmail } from './templates/date-reminder';
 import type { Order } from '@/types/order';
+import type { SignificantDate } from '@/types/significant-date';
 
 const FROM_ORDERS = 'Inky Cards <orders@inkycards.com>';
 const FROM_NOREPLY = 'Inky Cards <noreply@inkycards.com>';
@@ -48,5 +50,26 @@ export async function sendPasswordResetEmail(
     to: email,
     subject: 'Reset your password — Inky Cards',
     react: PasswordResetEmail({ name, resetUrl }),
+  });
+}
+
+export async function sendDateReminderEmail(
+  email: string,
+  userName: string,
+  date: SignificantDate
+) {
+  const categoryLabel = date.category === 'other' ? 'special day' : date.category;
+
+  await resend.emails.send({
+    from: FROM_NOREPLY,
+    to: email,
+    subject: `Reminder: ${date.personName}'s ${categoryLabel} is in one week`,
+    react: DateReminderEmail({
+      userName,
+      personName: date.personName,
+      category: date.category,
+      day: date.day,
+      month: date.month,
+    }),
   });
 }

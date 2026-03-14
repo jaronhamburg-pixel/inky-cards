@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/session';
-import { getReviewByOrderId, createReview, updateReview, deleteReview, getReviewById } from '@/lib/db/reviews';
+import { getReviewByOrderId, createReview, updateReview, deleteReview } from '@/lib/db/reviews';
 import { getOrderById } from '@/lib/db/orders';
 import { reviewSchema, reviewUpdateSchema } from '@/lib/utils/validation';
 
