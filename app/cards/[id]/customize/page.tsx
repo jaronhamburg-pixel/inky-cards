@@ -1,12 +1,13 @@
 'use client';
 
 import { use, useState, useCallback, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/types/card';
 import { useAiCardStore } from '@/lib/store/ai-card-store';
 import { useCartStore } from '@/lib/store/cart-store';
+import { useAuth } from '@/lib/context/auth-context';
 import { Button } from '@/components/ui/button';
 import { VideoRecorder } from '@/components/video/video-recorder';
 import { PhotoCapture } from '@/components/video/photo-capture';
@@ -56,8 +57,10 @@ function getCard(id: string, aiCard: Card | null, fetchedCard: Card | null) {
 export default function CustomizePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const addItem = useCartStore((state) => state.addItem);
   const aiCard = useAiCardStore((s) => s.card);
+  const { user } = useAuth();
 
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(true);
@@ -115,6 +118,12 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
     return () => { cancelled = true; };
   }, [mediaUrl]);
 
+  // Save Design
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [designName, setDesignName] = useState('');
+  const [savingDesign, setSavingDesign] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState('');
+
   // Undo/Redo
   const [history, setHistory] = useState<HistoryEntry[]>([
     { frontText: '', insideText: '', fontFamily: 'Cormorant Garamond', fontSize: 25, textColor: '#1a1a1a', textAlign: 'center' },
@@ -145,6 +154,61 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
     })();
     return () => { cancelled = true; };
   }, [id, aiCard]);
+
+  // Load saved design from query param
+  useEffect(() => {
+    const designId = searchParams.get('design');
+    if (!designId || !card) return;
+    fetch(`/api/account/saved-designs`)
+      .then((res) => res.json())
+      .then((data) => {
+        const design = (data.designs || []).find((d: { id: string }) => d.id === designId);
+        if (design?.customization) {
+          const c = design.customization;
+          if (c.frontText !== undefined) setFrontText(c.frontText);
+          if (c.insideText !== undefined) setInsideText(c.insideText);
+          if (c.fontFamily) setFontFamily(c.fontFamily);
+          if (c.fontSize) setFontSize(c.fontSize);
+          if (c.textColor) setTextColor(c.textColor);
+        }
+      })
+      .catch(() => {});
+  }, [searchParams, card]);
+
+  const handleSaveDesign = async () => {
+    if (!user) {
+      window.location.href = '/account';
+      return;
+    }
+    if (!designName.trim()) return;
+    setSavingDesign(true);
+    try {
+      const res = await fetch('/api/account/saved-designs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cardId: card!.id,
+          name: designName.trim(),
+          customization: {
+            frontText: card!.customizable.frontText ? frontText : undefined,
+            insideText: card!.customizable.insideText ? insideText : undefined,
+            fontFamily,
+            fontSize,
+            textColor,
+          },
+        }),
+      });
+      if (res.ok) {
+        setSaveSuccess('Design saved!');
+        setShowSaveModal(false);
+        setDesignName('');
+        setTimeout(() => setSaveSuccess(''), 3000);
+      }
+    } catch {
+      // ignore
+    }
+    setSavingDesign(false);
+  };
 
   const pushHistory = useCallback(() => {
     setHistory((prev) => {
@@ -685,9 +749,51 @@ export default function CustomizePage({ params }: { params: Promise<{ id: string
               {uploadError && (
                 <p className="text-sm text-red-600">{uploadError}</p>
               )}
+              {saveSuccess && (
+                <p className="text-sm text-green-700">{saveSuccess}</p>
+              )}
               <Button size="lg" variant="primary" className="w-full" onClick={handleAddToCart} isLoading={isUploading} disabled={isUploading}>
                 {isUploading ? 'Uploading media...' : 'Add to Basket'}
               </Button>
+
+              {/* Save Design */}
+              {showSaveModal ? (
+                <div className="p-4 bg-neutral-50 rounded-lg space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Design name..."
+                    value={designName}
+                    onChange={(e) => setDesignName(e.target.value)}
+                    className="w-full px-4 py-2 text-sm border border-silk rounded bg-white focus:outline-none focus:ring-2 focus:ring-ink"
+                    maxLength={100}
+                    autoFocus
+                  />
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="primary" onClick={handleSaveDesign} isLoading={savingDesign} disabled={!designName.trim()} className="flex-1">
+                      Save
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => setShowSaveModal(false)} className="flex-1">
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    if (!user) {
+                      window.location.href = '/account';
+                      return;
+                    }
+                    setShowSaveModal(true);
+                  }}
+                >
+                  Save Design
+                </Button>
+              )}
+
               <Button
                 size="lg"
                 variant="outline"

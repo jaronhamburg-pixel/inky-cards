@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id               String        @id @default(cuid())
-  email            String        @unique
+  id               String         @id @default(cuid())
+  email            String         @unique
   firstName        String
   lastName         String
   phone            String?
   passwordHash     String
-  resetToken       String?       @unique
+  resetToken       String?        @unique
   resetTokenExpiry DateTime?
   addresses        UserAddress[]
   orders           Order[]
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  savedDesigns     SavedDesign[]
+  reviews          Review[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 }
 
 model UserAddress {
@@ -38,17 +40,18 @@ model UserAddress {
 }
 
 model Card {
-  id           String      @id @default(cuid())
-  title        String
-  description  String
-  category     String
-  price        Float
-  images       Json
-  customizable Json
-  templates    Json
-  orderItems   OrderItem[]
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id            String         @id @default(cuid())
+  title         String
+  description   String
+  category      String
+  price         Float
+  images        Json
+  customizable  Json
+  templates     Json
+  orderItems    OrderItem[]
+  savedDesigns  SavedDesign[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model Order {
@@ -57,6 +60,7 @@ model Order {
   userId            String?
   user              User?       @relation(fields: [userId], references: [id])
   items             OrderItem[]
+  review            Review?
   customerEmail     String
   customerFirstName String
   customerLastName  String
@@ -101,4 +105,31 @@ model Article {
   readTime String
   image    String
   content  String[]
+}
+
+model SavedDesign {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardId        String
+  card          Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  name          String
+  customization Json
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  rating    Int
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

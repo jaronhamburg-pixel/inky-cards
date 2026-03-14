@@ -78,9 +78,9 @@ export default function CardDetailContent({
             <p className="body-large text-stone mb-6">{card.description}</p>
           </div>
 
-          <div className="mb-8">
+          <div className="mb-8 flex items-center gap-3">
             <span className="text-3xl font-semibold text-ink">{formatPrice(card.price)}</span>
-            <span className="text-stone ml-2 text-sm">per card</span>
+            <span className="text-stone text-sm">per card</span>
           </div>
 
           {/* Customisation options */}

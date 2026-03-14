@@ -80,6 +80,57 @@ export const resetPasswordSchema = z.object({
 
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
+// ─── Saved Designs ───────────────────────────────────────
+
+export const savedDesignSchema = z.object({
+  cardId: z.string().min(1, 'Card ID is required'),
+  name: z.string().min(1, 'Name is required').max(100, 'Name must be 100 characters or less'),
+  customization: z.object({
+    frontText: z.string().optional(),
+    backText: z.string().optional(),
+    insideText: z.string().optional(),
+    fontFamily: z.string().optional(),
+    fontSize: z.number().optional(),
+    textColor: z.string().optional(),
+  }),
+});
+
+export type SavedDesignFormData = z.infer<typeof savedDesignSchema>;
+
+export const savedDesignUpdateSchema = z.object({
+  name: z.string().min(1, 'Name is required').max(100, 'Name must be 100 characters or less').optional(),
+  customization: z.object({
+    frontText: z.string().optional(),
+    backText: z.string().optional(),
+    insideText: z.string().optional(),
+    fontFamily: z.string().optional(),
+    fontSize: z.number().optional(),
+    textColor: z.string().optional(),
+  }).optional(),
+});
+
+export type SavedDesignUpdateFormData = z.infer<typeof savedDesignUpdateSchema>;
+
+// ─── Reviews ─────────────────────────────────────────────
+
+export const reviewSchema = z.object({
+  rating: z.number().int().min(1, 'Rating must be at least 1').max(5, 'Rating must be at most 5'),
+  title: z.string().min(1, 'Title is required').max(200, 'Title must be 200 characters or less'),
+  content: z.string().min(1, 'Review is required').max(2000, 'Review must be 2000 characters or less'),
+});
+
+export type ReviewFormData = z.infer<typeof reviewSchema>;
+
+export const reviewUpdateSchema = z.object({
+  rating: z.number().int().min(1).max(5).optional(),
+  title: z.string().min(1).max(200).optional(),
+  content: z.string().min(1).max(2000).optional(),
+});
+
+export type ReviewUpdateFormData = z.infer<typeof reviewUpdateSchema>;
+
+// ─── Helpers ─────────────────────────────────────────────
+
 export function validateTextLength(text: string, maxLength: number): boolean {
   return text.length <= maxLength;
 }

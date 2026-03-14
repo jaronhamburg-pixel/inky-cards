@@ -14,10 +14,12 @@ import {
 } from '@/lib/utils/validation';
 import { formatPrice, formatDate } from '@/lib/utils/formatting';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PublicUser, UserAddress } from '@/types/user';
 import { Order } from '@/types/order';
+import { SavedDesign } from '@/types/saved-design';
 
-type Tab = 'profile' | 'addresses' | 'orders';
+type Tab = 'profile' | 'addresses' | 'orders' | 'saved-designs';
 
 export default function AccountPage() {
   const { user, isLoading, signIn, signUp, signOut, refreshUser } = useAuth();
@@ -168,6 +170,7 @@ function AccountDashboard({
     { key: 'profile', label: 'Profile' },
     { key: 'addresses', label: 'Addresses' },
     { key: 'orders', label: 'Orders' },
+    { key: 'saved-designs', label: 'Designs' },
   ];
 
   return (
@@ -186,12 +189,12 @@ function AccountDashboard({
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 border-b border-silk mb-8">
+        <div className="flex gap-1 border-b border-silk mb-8 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-5 py-3 text-sm tracking-widest uppercase transition-colors border-b-2 -mb-px ${
+              className={`px-5 py-3 text-sm tracking-widest uppercase transition-colors border-b-2 -mb-px whitespace-nowrap ${
                 activeTab === tab.key
                   ? 'border-ink text-ink font-medium'
                   : 'border-transparent text-stone hover:text-ink'
@@ -206,6 +209,7 @@ function AccountDashboard({
         {activeTab === 'profile' && <ProfileTab user={user} refreshUser={refreshUser} />}
         {activeTab === 'addresses' && <AddressesTab user={user} refreshUser={refreshUser} />}
         {activeTab === 'orders' && <OrdersTab />}
+        {activeTab === 'saved-designs' && <SavedDesignsTab />}
       </div>
     </div>
   );
@@ -537,3 +541,148 @@ function OrdersTab() {
     </div>
   );
 }
+
+// ─── Saved Designs Tab ───────────────────────────────────
+
+function SavedDesignsTab() {
+  const [designs, setDesigns] = useState<SavedDesign[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
+
+  useEffect(() => {
+    fetch('/api/account/saved-designs')
+      .then((res) => res.json())
+      .then((data) => {
+        setDesigns(
+          (data.designs || []).map((d: SavedDesign) => ({
+            ...d,
+            createdAt: new Date(d.createdAt),
+            updatedAt: new Date(d.updatedAt),
+          }))
+        );
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    const res = await fetch(`/api/account/saved-designs/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      setDesigns((prev) => prev.filter((d) => d.id !== id));
+    }
+  };
+
+  const handleRename = async (id: string) => {
+    if (!renameValue.trim()) return;
+    const res = await fetch(`/api/account/saved-designs/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: renameValue.trim() }),
+    });
+    if (res.ok) {
+      setDesigns((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, name: renameValue.trim() } : d))
+      );
+      setRenamingId(null);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2].map((i) => (
+          <div key={i} className="bg-white border border-silk rounded-lg p-6 animate-pulse">
+            <div className="h-4 bg-silk rounded w-32 mb-3" />
+            <div className="h-3 bg-silk rounded w-48" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (designs.length === 0) {
+    return (
+      <div className="bg-white border border-silk rounded-lg p-8 text-center">
+        <p className="text-stone text-sm mb-2">No saved designs yet</p>
+        <p className="text-stone text-xs">
+          Save a design while customising a card to find it here
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {designs.map((design) => (
+        <div key={design.id} className="bg-white border border-silk rounded-lg p-6">
+          <div className="flex items-center gap-4">
+            {/* Card thumbnail */}
+            <div className="w-16 h-20 relative rounded overflow-hidden shrink-0 bg-silk">
+              <Image
+                src={design.card.images.thumbnail}
+                alt={design.card.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            <div className="flex-1 min-w-0">
+              {renamingId === design.id ? (
+                <div className="flex items-center gap-2 mb-1">
+                  <input
+                    type="text"
+                    value={renameValue}
+                    onChange={(e) => setRenameValue(e.target.value)}
+                    className="px-2 py-1 text-sm border border-silk rounded focus:outline-none focus:ring-2 focus:ring-ink"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleRename(design.id);
+                      if (e.key === 'Escape') setRenamingId(null);
+                    }}
+                  />
+                  <button
+                    onClick={() => handleRename(design.id)}
+                    className="text-xs uppercase tracking-wider text-ink hover:underline"
+                  >
+                    Save
+                  </button>
+                </div>
+              ) : (
+                <h3 className="font-medium text-ink truncate">{design.name}</h3>
+              )}
+              <p className="text-xs text-stone">{design.card.title}</p>
+              <p className="text-xs text-stone mt-0.5">
+                {new Date(design.updatedAt).toLocaleDateString()}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-1 shrink-0">
+              <Link
+                href={`/cards/${design.cardId}/customize?design=${design.id}`}
+                className="text-xs uppercase tracking-wider text-ink hover:underline"
+              >
+                Load
+              </Link>
+              <button
+                onClick={() => {
+                  setRenamingId(design.id);
+                  setRenameValue(design.name);
+                }}
+                className="text-xs uppercase tracking-wider text-stone hover:text-ink transition-colors"
+              >
+                Rename
+              </button>
+              <button
+                onClick={() => handleDelete(design.id)}
+                className="text-xs uppercase tracking-wider text-red-600 hover:text-red-700 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+

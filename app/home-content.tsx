@@ -4,10 +4,20 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { StarRating } from '@/components/ui/star-rating';
 import { formatPrice } from '@/lib/utils/formatting';
 import type { Card } from '@/types/card';
+import type { Review, SiteRating } from '@/types/review';
 
-export default function HomeContent({ featuredCards }: { featuredCards: Card[] }) {
+export default function HomeContent({
+  featuredCards,
+  siteRating,
+  recentReviews,
+}: {
+  featuredCards: Card[];
+  siteRating: SiteRating;
+  recentReviews: Review[];
+}) {
 
   return (
     <div>
@@ -146,6 +156,58 @@ export default function HomeContent({ featuredCards }: { featuredCards: Card[] }
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      {recentReviews.length > 0 && (
+        <section className="py-24 border-t border-silk">
+          <div className="container-luxury">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-12"
+            >
+              <h2 className="heading-section text-ink mb-3">What Our Customers Say</h2>
+              {siteRating.count > 0 && (
+                <div className="flex items-center justify-center gap-2">
+                  <StarRating rating={siteRating.average} size="md" />
+                  <span className="text-stone text-sm">
+                    {siteRating.average.toFixed(1)} from {siteRating.count} review{siteRating.count !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              )}
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {recentReviews.slice(0, 3).map((review, i) => (
+                <motion.div
+                  key={review.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="bg-white border border-silk rounded-lg p-6"
+                >
+                  <StarRating rating={review.rating} size="sm" />
+                  <p className="text-sm text-stone mt-3 mb-4 line-clamp-3">
+                    &ldquo;{review.content}&rdquo;
+                  </p>
+                  <p className="text-xs font-medium text-ink">{review.userName}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="text-center mt-10">
+              <Link href="/reviews">
+                <Button variant="outline" size="lg">
+                  Read All Reviews
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Editorial CTA */}
       <section className="bg-ink text-paper py-24 md:py-32">

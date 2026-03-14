@@ -1,18 +1,27 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { use, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Order } from '@/types/order';
+import { Review } from '@/types/review';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { StarRating } from '@/components/ui/star-rating';
+import { ReviewForm } from '@/components/reviews/review-form';
 import { formatPrice, formatDate, formatOrderNumber } from '@/lib/utils/formatting';
 import { QRDisplay } from '@/components/video/qr-display';
+import { useAuth } from '@/lib/context/auth-context';
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { user } = useAuth();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const [review, setReview] = useState<Review | null>(null);
+  const [reviewLoading, setReviewLoading] = useState(true);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [editingReview, setEditingReview] = useState(false);
 
   useEffect(() => {
     fetch(`/api/orders/${id}`)
@@ -24,6 +33,29 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  const fetchReview = useCallback(() => {
+    setReviewLoading(true);
+    fetch(`/api/orders/${id}/review`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.review) {
+          setReview({
+            ...data.review,
+            createdAt: new Date(data.review.createdAt),
+            updatedAt: new Date(data.review.updatedAt),
+          });
+        } else {
+          setReview(null);
+        }
+      })
+      .finally(() => setReviewLoading(false));
+  }, [id]);
+
+  useEffect(() => {
+    if (user) fetchReview();
+    else setReviewLoading(false);
+  }, [user, fetchReview]);
 
   if (loading) {
     return (
@@ -55,6 +87,16 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     shipped: 'success',
     delivered: 'success',
     cancelled: 'default',
+  };
+
+  const canReview = user && order.userId === user.id && order.paymentStatus === 'succeeded';
+
+  const handleDeleteReview = async () => {
+    const res = await fetch(`/api/orders/${id}/review`, { method: 'DELETE' });
+    if (res.ok) {
+      setReview(null);
+      setEditingReview(false);
+    }
   };
 
   return (
@@ -214,6 +256,60 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             </div>
           </div>
         </div>
+
+        {/* Rate Your Experience */}
+        {canReview && !reviewLoading && (
+          <div className="mb-8">
+            {review && !editingReview ? (
+              <div className="bg-white border border-silk rounded-lg p-6">
+                <h2 className="font-semibold text-lg text-ink mb-4">Your Review</h2>
+                <div className="flex items-center gap-2 mb-2">
+                  <StarRating rating={review.rating} size="sm" />
+                </div>
+                <h4 className="font-medium text-ink mb-1">{review.title}</h4>
+                <p className="text-sm text-stone mb-4">{review.content}</p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setEditingReview(true)}
+                    className="text-xs uppercase tracking-wider text-stone hover:text-ink transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={handleDeleteReview}
+                    className="text-xs uppercase tracking-wider text-red-600 hover:text-red-700 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ) : showReviewForm || editingReview ? (
+              <ReviewForm
+                orderId={id}
+                review={editingReview ? review ?? undefined : undefined}
+                onSuccess={() => {
+                  setShowReviewForm(false);
+                  setEditingReview(false);
+                  fetchReview();
+                }}
+                onCancel={() => {
+                  setShowReviewForm(false);
+                  setEditingReview(false);
+                }}
+              />
+            ) : (
+              <div className="bg-white border border-silk rounded-lg p-6 text-center">
+                <h2 className="font-semibold text-lg text-ink mb-2">Rate Your Experience</h2>
+                <p className="text-sm text-stone mb-4">
+                  Let us know how your order went. Your feedback helps us improve.
+                </p>
+                <Button variant="outline" size="sm" onClick={() => setShowReviewForm(true)}>
+                  Write a Review
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4">
