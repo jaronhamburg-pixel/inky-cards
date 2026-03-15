@@ -171,7 +171,7 @@ export default function CheckoutPage() {
           shipping: { address: data.address, city: data.city, state: data.state, zip: data.zip, country: data.country || 'GB' },
           ...(videoItem?.videoMessage ? { videoMessage: videoItem.videoMessage } : {}),
           subtotal,
-          shipping_cost: shipping,
+          shippingCost: shipping,
           tax,
           total,
           status: 'processing',

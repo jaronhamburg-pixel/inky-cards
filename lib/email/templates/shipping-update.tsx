@@ -8,10 +8,7 @@ import {
   Link,
 } from '@react-email/components';
 import type { Order } from '@/types/order';
-
-const INK = '#1a1a1a';
-const PAPER = '#faf9f7';
-const STONE = '#6b6b6b';
+import { INK, PAPER, STONE } from '../constants';
 
 export function ShippingUpdateEmail({
   order,

@@ -14,7 +14,6 @@ async function verifyJWT(token: string): Promise<{ role: string; sub: string } |
   }
 }
 
-const userProtectedPaths: string[] = [];
 const userProtectedApiPaths = ['/api/account'];
 const adminProtectedPaths = ['/admin'];
 const adminProtectedApiPaths = ['/api/admin'];
@@ -102,21 +101,6 @@ export async function middleware(request: NextRequest) {
     const payload = await verifyJWT(token);
     if (!payload || payload.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    return NextResponse.next();
-  }
-
-  // ── Auth: User protected paths ──
-  if (matchesAny(pathname, userProtectedPaths)) {
-    const token = request.cookies.get('user-session')?.value;
-    if (!token) {
-      return NextResponse.redirect(new URL('/signin', request.url));
-    }
-    const payload = await verifyJWT(token);
-    if (!payload || payload.role !== 'user') {
-      const response = NextResponse.redirect(new URL('/signin', request.url));
-      response.cookies.set('user-session', '', { maxAge: 0, path: '/' });
-      return response;
     }
     return NextResponse.next();
   }

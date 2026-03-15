@@ -1,4 +1,5 @@
 import { prisma } from './prisma';
+import { toCard } from './mappers';
 import type { Order, OrderItem } from '@/types/order';
 import type {
   Order as PrismaOrder,
@@ -6,26 +7,13 @@ import type {
   Card as PrismaCard,
   Prisma,
 } from '@/lib/generated/prisma';
+import type { CardCustomization } from '@/types/card';
 
 type JsonInput = Prisma.InputJsonValue;
-import type { Card, CardCustomization } from '@/types/card';
 
 type PrismaOrderWithItems = PrismaOrder & {
   items: (PrismaOrderItem & { card: PrismaCard })[];
 };
-
-function toCard(row: PrismaCard): Card {
-  return {
-    id: row.id,
-    title: row.title,
-    description: row.description,
-    category: row.category as Card['category'],
-    price: row.price,
-    images: row.images as Card['images'],
-    customizable: row.customizable as Card['customizable'],
-    templates: row.templates as Card['templates'],
-  };
-}
 
 function toOrderItem(row: PrismaOrderItem & { card: PrismaCard }): OrderItem {
   return {
@@ -61,7 +49,7 @@ function toOrder(row: PrismaOrderWithItems): Order {
       ? { url: row.videoUrl, qrCodeUrl: row.videoQrCodeUrl!, videoId: row.videoId ?? undefined }
       : undefined,
     subtotal: row.subtotal,
-    shipping_cost: row.shippingCost,
+    shippingCost: row.shippingCost,
     tax: row.tax,
     total: row.total,
     status: row.status as Order['status'],
@@ -113,7 +101,7 @@ export async function createOrder(
       videoUrl: order.videoMessage?.url || null,
       videoQrCodeUrl: order.videoMessage?.qrCodeUrl || null,
       subtotal: order.subtotal,
-      shippingCost: order.shipping_cost,
+      shippingCost: order.shippingCost,
       tax: order.tax,
       total: order.total,
       status: order.status,

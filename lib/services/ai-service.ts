@@ -214,8 +214,16 @@ export async function refineCardImage(
   throw new Error('No image data in refinement response');
 }
 
+const BLOCKED_TERMS = [
+  'porn', 'xxx', 'nude', 'naked', 'sexting',
+  'kill', 'murder', 'suicide', 'self-harm',
+  'bomb', 'terrorist', 'terrorism',
+  'racial slur', 'hate speech',
+  'child abuse', 'child porn',
+  'drug deal', 'meth', 'cocaine', 'heroin',
+];
+
 export function containsInappropriateContent(text: string): boolean {
-  const inappropriateWords = ['badword1', 'badword2'];
   const lowerText = text.toLowerCase();
-  return inappropriateWords.some((word) => lowerText.includes(word));
+  return BLOCKED_TERMS.some((term) => lowerText.includes(term));
 }

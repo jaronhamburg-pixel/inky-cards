@@ -7,10 +7,7 @@ import {
   Text,
   Link,
 } from '@react-email/components';
-
-const INK = '#1a1a1a';
-const PAPER = '#faf9f7';
-const STONE = '#6b6b6b';
+import { INK, PAPER, STONE } from '../constants';
 
 export function WelcomeEmail({ name }: { name: string }) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://inkycards.com';

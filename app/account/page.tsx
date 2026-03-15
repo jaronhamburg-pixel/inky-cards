@@ -12,7 +12,7 @@ import {
   profileSchema, type ProfileFormData,
   addressSchema, type AddressFormData,
 } from '@/lib/utils/validation';
-import { formatPrice, formatDate } from '@/lib/utils/formatting';
+import { formatPrice, formatDate, MONTH_NAMES } from '@/lib/utils/formatting';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PublicUser, UserAddress } from '@/types/user';
@@ -691,11 +691,6 @@ function SavedDesignsTab() {
 }
 
 // ─── Dates Tab ───────────────────────────────────────────
-
-const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
 
 const CATEGORY_LABELS: Record<string, string> = {
   birthday: 'Birthday',

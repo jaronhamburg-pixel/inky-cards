@@ -1,22 +1,9 @@
 import { prisma } from './prisma';
+import { toCard } from './mappers';
 import type { SavedDesign } from '@/types/saved-design';
-import type { Card } from '@/types/card';
 import type { SavedDesign as PrismaSavedDesign, Card as PrismaCard, Prisma } from '@/lib/generated/prisma';
 
 type JsonInput = Prisma.InputJsonValue;
-
-function toCard(row: PrismaCard): Card {
-  return {
-    id: row.id,
-    title: row.title,
-    description: row.description,
-    category: row.category as Card['category'],
-    price: row.price,
-    images: row.images as Card['images'],
-    customizable: row.customizable as Card['customizable'],
-    templates: row.templates as Card['templates'],
-  };
-}
 
 function toSavedDesign(row: PrismaSavedDesign & { card: PrismaCard }): SavedDesign {
   return {

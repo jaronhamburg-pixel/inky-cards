@@ -5,11 +5,22 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
-import { Card as CardType } from '@/types/card';
+import { Card as CardType, CardCategory } from '@/types/card';
 import { useAiCardStore } from '@/lib/store/ai-card-store';
 import { formatPrice } from '@/lib/utils/formatting';
 
 type Occasion = 'birthday' | 'wedding' | 'anniversary' | 'thank-you' | 'sympathy' | 'congratulations' | 'holiday' | 'other';
+
+const OCCASION_TO_CATEGORY: Record<Occasion, CardCategory> = {
+  birthday: 'birthday',
+  wedding: 'wedding',
+  anniversary: 'anniversary',
+  congratulations: 'congratulations',
+  'thank-you': 'for-you',
+  sympathy: 'thinking-of-you',
+  holiday: 'misc',
+  other: 'misc',
+};
 type Tone = 'formal' | 'casual' | 'heartfelt' | 'humorous';
 type Style = 'elegant' | 'minimalist' | 'artistic' | 'modern';
 
@@ -57,8 +68,8 @@ export default function GeneratePage() {
       setGeneratedCard({ ...data.card, insideText: '' });
       setResponseId(data.responseId || '');
       setRefinementPrompt('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to generate card. Please try again.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to generate card. Please try again.');
     } finally {
       setIsGenerating(false);
     }
@@ -82,8 +93,8 @@ export default function GeneratePage() {
       setGeneratedCard((prev) => prev ? { ...prev, imageUrl: data.imageUrl } : prev);
       setResponseId(data.responseId || responseId);
       setRefinementPrompt('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to refine card. Please try again.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to refine card. Please try again.');
     } finally {
       setIsRefining(false);
     }
@@ -96,7 +107,7 @@ export default function GeneratePage() {
       id: cardId,
       title: `Custom ${occasion} Card`,
       description: `AI-generated card: ${prompt.slice(0, 100)}`,
-      category: occasion === 'other' ? 'misc' : occasion === 'thank-you' ? 'for-you' : occasion === 'sympathy' ? 'thinking-of-you' : occasion === 'holiday' ? 'misc' : occasion as any,
+      category: OCCASION_TO_CATEGORY[occasion],
       price: 4.99,
       images: { front: generatedCard.imageUrl, back: generatedCard.imageUrl, thumbnail: generatedCard.imageUrl },
       customizable: { frontText: true, backText: false, insideText: true },

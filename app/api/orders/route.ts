@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const sanitized = sanitizeObject(body);
-    const { items, customer, shipping, videoMessage, subtotal, shipping_cost, tax, total, status, userId, paymentIntentId } = sanitized;
+    const { items, customer, shipping, videoMessage, subtotal, shippingCost, tax, total, status, userId, paymentIntentId } = sanitized;
 
     if (!items || !customer || !shipping) {
       return NextResponse.json(
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       shipping,
       videoMessage,
       subtotal,
-      shipping_cost,
+      shippingCost,
       tax,
       total,
       status: paymentIntentId ? 'pending_payment' : (status || 'pending'),

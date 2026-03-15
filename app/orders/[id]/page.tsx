@@ -171,7 +171,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             </div>
             <div className="flex justify-between text-neutral-600">
               <span>Shipping</span>
-              <span>{formatPrice(order.shipping_cost)}</span>
+              <span>{formatPrice(order.shippingCost)}</span>
             </div>
             <div className="flex justify-between text-neutral-600">
               <span>Tax</span>

@@ -9,10 +9,7 @@ import {
   Link,
 } from '@react-email/components';
 import type { Order } from '@/types/order';
-
-const INK = '#1a1a1a';
-const PAPER = '#faf9f7';
-const STONE = '#6b6b6b';
+import { INK, PAPER, STONE } from '../constants';
 
 export function OrderConfirmationEmail({ order }: { order: Order }) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://inkycards.com';
@@ -57,7 +54,7 @@ export function OrderConfirmationEmail({ order }: { order: Order }) {
                 Subtotal: ${order.subtotal.toFixed(2)}
               </Text>
               <Text style={{ fontSize: '13px', color: STONE, margin: '0 0 4px' }}>
-                Shipping: {order.shipping_cost === 0 ? 'FREE' : `$${order.shipping_cost.toFixed(2)}`}
+                Shipping: {order.shippingCost === 0 ? 'FREE' : `$${order.shippingCost.toFixed(2)}`}
               </Text>
               <Text style={{ fontSize: '13px', color: STONE, margin: '0 0 4px' }}>
                 Tax: ${order.tax.toFixed(2)}

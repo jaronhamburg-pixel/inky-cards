@@ -142,14 +142,3 @@ export const significantDateSchema = z.object({
 
 export type SignificantDateFormData = z.infer<typeof significantDateSchema>;
 
-// ─── Helpers ─────────────────────────────────────────────
-
-export function validateTextLength(text: string, maxLength: number): boolean {
-  return text.length <= maxLength;
-}
-
-export function containsProfanity(text: string): boolean {
-  const profanityList = ['badword1', 'badword2']; // Basic list for demo
-  const lowerText = text.toLowerCase();
-  return profanityList.some((word) => lowerText.includes(word));
-}

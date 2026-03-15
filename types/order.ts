@@ -46,7 +46,7 @@ export interface Order {
     videoId?: string;
   };
   subtotal: number;
-  shipping_cost: number;
+  shippingCost: number;
   tax: number;
   total: number;
   status: OrderStatus;
