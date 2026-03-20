@@ -28,6 +28,9 @@ export function Footer() {
           <Link href="/contact" className="text-paper/60 hover:text-paper transition-colors">
             Contact
           </Link>
+          <Link href="/reviews" className="text-paper/60 hover:text-paper transition-colors">
+            Reviews
+          </Link>
           <Link href="/terms" className="text-paper/60 hover:text-paper transition-colors">
             Terms
           </Link>

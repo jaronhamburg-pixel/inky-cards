@@ -46,12 +46,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate card text and image in a single call
+    // Generate card image
     const { frontText, insideText, imageUrl, responseId } = await generateCard({
       occasion,
       prompt,
-      tone: tone || 'heartfelt',
-      style: style || 'elegant',
     });
 
     return NextResponse.json({

@@ -42,12 +42,6 @@ export function Header() {
               >
                 The Edit
               </Link>
-              <Link
-                href="/reviews"
-                className="text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
-              >
-                Reviews
-              </Link>
             </div>
 
             {/* Mobile hamburger */}
@@ -131,13 +125,6 @@ export function Header() {
                 className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
               >
                 The Edit
-              </Link>
-              <Link
-                href="/reviews"
-                onClick={() => setMobileOpen(false)}
-                className="block text-sm tracking-widest uppercase text-stone hover:text-ink transition-colors"
-              >
-                Reviews
               </Link>
               <Link
                 href="/account"

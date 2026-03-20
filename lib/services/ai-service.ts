@@ -3,69 +3,44 @@ import { GoogleGenAI } from '@google/genai';
 const MODEL = 'gemini-3.1-flash-image-preview';
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
-const CARD_DESIGNER_INSTRUCTION = `Act as a professional greeting card designer and art director specialising in premium 5 × 7 inch greeting cards.
-Your task is to generate high-end greeting card designs that are visually striking, minimal, and print-ready.
-Each design should feel like it could be sold in a premium boutique card shop.
+const CARD_DESIGNER_INSTRUCTION = `You are a professional illustrator who creates premium artwork for printed stationery.
 
-Core Output Rule (Most Important):
-Every response must generate a single greeting card design image with the following presentation:
-- The card must be portrait orientation (5 × 7 ratio).
-- The card must appear centred on a pure white background.
-- Only the card is visible.
-- No envelopes, no mockups, no hands or props, no shadows, no bleed marks, no crop marks, no surrounding objects.
-- It should look like a flat 2D card placed on a clean white background.
+Output rules:
+- Generate a single flat rectangular portrait illustration.
+- The illustration fills the entire image — edge to edge, with no border, margin, or background visible around it.
+- The output is ONLY the artwork itself — a single flat rectangle of artwork filling the full frame.
 
-Design Principles:
-All cards must follow these aesthetic guidelines:
+Design principles:
+- Premium, boutique-quality, minimal, artistic, clean, stylish.
+- Focus on simple, high-impact visuals. Visual elements should take up more space than text.
+- Preferred illustration styles: minimalist illustrations, elegant florals, modern abstract shapes, playful but tasteful graphics, hand-drawn elements, light painterly textures.
+- Avoid: stock-art appearance, clip-art styles, complex cluttered scenes.
 
-Premium Visual Style — Designs should feel: modern, premium, boutique-quality, minimal, artistic, clean, stylish.
-Avoid clutter. Focus on simple, high-impact visuals. Visual elements should take up more space than the text.
+Text rules:
+- Text must be minimal and elegant.
+- Only short greetings: Happy Birthday, Thank You, Congratulations, Good Luck, or a name/age if provided.
+- Typography: elegant serif, handwritten script, or refined calligraphy. Avoid comic or childish fonts.
 
-Illustration Style — Preferred styles include: minimalist illustrations, elegant florals, modern abstract shapes, simple characters, playful but tasteful graphics, hand-drawn style elements, light painterly textures.
-Avoid: stock-art appearance, overly digital / clip-art styles, complex scenes.
+Personalisation:
+- If a name is provided, make it large and visually prominent.
+- If an age is provided: ages 1–18 bright and playful, 18–40 modern and trendy, 40+ elegant and minimal.
 
-Text Rules:
-- Text must always be minimal and elegant.
-- Allowed phrases: Happy Birthday, Thank You, Congratulations, Good Luck.
-- Optional additions: a name (if provided), an age (if provided).
+Colour: soft pastels, warm modern tones, muted luxury palettes, elegant contrasts. Avoid neon or overly saturated colours.
 
-Typography Style — Fonts should appear: premium, elegant, stylish, boutique-quality.
-Preferred styles: elegant serif, modern serif, handwritten script, refined calligraphy.
-Avoid: comic fonts, childish fonts, overly decorative fonts, hard-to-read fonts.
+Originality: every design must be 100% original. No trademarks, logos, copyrighted characters, or branded references.
 
-Personalisation Rules:
-- If a name is provided: make the name large and visually prominent; integrate it beautifully into the design.
-- If an age is provided, adjust style accordingly:
-  - Ages 1–18: bright colours, fun illustrations, playful style.
-  - Ages 18–40: modern, stylish, trendy.
-  - Ages 40+: elegant, minimal, premium aesthetic.
+Composition: maintain balanced spacing, avoid overcrowding.`;
 
-Colour Guidelines:
-- Cards must include colour.
-- Preferred palettes: soft pastels, warm modern tones, muted luxury palettes, elegant contrasts.
-- Avoid: neon colours, overly saturated palettes, muddy colour combinations.
-
-Originality Rule:
-Every design must be 100% original. Free from trademarks, logos, copyrighted characters, and branded slogans. Never reference existing brands or characters.
-
-Composition Rules:
-- The design must be designed for a 5 × 7 portrait card.
-- Keep all artwork comfortably within the card edges.
-- Maintain balanced spacing.
-- Avoid overcrowding.
-- The card should feel deliberate and professionally designed.
-
-Behaviour:
-When a user provides a prompt: immediately generate the card design image. Do not ask clarification questions first. Every new request must produce a completely new design, not a minor variation.
-
-Tone & Persona:
-Adopt the tone of a British boutique card designer and art director.
-Communication style: professional, friendly, creative, concise, supportive.
-Use British English conventions: 'football' refers to soccer; use British spelling (colour, favourite, etc.).
-
-Design Philosophy:
-All cards should feel: handmade, thoughtful, elegant, unique, suitable for a modern premium card shop.
-The result should look like a card someone would happily pay £4–£6 in a boutique store.`;
+const OCCASION_FRONT_TEXT: Record<string, string> = {
+  birthday: 'Happy Birthday',
+  wedding: 'Congratulations',
+  anniversary: 'Happy Anniversary',
+  'thank-you': 'Thank You',
+  sympathy: 'Thinking of You',
+  congratulations: 'Congratulations',
+  holiday: 'Happy Holidays',
+  other: 'Special Wishes',
+};
 
 export interface GenerateCardResult {
   frontText: string;
@@ -80,82 +55,45 @@ const imageCache = new Map<string, string>();
 export async function generateCard({
   occasion,
   prompt,
-  tone = 'heartfelt',
-  style = 'elegant',
 }: {
   occasion: string;
   prompt: string;
-  tone?: 'formal' | 'casual' | 'heartfelt' | 'humorous';
-  style?: string;
 }): Promise<GenerateCardResult> {
-  const toneDescriptions = {
-    formal: 'elegant, sophisticated, and professionally worded',
-    casual: 'friendly, relaxed, and conversational',
-    heartfelt: 'warm, sincere, and emotionally resonant',
-    humorous: 'light-hearted, witty, and fun',
-  };
-
-  const styleDescriptions: Record<string, string> = {
-    elegant: 'refined, sophisticated watercolour with gold accents and delicate flourishes',
-    minimalist: 'clean, minimal line art with ample white space and subtle tones',
-    artistic: 'bold, expressive illustration with rich textures and vibrant colour',
-    modern: 'contemporary graphic design with geometric shapes and a fresh palette',
-  };
-
   try {
     const response = await ai.models.generateContent({
       model: MODEL,
-      contents: `Design a 5 x 7 greeting card for a ${occasion} occasion.
-
-Customer request: ${prompt}
-Tone: ${toneDescriptions[tone]}
-Visual style: ${styleDescriptions[style] || style}
-
-Also provide the card text as JSON with keys "frontText" and "insideText":
-- frontText: A brief, elegant heading or greeting for the front (2-8 words maximum)
-- insideText: A thoughtful message for the inside (2-4 sentences, maximum 150 words)
-
-Return the JSON text alongside the card image.`,
+      contents: `Create a beautiful portrait illustration for a ${occasion} occasion. ${prompt}`,
       config: {
         systemInstruction: CARD_DESIGNER_INSTRUCTION,
-        responseModalities: ['TEXT', 'IMAGE'],
+        responseModalities: ['IMAGE'],
+        imageConfig: {
+          aspectRatio: '3:4',
+          imageSize: '2K',
+        },
       },
     });
 
-    let frontText = 'Special Wishes';
-    let insideText = 'May this moment bring joy and happiness. Wishing you all the best as you celebrate this special occasion.';
-    let imageUrl = `https://picsum.photos/seed/${encodeURIComponent(`${occasion}-${style}`)}/800/1200`;
+    const frontText = OCCASION_FRONT_TEXT[occasion] || 'Special Wishes';
+    let imageUrl = '';
     let responseId = '';
 
     const parts = response.candidates?.[0]?.content?.parts || [];
     for (const part of parts) {
-      if (part.text) {
-        const jsonMatch = part.text.match(/\{[\s\S]*"frontText"[\s\S]*"insideText"[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            const parsed = JSON.parse(jsonMatch[0]);
-            frontText = parsed.frontText || frontText;
-            insideText = parsed.insideText || insideText;
-          } catch {
-            // Keep defaults if JSON parsing fails
-          }
-        }
-      } else if (part.inlineData?.mimeType?.startsWith('image/')) {
+      if (part.inlineData?.mimeType?.startsWith('image/')) {
         imageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
         responseId = crypto.randomUUID();
         imageCache.set(responseId, imageUrl);
       }
     }
 
-    return { frontText, insideText, imageUrl, responseId };
+    if (!imageUrl) {
+      throw new Error('No image returned from Gemini');
+    }
+
+    return { frontText, insideText: '', imageUrl, responseId };
   } catch (error) {
     console.error('Error generating card:', error);
-    return {
-      frontText: 'Special Wishes',
-      insideText: 'May this moment bring joy and happiness. Wishing you all the best as you celebrate this special occasion.',
-      imageUrl: `https://picsum.photos/seed/${encodeURIComponent(`${occasion}-${style}`)}/800/1200`,
-      responseId: '',
-    };
+    throw error;
   }
 }
 
@@ -187,14 +125,18 @@ export async function refineCardImage(
                 },
               },
               {
-                text: `This is a 5 x 7 greeting card. Please modify it based on this request: ${refinementPrompt}. Keep it as a premium 5 x 7 card design with consistent margins and bleed areas.`,
+                text: `Modify this illustration based on this request: ${refinementPrompt}`,
               },
             ],
           },
         ],
         config: {
           systemInstruction: CARD_DESIGNER_INSTRUCTION,
-          responseModalities: ['TEXT', 'IMAGE'],
+          responseModalities: ['IMAGE'],
+          imageConfig: {
+            aspectRatio: '3:4',
+            imageSize: '2K',
+          },
         },
       });
 
