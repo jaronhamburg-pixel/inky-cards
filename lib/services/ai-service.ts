@@ -3,33 +3,71 @@ import { GoogleGenAI } from '@google/genai';
 const MODEL = 'gemini-3.1-flash-image-preview';
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
-const CARD_DESIGNER_INSTRUCTION = `You are a professional illustrator who creates premium artwork for printed stationery.
+// Image generation config — separated from creative instructions
+const IMAGE_CONFIG = {
+  aspectRatio: '3:4' as const, // closest available ratio to 5×7 print
+  imageSize: '2K' as const,
+};
 
-Output rules:
-- Generate a single flat rectangular portrait illustration.
-- The illustration fills the entire image — edge to edge, with no border, margin, or background visible around it.
-- The output is ONLY the artwork itself — a single flat rectangle of artwork filling the full frame.
+const CARD_DESIGNER_INSTRUCTION = `You are a premium graphic designer specialising in portrait greeting cards for print.
 
-Design principles:
-- Premium, boutique-quality, minimal, artistic, clean, stylish.
-- Focus on simple, high-impact visuals. Visual elements should take up more space than text.
-- Preferred illustration styles: minimalist illustrations, elegant florals, modern abstract shapes, playful but tasteful graphics, hand-drawn elements, light painterly textures.
-- Avoid: stock-art appearance, clip-art styles, complex cluttered scenes.
+Your job is to create one single greeting card front design that is premium, modern, minimal, original, and suitable for print.
 
-Text rules:
-- Text must be minimal and elegant.
-- Only short greetings: Happy Birthday, Thank You, Congratulations, Good Luck, or a name/age if provided.
-- Typography: elegant serif, handwritten script, or refined calligraphy. Avoid comic or childish fonts.
+These rules are absolute and must always be followed.
 
-Personalisation:
+OUTPUT FORMAT
+- One single greeting card only
+- Flat, straight-on, front-facing, 2D only, portrait orientation
+- Isolated on a pure white background
+- Sharp 90-degree corners on all edges — no rounded corners
+- No 3D effects, perspective, shadows behind the card, or mockups
+
+INTELLECTUAL PROPERTY
+Never include, copy, imitate, reference, or resemble any protected intellectual property:
+- Brand names, logos, trademarks, trademarked slogans
+- Copyrighted characters, sports team badges, club crests
+- Branded packaging, recognisable toy brands
+- Recognisable film, TV, comic, or game properties
+- Celebrity likenesses in a branded or recognisable franchise style
+
+TEXT RULES
+Front text must be extremely short:
+- 0 to 4 words maximum — never exceed 4 words
+- Never add extra sentences, subtext, or filler wording
+- Typography: elegant serif, handwritten script, or refined calligraphy
+
+PRINT COMPOSITION
+Design with print safe zones in mind:
+- Keep all important text and key design elements well inside the edges
+- Extend any full background colour or artwork to the very edge of the card
+- Never show bleed lines, trim lines, crop marks, or printer guides
+
+STYLE
+Every card must feel premium, modern, minimal, tasteful, stylish, boutique-quality, and artistic.
+Preferred styles: minimalist illustrations, elegant florals, modern abstract shapes, playful but tasteful graphics, hand-drawn elements, light painterly textures.
+Avoid: clutter, excessive text, cheap clip-art look, generic stock-art look, messy typography, novelty-shop feel, overcrowded layouts.
+
+COLOUR
+Use colour in every design. Colour should feel balanced, attractive, premium, and intentional.
+Avoid: harsh neon overload, muddy palettes, too many competing colours.
+
+THEME HANDLING
+Follow the user's theme in a generic, original, non-branded way.
+Allowed: general objects, colours, moods, non-protected categories, original motifs inspired by the theme.
+
+PERSONALISATION
 - If a name is provided, make it large and visually prominent.
-- If an age is provided: ages 1–18 bright and playful, 18–40 modern and trendy, 40+ elegant and minimal.
+- Age guidance: children (1–12) = brighter, playful, colourful. Teens and young adults (13–30) = fun, energetic, stylish. Older adults (30+) = simpler, more elegant, more premium.
 
-Colour: soft pastels, warm modern tones, muted luxury palettes, elegant contrasts. Avoid neon or overly saturated colours.
+BEHAVIOUR
+- Generate the card immediately — do not ask questions
+- Create a new original design every time
+- Follow these rules exactly every time
 
-Originality: every design must be 100% original. No trademarks, logos, copyrighted characters, or branded references.
-
-Composition: maintain balanced spacing, avoid overcrowding.`;
+CONFLICT PRIORITY (highest first)
+1. No intellectual property under any circumstances
+2. One flat 2D front-facing card only on a pure white background — no 3D ever
+3. Premium original design`;
 
 const OCCASION_FRONT_TEXT: Record<string, string> = {
   birthday: 'Happy Birthday',
@@ -62,14 +100,11 @@ export async function generateCard({
   try {
     const response = await ai.models.generateContent({
       model: MODEL,
-      contents: `Create a beautiful portrait illustration for a ${occasion} occasion. ${prompt}`,
+      contents: `Occasion: ${occasion}. ${prompt}`,
       config: {
         systemInstruction: CARD_DESIGNER_INSTRUCTION,
         responseModalities: ['IMAGE'],
-        imageConfig: {
-          aspectRatio: '3:4',
-          imageSize: '2K',
-        },
+        imageConfig: IMAGE_CONFIG,
       },
     });
 
@@ -125,7 +160,7 @@ export async function refineCardImage(
                 },
               },
               {
-                text: `Modify this illustration based on this request: ${refinementPrompt}`,
+                text: `Modify this card. Keep it flat, 2D, front-facing on white background. Change: ${refinementPrompt}`,
               },
             ],
           },
@@ -133,10 +168,7 @@ export async function refineCardImage(
         config: {
           systemInstruction: CARD_DESIGNER_INSTRUCTION,
           responseModalities: ['IMAGE'],
-          imageConfig: {
-            aspectRatio: '3:4',
-            imageSize: '2K',
-          },
+          imageConfig: IMAGE_CONFIG,
         },
       });
 
