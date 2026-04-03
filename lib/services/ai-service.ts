@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 
-const MODEL = 'gemini-3.1-flash-image-preview';
+const MODEL = 'gemini-3-pro-image-preview';
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 // Image generation config — separated from creative instructions
